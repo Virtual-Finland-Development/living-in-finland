@@ -10,6 +10,7 @@ import { useCompanyContext } from '@/context/company-context';
 import { Step } from '@/context/company-context';
 
 type NavStep = { label: string; step: Step };
+type WizardType = 'company' | 'beneficialOwners' | 'signatoryRights';
 
 const COMPANY_STEPS: NavStep[] = [
   {
@@ -58,8 +59,19 @@ const SIGNATORY_RIGHTS_STEPS: NavStep[] = [
 ];
 
 interface Props {
-  wizardType: 'company' | 'beneficialOwners' | 'signatoryRights';
+  wizardType: WizardType;
   onWizardNavChange: (clickedStep: number) => void;
+}
+
+function navSettings(wizardType: WizardType) {
+  switch (wizardType) {
+    case 'company':
+      return ['Details', COMPANY_STEPS];
+    case 'beneficialOwners':
+      return ['Beneficial owners', BENEFICIAL_OWNER_STEPS];
+    case 'signatoryRights':
+      return ['Signatory rights', SIGNATORY_RIGHTS_STEPS];
+  }
 }
 
 export default function CompanyWizardNav(props: Props) {
@@ -67,18 +79,7 @@ export default function CompanyWizardNav(props: Props) {
   const { width } = useDimensions();
   const { isStepDone, isPrevStepDone, doneSteps, step } = useCompanyContext();
 
-  const navHeading =
-    wizardType === 'company'
-      ? 'Details'
-      : wizardType === 'beneficialOwners'
-      ? 'Beneficial owners'
-      : 'Signatory rights';
-  const navSteps =
-    wizardType === 'company'
-      ? COMPANY_STEPS
-      : wizardType === 'beneficialOwners'
-      ? BENEFICIAL_OWNER_STEPS
-      : SIGNATORY_RIGHTS_STEPS;
+  const [navHeading, navSteps] = navSettings(wizardType);
 
   const trackedDoneSteps = Object.keys(doneSteps)
     .filter(key => key.includes(wizardType))

@@ -15,10 +15,10 @@ export default function CompanyWizardActionButtons(props: Props) {
     formState: { errors },
   } = useFormContext();
   const router = useRouter();
-  const { businessId } = router.query;
-  const companyRouteUrl = !businessId
+  const { nationalIdentifier } = router.query;
+  const companyRouteUrl = !nationalIdentifier
     ? '/company/establishment'
-    : `/company/edit/${businessId}`;
+    : `/company/edit/${nationalIdentifier}`;
 
   const buttonsDisabled = Boolean(Object.keys(errors).length);
 

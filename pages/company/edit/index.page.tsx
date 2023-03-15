@@ -37,8 +37,8 @@ export default function CompanyEditIndexPage() {
                   <div className="flex flex-col gap-4">
                     {companies.map((company, index) => (
                       <CustomLink
-                        key={company.businessId}
-                        href={`/company/edit/${company.businessId}`}
+                        key={company.nationalIdentifier}
+                        href={`/company/edit/${company.nationalIdentifier}`}
                       >{`${index + 1}. ${
                         company.data.companyDetails.name
                       }`}</CustomLink>

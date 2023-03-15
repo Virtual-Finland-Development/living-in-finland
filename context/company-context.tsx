@@ -69,7 +69,7 @@ interface CompanyContextProps {
   step: number;
   setStep: (step: number) => void;
   isSaving: boolean;
-  businessId?: string;
+  nationalIdentifier?: string;
   codesets: {
     countries: CountryOption[] | undefined;
     currencies: CurrencyOption[] | undefined;
@@ -97,8 +97,8 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const [saveIsSuccess, setSaveIsSuccess] = useState(false);
   const [contextIsLoading, setContextIsLoading] = useState(false);
   const router = useRouter();
-  const businessId = router.query.businessId
-    ? (router.query.businessId as string)
+  const nationalIdentifier = router.query.nationalIdentifier
+    ? (router.query.nationalIdentifier as string)
     : undefined;
   const toast = useToast();
 
@@ -118,15 +118,15 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const { data: countries, isLoading: countriesLoading } = useCountries();
 
   /**
-   * [hooks] Fetch company related data, if businessId was provided.
+   * [hooks] Fetch company related data, if nationalIdentifier was provided.
    */
   const { data: companyData, isFetching: companyLoading } = useCompany(
-    businessId || undefined
+    nationalIdentifier || undefined
   );
   const { data: beneficialOwnersData, isFetching: beneficialOwnersLoading } =
-    useBeneficialOwners(businessId || undefined);
+    useBeneficialOwners(nationalIdentifier || undefined);
   const { data: signatoryRightsData, isFetching: signatoryRightsLoading } =
-    useSignatoryRights(businessId || undefined);
+    useSignatoryRights(nationalIdentifier || undefined);
 
   const companyDataLoading =
     companyLoading || beneficialOwnersLoading || signatoryRightsLoading;
@@ -140,12 +140,12 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   }, [codeSetsLoading, companyDataLoading]);
 
   /**
-   * Set fetched company related data to state, if businessId was provided and if data exists.
+   * Set fetched company related data to state, if nationalIdentifier was provided and if data exists.
    * Set all steps to done.
    */
   useEffect(() => {
     if (
-      businessId &&
+      nationalIdentifier &&
       !companyDataLoading &&
       companyData &&
       beneficialOwnersData &&
@@ -167,7 +167,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     }
   }, [
     beneficialOwnersData,
-    businessId,
+    nationalIdentifier,
     companyData,
     companyDataLoading,
     signatoryRightsData,
@@ -175,9 +175,9 @@ function CompanyContextProvider(props: CompanyProviderProps) {
 
   const isStepDone = useCallback(
     (step: Step) => {
-      return Boolean(lodash_get(doneSteps, step) || businessId);
+      return Boolean(lodash_get(doneSteps, step) || nationalIdentifier);
     },
-    [businessId, doneSteps]
+    [nationalIdentifier, doneSteps]
   );
 
   const isPrevStepDone = useCallback(
@@ -213,32 +213,32 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const saveCompanyData = useCallback(async () => {
     setIsSaving(true);
     const { company, beneficialOwners, signatoryRights } = values;
-    let payloadBusinessId: string = '';
+    let payloadId: string = '';
 
     // hack: when updating existing company, we need to use direct call to PRH mock bypassing testbed,
     // because Establish/Write does not have the ability to update existing company
     try {
-      if (!businessId) {
+      if (!nationalIdentifier) {
         // productizer call, create
         await api.company.saveCompany(company as Partial<NonListedCompany>);
-        // get created company from PRH mock, so we can get the created businessId (productizer response does not include this)
+        // get created company from PRH mock, so we can get the created nationalIdentifier (productizer response does not include this)
         const createdCompany = await api.company.getLatestModifiedCompany();
-        payloadBusinessId = createdCompany.businessId;
+        payloadId = createdCompany.nationalIdentifier;
       } else {
         // PRH mock call, company update
-        payloadBusinessId = businessId;
+        payloadId = nationalIdentifier;
         await api.company.saveCompanyDirectlyToPRH(
-          payloadBusinessId,
+          payloadId,
           company as Partial<NonListedCompany>
         );
       }
-      // continue to create / update beneficial owners / signatory rights with businessId, productizer calls
+      // continue to create / update beneficial owners / signatory rights withnationalIdentifier, productizer calls
       await api.company.saveBeneficialOwners(
-        payloadBusinessId,
+        payloadId,
         beneficialOwners as Partial<BenecifialOwners>
       );
       await api.company.saveSignatoryRights(
-        payloadBusinessId,
+        payloadId,
         signatoryRights as Partial<SignatoryRights>
       );
 
@@ -257,7 +257,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     } finally {
       setIsSaving(false);
     }
-  }, [businessId, toast, values]);
+  }, [nationalIdentifier, toast, values]);
 
   const setContextValues = useCallback(
     (newValues: Partial<CompanyContextValues>) => {
@@ -301,7 +301,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     step,
     setStep,
     isSaving: isSaving,
-    businessId: businessId ? (businessId as string) : undefined,
+    nationalIdentifier,
     saveCompany: saveCompanyData,
     saveIsSuccess,
     contextIsLoading,

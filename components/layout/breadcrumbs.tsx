@@ -74,7 +74,9 @@ export default function Breadcrumbs() {
         {breadcrumbs.map(item => (
           <Link key={item.href} href={item.href} passHref legacyBehavior>
             <BreadcrumbCustomLink href="" current={router.asPath === item.href}>
-              {router.query.businessId ? item.label : convertLabel(item.label)}
+              {router.query.nationalIdentifier
+                ? item.label
+                : convertLabel(item.label)}
             </BreadcrumbCustomLink>
           </Link>
         ))}

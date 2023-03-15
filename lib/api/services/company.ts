@@ -9,7 +9,7 @@ import apiClient from '../api-client';
 import { PRH_MOCK_BASE_URL } from '../endpoints';
 
 interface CompanyResponse {
-  businessId: string;
+  nationalIdentifier: string;
   data: NonListedCompany;
 }
 
@@ -50,11 +50,11 @@ export async function getLatestModifiedCompany(): Promise<CompanyResponse> {
 }
 
 export async function getCompany(
-  businessId: string
+  nationalIdentifier: string
 ): Promise<NonListedCompany> {
   const { data } = await apiClient.post(
     `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/Establishment`,
-    businessId,
+    { nationalIdentifier },
     { headers: { 'Content-Type': 'application/json' } }
   );
   return data;
@@ -82,7 +82,7 @@ export async function createCompanyDirectlyToPRH(
 }
 
 export async function saveCompanyDirectlyToPRH(
-  businessId: string,
+  nationalIdentifier: string,
   payload: Partial<NonListedCompany>
 ) {
   const token = Cookies.get('idToken');
@@ -94,7 +94,7 @@ export async function saveCompanyDirectlyToPRH(
   try {
     const { sub }: { sub: string | undefined } = jwt_decode(token);
     const { data } = await apiClient.patch(
-      `${PRH_MOCK_BASE_URL}/users/${sub}/companies/${businessId}`,
+      `${PRH_MOCK_BASE_URL}/users/${sub}/companies/${nationalIdentifier}`,
       payload
     );
     return data;
@@ -114,45 +114,45 @@ export async function saveCompany(
 }
 
 export async function getBeneficialOwners(
-  businessId: string
+  nationalIdentifier: string
 ): Promise<BenecifialOwners> {
   const { data } = await apiClient.post(
     `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/BeneficialOwners`,
-    businessId,
+    { nationalIdentifier },
     { headers: { 'Content-Type': 'application/json' } }
   );
   return data;
 }
 
 export async function saveBeneficialOwners(
-  businessId: string,
+  nationalIdentifier: string,
   beneficialOwners: Partial<BenecifialOwners>
 ): Promise<BenecifialOwners> {
   const { data } = await apiClient.post(
     `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/BeneficialOwners/Write`,
-    { businessId, data: beneficialOwners }
+    { nationalIdentifier, data: beneficialOwners }
   );
   return data;
 }
 
 export async function getSignatoryRights(
-  businessId: string
+  nationalIdentifier: string
 ): Promise<SignatoryRights> {
   const { data } = await apiClient.post(
     `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/SignatoryRights`,
-    businessId,
+    { nationalIdentifier },
     { headers: { 'Content-Type': 'application/json' } }
   );
   return data;
 }
 
 export async function saveSignatoryRights(
-  businessId: string,
+  nationalIdentifier: string,
   signatoryRights: Partial<SignatoryRights>
 ): Promise<SignatoryRights> {
   const { data } = await apiClient.post(
     `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/SignatoryRights/Write`,
-    { businessId, data: signatoryRights }
+    { nationalIdentifier, data: signatoryRights }
   );
   return data;
 }

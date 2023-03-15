@@ -146,7 +146,8 @@ interface Props {
 
 export default function CompanyWizard(props: Props) {
   const { wizardType } = props;
-  const { values, setValues, step, setStep, businessId } = useCompanyContext();
+  const { values, setValues, step, setStep, nationalIdentifier } =
+    useCompanyContext();
 
   /**
    * Form methods, passed to form provider (react-hook-form).
@@ -156,7 +157,7 @@ export default function CompanyWizard(props: Props) {
     mode: 'onSubmit',
     defaultValues: {
       [wizardType]: {
-        ...(!businessId && DEFAULT_VALUES[wizardType]),
+        ...(!nationalIdentifier && DEFAULT_VALUES[wizardType]),
         ...values[wizardType],
       },
     },

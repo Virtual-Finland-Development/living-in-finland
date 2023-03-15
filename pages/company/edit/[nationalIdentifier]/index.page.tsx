@@ -10,7 +10,7 @@ import Preview from '../../components/preview/preview';
 
 export default function CompanyEditPage() {
   const router = useRouter();
-  const { businessId } = router.query;
+  const { nationalIdentifier } = router.query;
 
   const {
     doneSteps,
@@ -23,7 +23,7 @@ export default function CompanyEditPage() {
   const doneStepValues = Object.values(doneSteps);
   const allStepsDone = doneStepValues.every(isDone => isDone);
 
-  if (!businessId) return null;
+  if (!nationalIdentifier) return null;
 
   return (
     <AuthSentry redirectPath="/company">

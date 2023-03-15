@@ -45,3 +45,7 @@ export function pickRandomDateString() {
   const timestamp = Math.floor(Math.random() * maxDate);
   return format(new Date(timestamp), 'yyyy-MM-dd');
 }
+
+export function removeTrailingSlash(str: string) {
+  return str.endsWith('/') ? str.slice(0, -1) : str;
+}

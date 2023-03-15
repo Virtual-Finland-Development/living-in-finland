@@ -12,10 +12,10 @@ export default function Preview(props: Props) {
   const { previewType, stageHeader } = props;
   const { clearValues } = useCompanyContext();
   const router = useRouter();
-  const { businessId } = router.query;
-  const editUrlBase = !businessId
+  const { nationalIdentifier } = router.query;
+  const editUrlBase = !nationalIdentifier
     ? '/company/establishment'
-    : `/company/edit/${businessId}`;
+    : `/company/edit/${nationalIdentifier}`;
 
   return (
     <div className="flex flex-col gap-4 w-full">

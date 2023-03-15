@@ -6,23 +6,23 @@ import Page from '@/components/layout/page';
 import Loading from '@/components/ui/loading';
 import CompanyWizard from '../../components/company-wizard/company-wizard';
 
-export default function DetailsPage() {
+export default function SignatoryRightsPage() {
   const router = useRouter();
-  const { businessId } = router.query;
+  const { nationalIdentifier } = router.query;
   const { contextIsLoading } = useCompanyContext();
-  if (!businessId) return null;
+  if (!nationalIdentifier) return null;
 
   return (
     <AuthSentry redirectPath="/company">
-      <Page title="Company edit - details" withBorder={false}>
+      <Page title="Company edit - signatory rights" withBorder={false}>
         {contextIsLoading ? (
           <Loading />
         ) : (
-          <CompanyWizard wizardType="company" />
+          <CompanyWizard wizardType="signatoryRights" />
         )}
       </Page>
     </AuthSentry>
   );
 }
 
-DetailsPage.provider = CompanyContextProvider;
+SignatoryRightsPage.provider = CompanyContextProvider;

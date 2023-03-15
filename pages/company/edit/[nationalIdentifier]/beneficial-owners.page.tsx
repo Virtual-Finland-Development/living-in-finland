@@ -8,9 +8,9 @@ import CompanyWizard from '../../components/company-wizard/company-wizard';
 
 export default function BeneficialOwnersPage() {
   const router = useRouter();
-  const { businessId } = router.query;
+  const { nationalIdentifier } = router.query;
   const { contextIsLoading } = useCompanyContext();
-  if (!businessId) return null;
+  if (!nationalIdentifier) return null;
 
   return (
     <AuthSentry redirectPath="/company">

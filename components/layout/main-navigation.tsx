@@ -1,7 +1,7 @@
 import Link, { LinkProps } from 'next/link';
 import { useRouter } from 'next/router';
-import { ReactNode } from 'react';
-import { Disclosure, Popover } from '@headlessui/react';
+import { ReactNode, useState } from 'react';
+import { Dialog, Popover, Transition } from '@headlessui/react';
 import {
   Button,
   Icon,
@@ -120,29 +120,61 @@ function DesktopNavigation() {
   );
 }
 
-function MobileNavigationPanel() {
+function MobileNavigationPanel({
+  isOpen,
+  setIsOpen,
+}: {
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
+}) {
   const router = useRouter();
 
   return (
-    <Disclosure.Panel className="md:hidden absolute border-t border-solid border-gray-300 bg-white w-full border-b border-b-suomifi-light z-10">
-      {({ close }) => (
-        <ServiceNavigation aria-label="Mobile navigation">
-          {navigation.map(item => (
-            <ServiceNavigationItem
-              key={item.name}
-              selected={
-                (item.href === '/' && router.pathname === item.href) ||
-                (item.href !== '/' && router.pathname.includes(item.href))
-              }
-            >
-              <MobileLink href={item.href} onClick={() => close()}>
-                {item.name}
-              </MobileLink>
-            </ServiceNavigationItem>
-          ))}
-        </ServiceNavigation>
-      )}
-    </Disclosure.Panel>
+    <Transition show={isOpen}>
+      <Dialog
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        className="md:hidden absolute inset-0 top-[60px]"
+      >
+        <Transition.Child
+          enter="transition-opacity duration-300"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-150"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <div
+            className="fixed inset-0 top-[60px] bg-black/60"
+            aria-hidden="true"
+          />
+        </Transition.Child>
+        <div className="fixed inset-x-0">
+          <Dialog.Panel className="bg-white border-t border-solid border-gray-300 border-b border-b-suomifi-light">
+            <ServiceNavigation aria-label="Mobile navigation">
+              {navigation.map(item => (
+                <div key={item.name} className="border-b">
+                  <ServiceNavigationItem
+                    key={item.name}
+                    selected={
+                      (item.href === '/' && router.pathname === item.href) ||
+                      (item.href !== '/' && router.pathname.includes(item.href))
+                    }
+                  >
+                    <MobileLink
+                      href={item.href}
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {item.name}
+                    </MobileLink>
+                  </ServiceNavigationItem>
+                </div>
+              ))}
+            </ServiceNavigation>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+    </Transition>
   );
 }
 
@@ -170,82 +202,82 @@ function UserControl({ className }: { className: string }) {
 
 export default function MainNavigation() {
   const { isAuthenticated } = useAuth();
+  const [mobileNavPanelOpen, setMobileNavPanelOpen] = useState(false);
 
   return (
     <header>
-      <Disclosure
-        as="nav"
-        className="bg-white border-b border-t-4 border-solid border-t-suomifi-dark border-b-suomifi-light"
-      >
-        {({ open }) => (
-          <>
-            <div className="container px-4">
-              <div className="relative flex h-14 items-center justify-between">
-                {/* Main heading */}
-                <Link href="/">
-                  <CustomHeading variant="h4" suomiFiBlue="light">
-                    VIRTUAL FINLAND
-                  </CustomHeading>
-                </Link>
+      <nav className="bg-white border-b border-t-4 border-solid border-t-suomifi-dark border-b-suomifi-light relative">
+        <div className="container px-4">
+          <div className="relative flex h-14 items-center justify-between">
+            {/* Main heading */}
+            <Link href="/">
+              <CustomHeading variant="h4" suomiFiBlue="light">
+                VIRTUAL FINLAND
+              </CustomHeading>
+            </Link>
 
-                {/* Controls */}
-                <div className="flex flex-row items-center gap-6">
-                  {/* Language menu */}
-                  <LanguageMenu name="EN" tw="font-bold">
-                    <LanguageMenuItem onSelect={() => {}}>
-                      Suomeksi (FI)
-                    </LanguageMenuItem>
-                    <LanguageMenuItem onSelect={() => {}}>
-                      På Svenska (SV)
-                    </LanguageMenuItem>
-                    <LanguageMenuItem onSelect={() => {}} selected>
-                      In English (EN)
-                    </LanguageMenuItem>
-                  </LanguageMenu>
+            {/* Controls */}
+            <div className="flex flex-row items-center gap-6">
+              {/* Language menu */}
+              <LanguageMenu name="EN" tw="font-bold">
+                <LanguageMenuItem onSelect={() => {}}>
+                  Suomeksi (FI)
+                </LanguageMenuItem>
+                <LanguageMenuItem onSelect={() => {}}>
+                  På Svenska (SV)
+                </LanguageMenuItem>
+                <LanguageMenuItem onSelect={() => {}} selected>
+                  In English (EN)
+                </LanguageMenuItem>
+              </LanguageMenu>
 
-                  {/* Mobile menu toggle button */}
-                  <div className="md:hidden">
-                    <Disclosure.Button as={MobileMenuToggleButton}>
-                      {open ? (
-                        <Icon
-                          icon="close"
-                          className="block h-6 w-6"
-                          aria-hidden="true"
-                        />
-                      ) : (
-                        <Icon
-                          icon="menu"
-                          className="block h-6 w-6"
-                          aria-hidden="true"
-                        />
-                      )}
-                    </Disclosure.Button>
-                  </div>
-
-                  {/* Desktop user info / log out */}
-                  {isAuthenticated && (
-                    <UserControl className="hidden md:flex flex-col items-end" />
+              {/* Mobile menu toggle button */}
+              <div className="md:hidden">
+                <Button
+                  as={MobileMenuToggleButton}
+                  onClick={() => setMobileNavPanelOpen(isOpen => !isOpen)}
+                >
+                  {mobileNavPanelOpen ? (
+                    <Icon
+                      icon="close"
+                      className="block h-6 w-6"
+                      aria-hidden="true"
+                    />
+                  ) : (
+                    <Icon
+                      icon="menu"
+                      className="block h-6 w-6"
+                      aria-hidden="true"
+                    />
                   )}
-
-                  {/* Desktop menu popover */}
-                  <DesktopMenuPopover />
-                </div>
+                </Button>
               </div>
 
-              {/* Mobile user info / log out */}
+              {/* Desktop user info / log out */}
               {isAuthenticated && (
-                <UserControl className="md:hidden flex flex-row items-center justify-between pb-1 -mt-1" />
+                <UserControl className="hidden md:flex flex-col items-end" />
               )}
+
+              {/* Desktop menu popover */}
+              <DesktopMenuPopover />
             </div>
+          </div>
 
-            {/* Desktop navigation */}
-            <DesktopNavigation />
+          {/* Mobile user info / log out */}
+          {isAuthenticated && (
+            <UserControl className="md:hidden flex flex-row items-center justify-between pb-1 -mt-1" />
+          )}
+        </div>
 
-            {/* Mobile navigation disclosure panel */}
-            <MobileNavigationPanel />
-          </>
-        )}
-      </Disclosure>
+        {/* Desktop navigation */}
+        <DesktopNavigation />
+
+        {/* Mobile navigation panel (dialog/modal) */}
+        <MobileNavigationPanel
+          isOpen={mobileNavPanelOpen}
+          setIsOpen={setMobileNavPanelOpen}
+        />
+      </nav>
     </header>
   );
 }

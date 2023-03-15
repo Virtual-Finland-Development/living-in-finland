@@ -1,19 +1,20 @@
 import { format } from 'date-fns';
 import { AppContextObj } from '@/types';
 import { baseAppContextObj } from '../constants';
-import adresses from '../fake-data/adresses.json';
 import firstNames from '../fake-data/first-names.json';
 import lastNames from '../fake-data/last-names.json';
 
 export function generateAppContextHash(
   applicationContextObj?: Partial<AppContextObj>
 ) {
-  const appContextBase64 = Buffer.from(
-    JSON.stringify({
-      ...baseAppContextObj,
-      ...(applicationContextObj || {}),
-    })
-  ).toString('base64');
+  const appContext: AppContextObj = {
+    ...baseAppContextObj,
+    ...(applicationContextObj || {}),
+    redirectUrl: `${window.location.origin}/auth`,
+  };
+  const appContextBase64 = Buffer.from(JSON.stringify(appContext)).toString(
+    'base64'
+  );
   return encodeURIComponent(appContextBase64);
 }
 

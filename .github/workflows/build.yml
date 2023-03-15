@@ -69,7 +69,7 @@ jobs:
           access-token: ${{ secrets.PULUMI_ACCESS_TOKEN }}
       - name: App build
         if: ${{ inputs.deployment_stage }}
-        run: npm install && npm run build
+        run: npm install && npm run export
         env:
           NEXT_PUBLIC_AUTH_GW_BASE_URL: ${{ steps.auth-gw-url.outputs.resource-output }}
           NEXT_PUBLIC_PRH_MOCK_BASE_URL: ${{ steps.prh-mock-url.outputs.resource-output }}

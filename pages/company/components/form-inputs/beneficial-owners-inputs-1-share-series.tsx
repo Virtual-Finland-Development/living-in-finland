@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
 import { Button } from 'suomifi-ui-components';
 import type { ShareSeries2 } from '@/types';
+import { SHARE_SERIES_CLASS_OPTIONS } from '@/lib/constants';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
@@ -19,29 +20,6 @@ const REQUIRED_FIELDS = [
   'numberOfShares',
   'shareValue',
   'votesPerShare',
-];
-
-const SHARE_SERIES_CLASS_OPTIONS = [
-  {
-    labelText: 'A',
-    uniqueItemId: 'A',
-  },
-  {
-    labelText: 'B',
-    uniqueItemId: 'B',
-  },
-  {
-    labelText: 'C',
-    uniqueItemId: 'C',
-  },
-  {
-    labelText: 'D',
-    uniqueItemId: 'D',
-  },
-  {
-    labelText: 'E',
-    uniqueItemId: 'E',
-  },
 ];
 
 export default function BeneficialOwnersShareSeries() {
@@ -92,7 +70,7 @@ export default function BeneficialOwnersShareSeries() {
   return (
     <div className="flex flex-col gap-4 items-start">
       <div>
-        <CustomHeading variant="h4">Stage 2.1</CustomHeading>
+        <CustomHeading variant="h4">Stage 1/3</CustomHeading>
         <CustomHeading variant="h2">
           Beneficial owners - Share series
         </CustomHeading>
@@ -117,6 +95,7 @@ export default function BeneficialOwnersShareSeries() {
               control={control}
               rules={{
                 required: 'Number of shares is required.',
+                valueAsNumber: true,
                 validate: value => value > -1,
               }}
               labelText="Number of shares"
@@ -125,7 +104,11 @@ export default function BeneficialOwnersShareSeries() {
               type="number"
               name={`beneficialOwners.shareSeries.${index}.votesPerShare`}
               control={control}
-              rules={{ required: 'Votes per share is required.' }}
+              rules={{
+                required: 'Votes per share is required.',
+                valueAsNumber: true,
+                validate: value => value > -1,
+              }}
               labelText="Votes per share"
             />
           </div>

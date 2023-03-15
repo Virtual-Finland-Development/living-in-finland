@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { Block, Button, Text, TextInput } from 'suomifi-ui-components';
+import { Button, Text, TextInput } from 'suomifi-ui-components';
 import api from '@/lib/api';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 
-export default function Profile() {
+export default function ProfilePage() {
   const [isLoading, setLoading] = useState(false);
 
   const loginHandler = () => {
@@ -14,7 +14,7 @@ export default function Profile() {
 
   return (
     <Page title="Profile">
-      <Block variant="section" className="px-4 py-6 bg-white">
+      <Page.Block className="bg-white">
         <CustomHeading variant="h2" suomiFiBlue="dark">
           Create your profile
         </CustomHeading>
@@ -22,12 +22,14 @@ export default function Profile() {
           <Text>
             Choose which service to use to log in to Living in Finland.
           </Text>
-          <Button onClick={loginHandler} disabled={isLoading}>
-            {isLoading ? 'Redirecting...' : 'Login with testbed'}
-          </Button>
+          <div>
+            <Button onClick={loginHandler} disabled={isLoading}>
+              {isLoading ? 'Redirecting...' : 'Login with testbed'}
+            </Button>
+          </div>
         </div>
-      </Block>
-      <Block variant="section" className="bg-suomifi-blue-bg-light px-4 py-6">
+      </Page.Block>
+      <Page.Block className="bg-suomifi-blue-bg-light">
         <CustomHeading variant="h2" suomiFiBlue="dark">
           Or register with email address
         </CustomHeading>
@@ -37,7 +39,7 @@ export default function Profile() {
           <TextInput labelText="Email address" type="email" />
           <Button>Create profile</Button>
         </form>
-      </Block>
+      </Page.Block>
     </Page>
   );
 }

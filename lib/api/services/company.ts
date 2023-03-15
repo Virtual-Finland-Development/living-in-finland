@@ -130,7 +130,7 @@ export async function saveBeneficialOwners(
 ): Promise<BenecifialOwners> {
   const { data } = await apiClient.post(
     `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/BeneficialOwners/Write`,
-    { businessId, beneficialOwners }
+    { businessId, data: beneficialOwners }
   );
   return data;
 }
@@ -152,7 +152,7 @@ export async function saveSignatoryRights(
 ): Promise<SignatoryRights> {
   const { data } = await apiClient.post(
     `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/SignatoryRights/Write`,
-    { businessId, signatoryRights }
+    { businessId, data: signatoryRights }
   );
   return data;
 }

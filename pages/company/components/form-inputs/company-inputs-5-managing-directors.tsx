@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
 import { Button } from 'suomifi-ui-components';
 import type { ManagingDirector } from '@/types';
+import { MANAGING_DIRECTORS_ROLE_OPTIONS } from '@/lib/constants';
 import { pickRandomDateString, pickRandomName } from '@/lib/utils';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
@@ -22,11 +23,6 @@ const REQUIRED_FIELDS = [
   'middleNames',
   'dateOfBirth',
   'nationality',
-];
-
-const ROLE_OPTIONS = [
-  { labelText: 'Director', uniqueItemId: 'director' },
-  { labelText: 'Debuty director', uniqueItemId: 'debuty director' },
 ];
 
 export default function CompanyManagingDirectors() {
@@ -80,7 +76,7 @@ export default function CompanyManagingDirectors() {
   return (
     <div className="flex flex-col gap-4 items-start">
       <div>
-        <CustomHeading variant="h4">Stage 1.5</CustomHeading>
+        <CustomHeading variant="h4">Stage 5/8</CustomHeading>
         <CustomHeading variant="h2">Managing directors</CustomHeading>
       </div>
 
@@ -94,7 +90,7 @@ export default function CompanyManagingDirectors() {
               name={`company.managingDirectors.${index}.role`}
               control={control}
               rules={{ required: 'Role is required.' }}
-              items={ROLE_OPTIONS}
+              items={MANAGING_DIRECTORS_ROLE_OPTIONS}
               labelText="Role"
             />
             <FormInput

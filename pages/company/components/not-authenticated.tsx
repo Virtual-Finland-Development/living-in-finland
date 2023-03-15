@@ -1,21 +1,25 @@
 import ExportedImage from 'next-image-export-optimizer';
-// import Image from 'next/image';
-import { Block, Button, Text } from 'suomifi-ui-components';
+import { useState } from 'react';
+import { Button, Text } from 'suomifi-ui-components';
 import { StaticIcon } from 'suomifi-ui-components';
 import api from '@/lib/api';
+import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 import CustomText from '@/components/ui/custom-text';
 import manLaptopImage from '../../../public/images/man-laptop.jpg';
 
 export default function NotAuthenticated() {
+  const [isLoading, setLoading] = useState(false);
+
   const loginHandler = () => {
+    setLoading(true);
     api.auth.directToAuthGwLogin('/company');
   };
 
   return (
     <>
-      <Block variant="section" className="px-4 py-6 bg-white">
-        <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1">
+      <Page.Block className="bg-white">
+        <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 lg:-mx-12">
           <div className="bg-suomifi-light text-white flex flex-col gap-8 items-center justify-center px-4 py-8">
             <div className="hidden md:block">
               <StaticIcon
@@ -30,19 +34,16 @@ export default function NotAuthenticated() {
               Identify yourself into Company. You can then establish a company
               or modify existing company information.
             </CustomText>
-            <Button icon="login" variant="inverted" onClick={loginHandler}>
-              Identification
+            <Button
+              icon="login"
+              variant="inverted"
+              onClick={loginHandler}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Redirecting...' : 'Identification'}
             </Button>
           </div>
           <div className="hidden md:block relative">
-            {/* <Image
-              src="/images/man-laptop.jpg"
-              alt="Man with laptop"
-              className="object-cover h-full w-full"
-              width={537}
-              height={395}
-              priority
-            /> */}
             <ExportedImage
               src={manLaptopImage}
               alt="Man with laptop"
@@ -67,7 +68,7 @@ export default function NotAuthenticated() {
             mollit anim id est laborum.
           </Text>
         </div>
-      </Block>
+      </Page.Block>
     </>
   );
 }

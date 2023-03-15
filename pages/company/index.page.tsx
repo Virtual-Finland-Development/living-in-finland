@@ -3,7 +3,7 @@ import Page from '@/components/layout/page';
 import Authenticated from './components/authenticated';
 import NotAuthenticated from './components/not-authenticated';
 
-export default function Company() {
+export default function CompanyPage() {
   const { isAuthenticated } = useAuth();
 
   return (

@@ -44,7 +44,7 @@ export default function CompanyDetails() {
   return (
     <div className="flex flex-col gap-4 items-start">
       <div>
-        <CustomHeading variant="h4">Stage 1.2</CustomHeading>
+        <CustomHeading variant="h4">Stage 2/8</CustomHeading>
         <CustomHeading variant="h2">Company details</CustomHeading>
       </div>
       <div className="grid sm:grid-cols-2 gap-6">
@@ -92,6 +92,7 @@ export default function CompanyDetails() {
           control={control}
           rules={{
             required: 'Share capital is required.',
+            valueAsNumber: true,
             validate: value => value > -1,
           }}
           labelText="Share capital"
@@ -116,7 +117,7 @@ export default function CompanyDetails() {
           type="number"
           name={`company.companyDetails.settlementDeposit`}
           control={control}
-          rules={{ validate: value => value > -1 }}
+          rules={{ valueAsNumber: true, validate: value => value > -1 }}
           labelText="Settlement deposit"
           optionalText="optional"
           hintText="Deposit paid during the establishment"

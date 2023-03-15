@@ -8,7 +8,7 @@ import { useAuth } from '@/context/auth-context';
 import Alert from '@/components/ui/alert';
 import Loading from '@/components/ui/loading';
 
-export default function Auth() {
+export default function AuthPage() {
   const { logIn, logOut } = useAuth();
   const [isLoading, setLoading] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);

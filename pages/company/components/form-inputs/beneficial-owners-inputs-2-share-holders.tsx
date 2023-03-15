@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
 import { Button } from 'suomifi-ui-components';
 import type { Shareholder } from '@/types';
+import { SHARE_SERIES_CLASS_OPTIONS } from '@/lib/constants';
 import { pickRandomName } from '@/lib/utils';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
@@ -16,29 +17,6 @@ interface FieldProps {
 }
 
 const REQUIRED_FIELDS = ['name'];
-
-const SHARE_SERIES_CLASS_OPTIONS = [
-  {
-    labelText: 'A',
-    uniqueItemId: 'A',
-  },
-  {
-    labelText: 'B',
-    uniqueItemId: 'B',
-  },
-  {
-    labelText: 'C',
-    uniqueItemId: 'C',
-  },
-  {
-    labelText: 'D',
-    uniqueItemId: 'D',
-  },
-  {
-    labelText: 'E',
-    uniqueItemId: 'E',
-  },
-];
 
 export default function BeneficialOwnersShareholders() {
   const {
@@ -55,7 +33,7 @@ export default function BeneficialOwnersShareholders() {
   const appendShareSeries = () => {
     append({
       name: `${pickRandomName('lastName')}-${pickRandomName('firstName')} Ltd`,
-      ownerships: [
+      shareOwnership: [
         {
           shareSeriesClass: 'A',
           quantity: Math.floor(Math.random() * 100) + 1,
@@ -70,7 +48,7 @@ export default function BeneficialOwnersShareholders() {
 
   const isStepDone = useMemo(() => {
     const hasContextValues = (() => {
-      const shareSeriesArr = lodash_get(beneficialOwners, 'shareholders');
+      const shareSeriesArr = lodash_get(beneficialOwners, 'shareholder');
 
       if (Array.isArray(shareSeriesArr)) {
         return shareSeriesArr.every(i => {
@@ -91,7 +69,7 @@ export default function BeneficialOwnersShareholders() {
   return (
     <div className="flex flex-col gap-4 items-start">
       <div>
-        <CustomHeading variant="h4">Stage 2.2</CustomHeading>
+        <CustomHeading variant="h4">Stage 2/3</CustomHeading>
         <CustomHeading variant="h2">
           Beneficial owners - Shareholders
         </CustomHeading>
@@ -139,11 +117,14 @@ function Ownerships({ index }: { index: number }) {
 
   const { fields, append, remove } = useFieldArray<FieldProps>({
     control,
-    name: `beneficialOwners.shareholders.${index}.ownerships`,
+    name: `beneficialOwners.shareholders.${index}.shareOwnership`,
   });
 
   const appendOwnership = () => {
-    append({ shareSeriesClass: 'A', quantity: 0 });
+    append({
+      shareSeriesClass: 'A',
+      quantity: Math.floor(Math.random() * 100) + 1,
+    });
   };
 
   const removeOwnership = (index: number) => {
@@ -158,7 +139,7 @@ function Ownerships({ index }: { index: number }) {
           className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end justify-start border-b-gray-300 mb-6"
         >
           <FormSingleSelect
-            name={`beneficialOwners.shareholders.${index}.ownerships.${i}.shareSeriesClass`}
+            name={`beneficialOwners.shareholders.${index}.shareOwnership.${i}.shareSeriesClass`}
             control={control}
             rules={{ required: true }}
             items={SHARE_SERIES_CLASS_OPTIONS}
@@ -167,9 +148,13 @@ function Ownerships({ index }: { index: number }) {
           />
           <FormInput
             type="number"
-            name={`beneficialOwners.shareholders.${index}.ownerships.${i}.quantity`}
+            name={`beneficialOwners.shareholders.${index}.shareOwnership.${i}.quantity`}
             control={control}
-            rules={{ required: true, validate: value => value > -1 }}
+            rules={{
+              required: true,
+              valueAsNumber: true,
+              validate: value => value > -1,
+            }}
             labelText="Quantity"
             showStatusText={false}
           />

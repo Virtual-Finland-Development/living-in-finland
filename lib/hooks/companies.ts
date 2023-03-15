@@ -1,6 +1,6 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { BenecifialOwners, NonListedCompany } from '@/types';
+import { useQuery } from '@tanstack/react-query';
 import api from '../api';
+import useErrorToast from './use-error-toast';
 
 const COMPANIES_QUERY_KEYS = ['companies'];
 const COMPANY_QUERY_KEY = 'company';
@@ -18,18 +18,16 @@ interface SaveCompanyRelatedInput<T> {
 function useCompanies() {
   const query = useQuery(
     COMPANIES_QUERY_KEYS,
-    async () => {
-      try {
-        return await api.company.getCompanies();
-      } catch (error) {
-        console.log(error);
-        return null;
-      }
-    },
+    async () => await api.company.getCompanies(),
     {
       refetchOnWindowFocus: false,
     }
   );
+
+  useErrorToast({
+    title: 'Could not fetch user companies',
+    error: query.error,
+  });
 
   return query;
 }
@@ -40,19 +38,17 @@ function useCompanies() {
 function useCompany(businessId: string | undefined) {
   const query = useQuery(
     [COMPANY_QUERY_KEY, businessId],
-    async () => {
-      try {
-        return await api.company.getCompany(businessId as string);
-      } catch (error) {
-        console.log(error);
-        return null;
-      }
-    },
+    async () => await api.company.getCompany(businessId as string),
     {
       enabled: Boolean(businessId),
       refetchOnWindowFocus: false,
     }
   );
+
+  useErrorToast({
+    title: 'Could not fetch company',
+    error: query.error,
+  });
 
   return query;
 }
@@ -96,19 +92,17 @@ function useCompany(businessId: string | undefined) {
 function useBeneficialOwners(businessId: string | undefined) {
   const query = useQuery(
     [BENEFICIAL_OWNERS_QUERY_KEY, businessId],
-    async () => {
-      try {
-        return await api.company.getBeneficialOwners(businessId as string);
-      } catch (error) {
-        console.log(error);
-        return null;
-      }
-    },
+    async () => await api.company.getBeneficialOwners(businessId as string),
     {
       enabled: Boolean(businessId),
       refetchOnWindowFocus: false,
     }
   );
+
+  useErrorToast({
+    title: 'Could not fetch beneficial owners',
+    error: query.error,
+  });
 
   return query;
 }
@@ -155,19 +149,17 @@ function useBeneficialOwners(businessId: string | undefined) {
 function useSignatoryRights(businessId: string | undefined) {
   const query = useQuery(
     [SIGNATORY_RIGHTS_QUERY_KEY, businessId],
-    async () => {
-      try {
-        return await api.company.getSignatoryRights(businessId as string);
-      } catch (err) {
-        console.log(err);
-        return null;
-      }
-    },
+    async () => await api.company.getSignatoryRights(businessId as string),
     {
       enabled: Boolean(businessId),
       refetchOnWindowFocus: false,
     }
   );
+
+  useErrorToast({
+    title: 'Could not fetch signatory rights',
+    error: query.error,
+  });
 
   return query;
 }

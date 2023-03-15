@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
 import { Button } from 'suomifi-ui-components';
 import type { ShareSeries } from '@/types';
+import { SHARE_SERIES_CLASS_OPTIONS } from '@/lib/constants';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
@@ -15,29 +16,6 @@ interface FieldProps {
 }
 
 const REQUIRED_FIELDS = ['shareSeriesClass', 'numberOfShares', 'shareValue'];
-
-const SHARE_SERIES_CLASS_OPTIONS = [
-  {
-    labelText: 'A',
-    uniqueItemId: 'A',
-  },
-  {
-    labelText: 'B',
-    uniqueItemId: 'B',
-  },
-  {
-    labelText: 'C',
-    uniqueItemId: 'C',
-  },
-  {
-    labelText: 'D',
-    uniqueItemId: 'D',
-  },
-  {
-    labelText: 'E',
-    uniqueItemId: 'E',
-  },
-];
 
 export default function CompanyShareSeries() {
   const {
@@ -88,7 +66,7 @@ export default function CompanyShareSeries() {
   return (
     <div className="flex flex-col gap-4 items-start">
       <div>
-        <CustomHeading variant="h4">Stage 1.4</CustomHeading>
+        <CustomHeading variant="h4">Stage 4/8</CustomHeading>
         <CustomHeading variant="h2">Share series</CustomHeading>
       </div>
 
@@ -111,6 +89,7 @@ export default function CompanyShareSeries() {
               control={control}
               rules={{
                 required: 'Number of shares is required.',
+                valueAsNumber: true,
                 validate: value => value > -1,
               }}
               labelText="Number of shares"
@@ -121,6 +100,7 @@ export default function CompanyShareSeries() {
               control={control}
               rules={{
                 required: 'Share value is required.',
+                valueAsNumber: true,
                 validate: value => value > -1,
               }}
               labelText="Share value"

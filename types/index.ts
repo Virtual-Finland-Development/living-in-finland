@@ -54,8 +54,8 @@ export type CompanyAddress = {
   postCode: string;
   postName: string;
   poBox: string;
-  adminUnitLevel1: string;
-  adminUnitLevel2: string;
+  adminUnitLevel_1: string;
+  adminUnitLevel_2: string;
 };
 
 export type ShareSeries = {
@@ -83,7 +83,7 @@ export type BoardMember = {
   nationality: string;
 };
 
-export type Auditor = {
+export type AuditorDetails = {
   companyName: string;
   nationalIdentifier: string;
   givenName: string;
@@ -97,7 +97,7 @@ export interface NonListedCompany {
   shareSeries: ShareSeries[];
   managingDirectors: ManagingDirector[];
   boardMembers: BoardMember[];
-  auditor: Auditor;
+  auditorDetails: AuditorDetails;
 }
 
 /**
@@ -108,20 +108,19 @@ export type ShareSeries2 = Omit<ShareSeries, 'shareValue'> & {
   votesPerShare: number;
 };
 
-export type Owrnership = {
+export type ShareOwrnership = {
   shareSeriesClass: 'A' | 'B' | 'C' | 'D' | 'E';
   quantity: number;
 };
 
 export type Shareholder = {
   name: string;
-  ownerships: Owrnership[];
+  shareOwnership: ShareOwrnership[];
 };
 
 export interface BenecifialOwners {
   shareSeries: ShareSeries2[];
-  shareholders: Shareholder[];
-  ownerships: Owrnership[];
+  shareholder: Shareholder[];
 }
 
 /**
@@ -149,8 +148,8 @@ export interface SigningRight {
   postCode: string;
   postName: string;
   poBox: string;
-  adminUnitLevel1: string;
-  adminUnitLevel2: string;
+  adminUnitLevel_1: string;
+  adminUnitLevel_2: string;
 }
 
 export interface SignatoryRights {

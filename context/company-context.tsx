@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import {
   ReactNode,
   createContext,
@@ -23,7 +24,6 @@ import {
   useSignatoryRights,
 } from '@/lib/hooks/companies';
 import { useToast } from '@/context/toast-context';
-import Loading from '@/components/ui/loading';
 
 interface CompanyContextValues {
   company: Partial<NonListedCompany>;
@@ -38,34 +38,50 @@ type Step =
   | 'company.shareSeries'
   | 'company.managingDirectors'
   | 'company.boardMembers'
-  | 'company.auditor'
+  | 'company.auditorDetails'
   | 'beneficialOwners.shareSeries'
   | 'beneficialOwners.shareholders'
-  | 'signatoryRights.signinRights';
+  | 'signatoryRights.signingRights';
+
+const doneStepsInitial: Record<Step, boolean> = {
+  'company.registrant': false,
+  'company.companyDetails': false,
+  'company.companyAddress': false,
+  'company.shareSeries': false,
+  'company.managingDirectors': false,
+  'company.boardMembers': false,
+  'company.auditorDetails': false,
+  'beneficialOwners.shareSeries': false,
+  'beneficialOwners.shareholders': false,
+  'signatoryRights.signingRights': false,
+};
 
 interface CompanyContextProps {
   values: Partial<CompanyContextValues>;
   setValues: (values: Partial<CompanyContextValues>) => void;
+  clearValues: (
+    type: 'company' | 'beneficialOwners' | 'signatoryRights'
+  ) => void;
   isStepDone: (step: Step) => boolean;
   isPrevStepDone: (currentStep: Step) => boolean;
   doneSteps: any;
   setIsCurrentStepDone: (step: Step, done: boolean) => void;
   step: number;
   setStep: (step: number) => void;
-  isLoading: boolean;
+  isSaving: boolean;
   businessId?: string;
   codesets: {
     countries: CountryOption[] | undefined;
     currencies: CurrencyOption[] | undefined;
   };
+  saveCompany: () => void;
+  saveIsSuccess: boolean;
+  contextIsLoading: boolean;
 }
 
 interface CompanyProviderProps {
-  businessId?: string;
   children: ReactNode;
 }
-
-const LAST_STEP = 11;
 
 const CompanyContext = createContext<CompanyContextProps | undefined>(
   undefined
@@ -73,12 +89,27 @@ const CompanyContext = createContext<CompanyContextProps | undefined>(
 const CompanyContextConsumer = CompanyContext.Consumer;
 
 function CompanyContextProvider(props: CompanyProviderProps) {
-  const { businessId, children } = props;
+  const { children } = props;
   const [step, setStep] = useState(0);
   const [values, setValues] = useState<Partial<CompanyContextValues>>({});
-  const [doneSteps, setStepDone] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [doneSteps, setDoneSteps] = useState(doneStepsInitial);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveIsSuccess, setSaveIsSuccess] = useState(false);
+  const [contextIsLoading, setContextIsLoading] = useState(false);
+  const router = useRouter();
+  const businessId = router.query.businessId
+    ? (router.query.businessId as string)
+    : undefined;
   const toast = useToast();
+
+  /**
+   * Reset step on every route change.
+   */
+  useEffect(() => {
+    const resetStep = () => setStep(0);
+    router.events.on('routeChangeComplete', resetStep);
+    return () => router.events.off('routeChangeComplete', resetStep);
+  }, [router.events]);
 
   /**
    * [hooks] Fetch codesets.
@@ -100,17 +131,38 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const companyDataLoading =
     companyLoading || beneficialOwnersLoading || signatoryRightsLoading;
   const codeSetsLoading = currenciesLoading || countriesLoading;
-  const contextLoading = companyDataLoading || codeSetsLoading;
 
   /**
-   * Set fetched company related to state, if businessId was provided and if data exists.
+   * Company context loading state, track company data / codesets loading states.
    */
   useEffect(() => {
-    if (businessId && !companyDataLoading) {
+    setContextIsLoading(companyDataLoading || codeSetsLoading);
+  }, [codeSetsLoading, companyDataLoading]);
+
+  /**
+   * Set fetched company related data to state, if businessId was provided and if data exists.
+   * Set all steps to done.
+   */
+  useEffect(() => {
+    if (
+      businessId &&
+      !companyDataLoading &&
+      companyData &&
+      beneficialOwnersData &&
+      signatoryRightsData
+    ) {
       setValues({
-        ...(companyData && { company: companyData }),
-        ...(beneficialOwnersData && { beneficialOwners: beneficialOwnersData }),
-        ...(signatoryRightsData && { signatoryRights: signatoryRightsData }),
+        company: companyData,
+        beneficialOwners: beneficialOwnersData,
+        signatoryRights: signatoryRightsData,
+      });
+      setDoneSteps(prev => {
+        return Object.keys(prev).reduce((acc, key) => {
+          return {
+            ...acc,
+            [key]: true,
+          };
+        }, prev);
       });
     }
   }, [
@@ -128,13 +180,6 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     [businessId, doneSteps]
   );
 
-  /* const isStepDoneAndHasValues = useCallback(
-    (step: Step) => {
-      return isStepDone(step)  && Boolean(lodash_get(values, step));
-    },
-    [isStepDone, values]
-  ); */
-
   const isPrevStepDone = useCallback(
     (currentStep: Step) => {
       switch (currentStep) {
@@ -150,14 +195,14 @@ function CompanyContextProvider(props: CompanyProviderProps) {
           return isStepDone('company.shareSeries');
         case 'company.boardMembers':
           return isStepDone('company.managingDirectors');
-        case 'company.auditor':
+        case 'company.auditorDetails':
           return isStepDone('company.boardMembers');
         case 'beneficialOwners.shareSeries':
-          return isStepDone('company.auditor');
+          return true;
         case 'beneficialOwners.shareholders':
           return isStepDone('beneficialOwners.shareSeries');
-        case 'signatoryRights.signinRights':
-          return isStepDone('beneficialOwners.shareholders');
+        case 'signatoryRights.signingRights':
+          return true;
         default:
           return false;
       }
@@ -165,102 +210,118 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     [isStepDone]
   );
 
-  const saveCompanyData = useCallback(
-    async (values: Partial<CompanyContextValues>) => {
-      setIsLoading(true);
-      const { company, beneficialOwners, signatoryRights } = values;
-      let payloadBusinessId: string = '';
+  const saveCompanyData = useCallback(async () => {
+    setIsSaving(true);
+    const { company, beneficialOwners, signatoryRights } = values;
+    let payloadBusinessId: string = '';
 
-      // hack: when updating existing company, we need to use direct call to PRH mock bypassing testbed,
-      // because Establish/Write does not have the ability to update existing company
-      try {
-        if (!businessId) {
-          // productizer call, create
-          await api.company.saveCompany(company as Partial<NonListedCompany>);
-          // get created company from PRH mock, so we can get the created businessId (productizer response does not include this)
-          const createdCompany = await api.company.getLatestModifiedCompany();
-          payloadBusinessId = createdCompany.businessId;
-        } else {
-          // PRH mock call, company update
-          payloadBusinessId = businessId;
-          await api.company.saveCompanyDirectlyToPRH(
-            businessId,
-            company as Partial<NonListedCompany>
-          );
-        }
-        // continue to create / update beneficial owners / signatory rights with businessId, productizer calls
-        await api.company.saveBeneficialOwners(
+    // hack: when updating existing company, we need to use direct call to PRH mock bypassing testbed,
+    // because Establish/Write does not have the ability to update existing company
+    try {
+      if (!businessId) {
+        // productizer call, create
+        await api.company.saveCompany(company as Partial<NonListedCompany>);
+        // get created company from PRH mock, so we can get the created businessId (productizer response does not include this)
+        const createdCompany = await api.company.getLatestModifiedCompany();
+        payloadBusinessId = createdCompany.businessId;
+      } else {
+        // PRH mock call, company update
+        payloadBusinessId = businessId;
+        await api.company.saveCompanyDirectlyToPRH(
           payloadBusinessId,
-          beneficialOwners as Partial<BenecifialOwners>
+          company as Partial<NonListedCompany>
         );
-        await api.company.saveSignatoryRights(
-          payloadBusinessId,
-          signatoryRights as Partial<SignatoryRights>
-        );
-      } catch (error: any) {
-        toast({
-          status: 'error',
-          title: 'Error',
-          content: error?.message || 'Something went wrong.',
-        });
-      } finally {
-        setIsLoading(false);
       }
-    },
-    [businessId, toast]
-  );
+      // continue to create / update beneficial owners / signatory rights with businessId, productizer calls
+      await api.company.saveBeneficialOwners(
+        payloadBusinessId,
+        beneficialOwners as Partial<BenecifialOwners>
+      );
+      await api.company.saveSignatoryRights(
+        payloadBusinessId,
+        signatoryRights as Partial<SignatoryRights>
+      );
+
+      setSaveIsSuccess(true);
+      toast({
+        status: 'neutral',
+        title: 'Success',
+        content: 'Company information saved successfully!',
+      });
+    } catch (error: any) {
+      toast({
+        status: 'error',
+        title: 'Error',
+        content: error?.message || 'Something went wrong.',
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  }, [businessId, toast, values]);
 
   const setContextValues = useCallback(
-    async (newValues: Partial<CompanyContextValues>) => {
+    (newValues: Partial<CompanyContextValues>) => {
       const mergedValues = lodash_merge(values, newValues);
       setValues(mergedValues);
-
-      // last step, create or edit company / beneficial owners / signatory rights
-      if (step + 1 === LAST_STEP) {
-        saveCompanyData(mergedValues);
-      }
     },
-    [saveCompanyData, step, values]
+    [values]
+  );
+
+  const clearContextValues = useCallback(
+    (type: 'company' | 'beneficialOwners' | 'signatoryRights') => {
+      const clearedValues = { ...values, [type]: {} };
+      setValues(clearedValues);
+      setDoneSteps(prev => {
+        return Object.keys(prev).reduce((acc, key) => {
+          const isDone = key.startsWith(type)
+            ? false
+            : prev[key as keyof Record<Step, boolean>];
+          return {
+            ...acc,
+            [key]: isDone,
+          };
+        }, prev);
+      });
+    },
+    [values]
   );
 
   const setIsCurrentStepDone = useCallback((step: Step, done: boolean) => {
-    setStepDone(prev => ({ ...prev, [step]: done }));
+    setDoneSteps(prev => ({ ...prev, [step]: done }));
   }, []);
 
-  if (contextLoading) {
-    return <Loading />;
-  }
+  const contextValue = {
+    values,
+    setValues: setContextValues,
+    clearValues: clearContextValues,
+    isStepDone,
+    isPrevStepDone,
+    doneSteps,
+    setIsCurrentStepDone,
+    step,
+    setStep,
+    isSaving: isSaving,
+    businessId: businessId ? (businessId as string) : undefined,
+    saveCompany: saveCompanyData,
+    saveIsSuccess,
+    contextIsLoading,
+    codesets: {
+      countries,
+      currencies: currencies
+        ? currencies
+            .filter(c => ['EUR', 'SEK', 'NOK', 'ISK', 'DKK'].includes(c.code))
+            .reduce((acc: CurrencyOption[], item) => {
+              if (!acc.some(i => i.code === item.code)) {
+                acc.push(item);
+              }
+              return acc;
+            }, [])
+        : undefined,
+    },
+  };
 
   return (
-    <CompanyContext.Provider
-      value={{
-        values,
-        setValues: setContextValues,
-        isStepDone,
-        isPrevStepDone,
-        doneSteps,
-        setIsCurrentStepDone,
-        step,
-        setStep,
-        isLoading: isLoading,
-        businessId,
-        codesets: {
-          countries,
-          currencies: currencies
-            ? currencies
-                .filter(c =>
-                  ['EUR', 'SEK', 'NOK', 'ISK', 'DKK'].includes(c.code)
-                )
-                .reduce((acc: CurrencyOption[], item) => {
-                  if (!acc.some(i => i.code === item.code)) {
-                    acc.push(item);
-                  }
-                  return acc;
-                }, [])
-            : undefined,
-        },
-      }}
-    >
+    <CompanyContext.Provider value={contextValue}>
       {children}
     </CompanyContext.Provider>
   );
@@ -277,9 +338,4 @@ function useCompanyContext() {
 }
 
 export type { Step };
-export {
-  CompanyContextProvider,
-  CompanyContextConsumer,
-  useCompanyContext,
-  LAST_STEP,
-};
+export { CompanyContextProvider, CompanyContextConsumer, useCompanyContext };

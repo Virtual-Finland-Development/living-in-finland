@@ -2,7 +2,7 @@ import { Block, Heading, Text } from 'suomifi-ui-components';
 import Page from '@/components/layout/page';
 import CustomLink from '@/components/ui/custom-link';
 
-export default function NotFound() {
+export default function NotFoundPage() {
   return (
     <Page title="404 Not Found">
       <Block variant="section" className="bg-white px-4 py-6">

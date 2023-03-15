@@ -1,19 +1,14 @@
 import { useRouter } from 'next/router';
-import { Block, Button, Text } from 'suomifi-ui-components';
-import { useCompanies } from '@/lib/hooks/companies';
+import { Button, Text } from 'suomifi-ui-components';
+import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
-import CustomLink from '@/components/ui/custom-link';
-import Loading from '@/components/ui/loading';
 
 export default function Authenticated() {
   const router = useRouter();
 
-  const { data: companies, isLoading } = useCompanies();
-  console.log(companies);
-
   return (
     <>
-      <Block variant="section" className="px-4 py-6 bg-white">
+      <Page.Block className="bg-white">
         <div className="flex flex-col gap-6 items-start">
           <CustomHeading variant="h2" suomiFiBlue="dark">
             Company establishment
@@ -50,7 +45,7 @@ export default function Authenticated() {
             Modify existing companies
           </Button>
         </div>
-      </Block>
+      </Page.Block>
     </>
   );
 }

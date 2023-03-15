@@ -36,7 +36,7 @@ export default function CompanyAddress() {
   return (
     <div className="flex flex-col gap-4 items-start">
       <div>
-        <CustomHeading variant="h4">Stage 1.3</CustomHeading>
+        <CustomHeading variant="h4">Stage 3/8</CustomHeading>
         <CustomHeading variant="h2">Company address</CustomHeading>
       </div>
       <div className="grid sm:grid-cols-2 gap-6">
@@ -89,13 +89,13 @@ export default function CompanyAddress() {
           optionalText="optional"
         />
         <FormInput
-          name={`company.companyAddress.adminUnitLevel1`}
+          name={`company.companyAddress.adminUnitLevel_1`}
           control={control}
           labelText="Admin unit level 1"
           optionalText="optional"
         />
         <FormInput
-          name={`company.companyAddress.adminUnitLevel2`}
+          name={`company.companyAddress.adminUnitLevel_2`}
           control={control}
           labelText="Admin unit level 2"
           optionalText="optional"

@@ -1,18 +1,16 @@
 import { useEffect, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
-import type { Auditor } from '@/types';
+import type { AuditorDetails } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
 import FormInput from '@/components/form/form-input';
 import CustomHeading from '@/components/ui/custom-heading';
 
 interface FieldProps {
   company: {
-    auditor: Auditor;
+    auditorDetails: AuditorDetails;
   };
 }
-
-// const REQUIRED_FIELDS = ['companyName', 'nationalIdentifier'];
 
 export default function CompanyAuditor() {
   const {
@@ -20,52 +18,45 @@ export default function CompanyAuditor() {
     setIsCurrentStepDone,
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
-  const { invalid } = getFieldState('company.auditor', formState);
+  const { invalid } = getFieldState('company.auditorDetails', formState);
 
   const isStepDone = useMemo(() => {
-    /*  const hasContextValues = REQUIRED_FIELDS.every(field =>
-      lodash_get(company?.auditor, field)
-    ); */
-    const hasContextValues = lodash_get(company, 'auditor');
+    const hasContextValues = lodash_get(company, 'auditorDetails');
     return hasContextValues ? !invalid : formState.isValid;
   }, [company, formState.isValid, invalid]);
 
   useEffect(() => {
-    setIsCurrentStepDone('company.auditor', isStepDone);
+    setIsCurrentStepDone('company.auditorDetails', isStepDone);
   }, [isStepDone, setIsCurrentStepDone]);
 
   return (
     <div className="flex flex-col gap-4 items-start">
       <div>
-        <CustomHeading variant="h4">Stage 1.7</CustomHeading>
+        <CustomHeading variant="h4">Stage 7/8</CustomHeading>
         <CustomHeading variant="h2">Auditor</CustomHeading>
       </div>
       <FormInput
-        name={`company.auditor.companyName`}
+        name={`company.auditorDetails.companyName`}
         control={control}
-        // rules={{ required: 'Auditor company name is required.' }}
         labelText="Auditor company name"
         optionalText="Optional"
       />
       <FormInput
-        name={`company.auditor.nationalIdentifier`}
+        name={`company.auditorDetails.nationalIdentifier`}
         control={control}
-        // rules={{ required: 'National identifier is required.' }}
         labelText="National identifier"
         hintText="The national identifier of the non-listed company issued by the trade register"
         optionalText="Optional"
       />
       <FormInput
-        name={`company.auditor.givenName`}
+        name={`company.auditorDetails.givenName`}
         control={control}
-        // rules={{ required: 'National identifier is required.' }}
         labelText="Auditor given name"
         optionalText="Optional"
       />
       <FormInput
-        name={`company.auditor.lastName`}
+        name={`company.auditorDetails.lastName`}
         control={control}
-        // rules={{ required: 'National identifier is required.' }}
         labelText="Auditor last name"
         optionalText="Optional"
       />

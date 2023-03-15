@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form';
 import { Block } from 'suomifi-ui-components';
 import type {
@@ -12,20 +12,19 @@ import {
   pickRandomName,
 } from '@/lib/utils';
 import { useCompanyContext } from '@/context/company-context';
-import Loading from '@/components/ui/loading';
-import BeneficialOwnersShareSeries from './beneficial-owners-inputs-1-share-series';
-import BeneficialOwnersShareholders from './beneficial-owners-inputs-2-share-holders';
-import CompanyRegistrant from './company-inputs-1-registrant';
-import CompanyDetails from './company-inputs-2-company-details';
-import CompanyAddress from './company-inputs-3-company-address';
-import CompanyShares from './company-inputs-4-share-series';
-import CompanyDirectors from './company-inputs-5-managing-directors';
-import CompanyMembers from './company-inputs-6-board-members';
-import CompanyAuditor from './company-inputs-7-auditor';
+import BeneficialOwnersShareSeries from '../form-inputs/beneficial-owners-inputs-1-share-series';
+import BeneficialOwnersShareholders from '../form-inputs/beneficial-owners-inputs-2-share-holders';
+import CompanyRegistrant from '../form-inputs/company-inputs-1-registrant';
+import CompanyDetails from '../form-inputs/company-inputs-2-company-details';
+import CompanyAddress from '../form-inputs/company-inputs-3-company-address';
+import CompanyShares from '../form-inputs/company-inputs-4-share-series';
+import CompanyDirectors from '../form-inputs/company-inputs-5-managing-directors';
+import CompanyMembers from '../form-inputs/company-inputs-6-board-members';
+import CompanyAuditor from '../form-inputs/company-inputs-7-auditor';
+import SignatoryRightsSigningRights from '../form-inputs/signatory-rights-inputs-1-signing-rights';
+import Preview from '../preview/preview';
+import CompanyWizardActionButtons from './company-wizard-action-buttons';
 import CompanyWizardNav from './company-wizard-nav';
-import FormActionButtons from './form-action-buttons';
-import Preview from './preview';
-import SignatoryRightsSigninRights from './signatory-rights-inputs-1-signin-rights';
 
 interface FormProps {
   company: Partial<NonListedCompany>;
@@ -33,19 +32,27 @@ interface FormProps {
   signatoryRights: SignatoryRights;
 }
 
-const companyWizardSteps = [
-  <CompanyRegistrant key="1" />,
-  <CompanyDetails key="2" />,
-  <CompanyAddress key="3" />,
-  <CompanyShares key="4" />,
-  <CompanyDirectors key="5" />,
-  <CompanyMembers key="6" />,
-  <CompanyAuditor key="7" />,
-  <BeneficialOwnersShareSeries key="8" />,
-  <BeneficialOwnersShareholders key="9" />,
-  <SignatoryRightsSigninRights key="10" />,
-  <Preview key="11" />,
-];
+const WIZARD_STEPS = {
+  company: [
+    <CompanyRegistrant key="1" />,
+    <CompanyDetails key="2" />,
+    <CompanyAddress key="3" />,
+    <CompanyShares key="4" />,
+    <CompanyDirectors key="5" />,
+    <CompanyMembers key="6" />,
+    <CompanyAuditor key="7" />,
+    <Preview key="8" previewType="company" stageHeader="Stage 8/8" />,
+  ],
+  beneficialOwners: [
+    <BeneficialOwnersShareSeries key="1" />,
+    <BeneficialOwnersShareholders key="2" />,
+    <Preview key="4" previewType="beneficialOwners" stageHeader="Stage 3/3" />,
+  ],
+  signatoryRights: [
+    <SignatoryRightsSigningRights key="1" />,
+    <Preview key="2" previewType="signatoryRights" stageHeader="Stage 2/2" />,
+  ],
+};
 
 const DEFAULT_VALUES = {
   company: {
@@ -110,7 +117,7 @@ const DEFAULT_VALUES = {
         name: `${pickRandomName('lastName')}-${pickRandomName(
           'firstName'
         )} Ltd`,
-        ownerships: [
+        shareOwnership: [
           {
             shareSeriesClass: 'A' as const,
             quantity: Math.floor(Math.random() * 100) + 1,
@@ -120,7 +127,7 @@ const DEFAULT_VALUES = {
     ],
   },
   signatoryRights: {
-    signinRights: [
+    signingRights: [
       {
         role: 'director' as const,
         givenName: pickRandomName('firstName'),
@@ -133,9 +140,13 @@ const DEFAULT_VALUES = {
   },
 };
 
-export default function CompanyWizard() {
-  const { values, setValues, step, setStep, isLoading, businessId } =
-    useCompanyContext();
+interface Props {
+  wizardType: 'company' | 'beneficialOwners' | 'signatoryRights';
+}
+
+export default function CompanyWizard(props: Props) {
+  const { wizardType } = props;
+  const { values, setValues, step, setStep, businessId } = useCompanyContext();
 
   /**
    * Form methods, passed to form provider (react-hook-form).
@@ -143,18 +154,13 @@ export default function CompanyWizard() {
    */
   const formMethods = useForm<FormProps>({
     mode: 'onSubmit',
-    defaultValues: { ...DEFAULT_VALUES },
+    defaultValues: {
+      [wizardType]: {
+        ...(!businessId && DEFAULT_VALUES[wizardType]),
+        ...values[wizardType],
+      },
+    },
   });
-
-  /**
-   * Reset values to react-hook-form state, if was provided from company context.
-   */
-  useEffect(() => {
-    if (businessId && values) {
-      console.log(values);
-      formMethods.reset({ ...values });
-    }
-  }, [businessId, formMethods, values]);
 
   /**
    * Handle form submission, save values to context.
@@ -173,11 +179,11 @@ export default function CompanyWizard() {
    * Submit form on next step, set current step.
    */
   const onFormActionClick = useCallback(
-    (next?: boolean, last?: boolean) => {
+    (next?: boolean) => {
       if (next) {
         formMethods.handleSubmit(values => {
           onSubmit(values);
-          !last && setStep(step + 1);
+          setStep(step + 1);
         })();
       } else {
         setStep(step - 1);
@@ -208,38 +214,39 @@ export default function CompanyWizard() {
     <FormProvider {...formMethods}>
       <div className="block lg:hidden pb-4 px-4 md:px-0">
         <div className="border border-suomifi-light">
-          <CompanyWizardNav onWizardNavChange={onWizardNavChange} />
+          <CompanyWizardNav
+            wizardType={wizardType}
+            onWizardNavChange={onWizardNavChange}
+          />
         </div>
       </div>
 
       <div className="flex flex-row w-full items-start">
         <div className="hidden lg:block bg-white flex-shrink-0 mr-8 h-full border border-gray-300 py-6">
           <div className="min-w-[240px]">
-            <CompanyWizardNav onWizardNavChange={onWizardNavChange} />
+            <CompanyWizardNav
+              wizardType={wizardType}
+              onWizardNavChange={onWizardNavChange}
+            />
           </div>
         </div>
 
-        {isLoading ? (
-          <div className="flex w-full align-center justify-center mb-4">
-            <Loading />
-          </div>
-        ) : (
-          <Block
-            variant="section"
-            className="bg-white md:border border-gray-300 flex flex-col w-full px-4 py-6"
-          >
-            <form>
-              {companyWizardSteps[step]}
+        <Block
+          variant="section"
+          className="bg-white md:border border-gray-300 flex flex-col w-full px-4 py-6"
+        >
+          <form>
+            {WIZARD_STEPS[wizardType][step]}
 
-              <div className="flex flex-row gap-4 mt-14 w-full">
-                <FormActionButtons
-                  key={step}
-                  onFormActionClick={onFormActionClick}
-                />
-              </div>
-            </form>
-          </Block>
-        )}
+            <div className="flex flex-row gap-4 mt-14 w-full">
+              <CompanyWizardActionButtons
+                key={step}
+                onFormActionClick={onFormActionClick}
+                isLastStep={step === WIZARD_STEPS[wizardType].length - 1}
+              />
+            </div>
+          </form>
+        </Block>
       </div>
     </FormProvider>
   );

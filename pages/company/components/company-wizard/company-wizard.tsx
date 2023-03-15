@@ -59,7 +59,11 @@ const DEFAULT_VALUES = {
     registrant: {
       givenName: pickRandomName('firstName'),
       lastName: pickRandomName('lastName'),
-      email: pickRandomName('lastName'),
+      email: `${pickRandomName(
+        'lastName'
+      ).toLocaleLowerCase()}.${pickRandomName(
+        'lastName'
+      ).toLocaleLowerCase()}@email.com`,
       phoneNumber: '+1 231 231 2312',
     },
     companyDetails: {

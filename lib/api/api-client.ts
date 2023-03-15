@@ -1,15 +1,16 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { PRH_MOCK_BASE_URL } from './endpoints';
+import { PRH_MOCK_BASE_URL, TESTBED_API_BASE_URL } from './endpoints';
 
 const apiClient = axios.create({});
 
 const DATA_URLS = [
   `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/Establishment`,
+  `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/establishment`,
   `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/Establishment/Write`,
-  `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/BeneficialOwners`,
+  `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/beneficial-owners`,
   `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/BeneficialOwners/Write`,
-  `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/SignatoryRights`,
+  `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/signatory-rights`,
   `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/SignatoryRights/Write`,
 ];
 

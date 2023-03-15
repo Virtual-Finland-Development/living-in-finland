@@ -6,7 +6,7 @@ import type {
   SignatoryRights,
 } from '@/types';
 import apiClient from '../api-client';
-import { PRH_MOCK_BASE_URL } from '../endpoints';
+import { PRH_MOCK_BASE_URL, TESTBED_API_BASE_URL } from '../endpoints';
 
 interface CompanyResponse {
   nationalIdentifier: string;
@@ -107,7 +107,7 @@ export async function saveCompany(
   payload: Partial<NonListedCompany>
 ): Promise<NonListedCompany> {
   const { data } = await apiClient.post(
-    `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/Establishment/Write`,
+    `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/establishment`,
     payload
   );
   return data;
@@ -117,7 +117,7 @@ export async function getBeneficialOwners(
   nationalIdentifier: string
 ): Promise<BenecifialOwners> {
   const { data } = await apiClient.post(
-    `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/BeneficialOwners`,
+    `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/beneficial-owners`,
     { nationalIdentifier },
     { headers: { 'Content-Type': 'application/json' } }
   );
@@ -139,7 +139,7 @@ export async function getSignatoryRights(
   nationalIdentifier: string
 ): Promise<SignatoryRights> {
   const { data } = await apiClient.post(
-    `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/SignatoryRights`,
+    `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/signatory-rights`,
     { nationalIdentifier },
     { headers: { 'Content-Type': 'application/json' } }
   );

@@ -160,6 +160,12 @@ export default function SignatoryRightsSigningRights() {
             <FormInput
               name={`signatoryRights.signingRights.${index}.locatorDesignator`}
               control={control}
+              rules={{
+                validate: value => {
+                  if (!value) return true;
+                  if (value.length > 10) return 'Max 10 characters.';
+                },
+              }}
               optionalText="optional"
               labelText="Locator designator"
             />

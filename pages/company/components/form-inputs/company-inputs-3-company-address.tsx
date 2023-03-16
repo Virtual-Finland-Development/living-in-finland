@@ -55,6 +55,12 @@ export default function CompanyAddress() {
         <FormInput
           name={`company.companyAddress.locatorDesignator`}
           control={control}
+          rules={{
+            validate: value => {
+              if (!value) return true;
+              if (value.length > 10) return 'Max 10 characters.';
+            },
+          }}
           labelText="Locator designator"
           optionalText="optional"
         />

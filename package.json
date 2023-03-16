@@ -6,7 +6,7 @@
     "dev": "next dev",
     "dev:static": "serve ./out",
     "build": "next build",
-    "export": "next build && next export && next-image-export-optimizer",
+    "export": "next build && next export",
     "start": "next start",
     "lint": "next lint"
   },

@@ -1,5 +1,8 @@
 {
     "name": "virtual-finland",
+    "scripts": {
+        "build": "cd functions/fn-format-request && npm ci && npm run build"
+    },
     "devDependencies": {
         "@types/node": "^16"
     },

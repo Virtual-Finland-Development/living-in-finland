@@ -47,7 +47,7 @@ const BENEFICIAL_OWNER_STEPS: NavStep[] = [
   { label: '1. Share series', step: 'beneficialOwners.shareSeries' },
   {
     label: '2. Shareholders',
-    step: 'beneficialOwners.shareholders',
+    step: 'beneficialOwners.shareholder',
   },
 ];
 

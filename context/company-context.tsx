@@ -40,7 +40,7 @@ type Step =
   | 'company.boardMembers'
   | 'company.auditorDetails'
   | 'beneficialOwners.shareSeries'
-  | 'beneficialOwners.shareholders'
+  | 'beneficialOwners.shareholder'
   | 'signatoryRights.signingRights';
 
 const doneStepsInitial: Record<Step, boolean> = {
@@ -52,7 +52,7 @@ const doneStepsInitial: Record<Step, boolean> = {
   'company.boardMembers': false,
   'company.auditorDetails': false,
   'beneficialOwners.shareSeries': false,
-  'beneficialOwners.shareholders': false,
+  'beneficialOwners.shareholder': false,
   'signatoryRights.signingRights': false,
 };
 
@@ -199,7 +199,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
           return isStepDone('company.boardMembers');
         case 'beneficialOwners.shareSeries':
           return true;
-        case 'beneficialOwners.shareholders':
+        case 'beneficialOwners.shareholder':
           return isStepDone('beneficialOwners.shareSeries');
         case 'signatoryRights.signingRights':
           return true;

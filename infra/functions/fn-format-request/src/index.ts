@@ -11,6 +11,7 @@ function handler(
 
   if (uri && !hasSlash.test(uri) && !hasExtension.test(uri) && isCompanyEdit) {
     request.uri = `/company/edit/[nationalIdentifier].html`;
+    return request;
   }
 
   if (uri === '/') {

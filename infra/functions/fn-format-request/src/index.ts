@@ -7,7 +7,7 @@ function handler(
   const request = event.request;
   const uri = request.uri;
 
-  if (uri.match(dynamicRouteRegex)) {
+  if (uri.includes('/company/edit/')) {
     request.uri = '/company/edit/[nationalIdentifier].html';
     return request;
   }

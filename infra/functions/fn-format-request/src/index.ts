@@ -1,5 +1,5 @@
-const hasExtension = /(.+)\.[a-zA-Z0-9]{2,5}$/;
-const hasSlash = /\/$/;
+const dynamicRouteRegex =
+  /\/edit\/\b[0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12}\b/;
 
 function handler(
   event: AWSCloudFrontFunction.Event
@@ -7,10 +7,8 @@ function handler(
   const request = event.request;
   const uri = request.uri;
 
-  const isCompanyEdit = uri.indexOf('/company/edit/');
-
-  if (uri && !hasSlash.test(uri) && !hasExtension.test(uri) && isCompanyEdit) {
-    request.uri = `/company/edit/[nationalIdentifier].html`;
+  if (uri.match(dynamicRouteRegex)) {
+    request.uri = '/company/edit/[nationalIdentifier].html';
     return request;
   }
 

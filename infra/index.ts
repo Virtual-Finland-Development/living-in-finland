@@ -34,12 +34,18 @@ const originAccessIdentity = new aws.cloudfront.OriginAccessIdentity(
 );
 
 // CloudFront function
-const formatRequestCFFunction = new aws.cloudfront.Function('test', {
-  runtime: 'cloudfront-js-1.0',
-  comment: 'fn-format-request',
-  publish: true,
-  code: fs.readFileSync('./functions/fn-format-request/build/index.js', 'utf8'),
-});
+const formatRequestCFFunction = new aws.cloudfront.Function(
+  `${projectName}-cff-${env}`,
+  {
+    runtime: 'cloudfront-js-1.0',
+    comment: 'fn-format-request',
+    publish: true,
+    code: fs.readFileSync(
+      './functions/fn-format-request/build/index.js',
+      'utf8'
+    ),
+  }
+);
 
 // Create a CloudFront CDN to distribute and cache the website.
 const cdn = new aws.cloudfront.Distribution(
@@ -105,12 +111,12 @@ const cdn = new aws.cloudfront.Distribution(
     customErrorResponses: [
       {
         errorCode: 404,
-        responseCode: 200,
+        responseCode: 404,
         responsePagePath: `/${errorDocument}`,
       },
       {
         errorCode: 403,
-        responseCode: 200,
+        responseCode: 403,
         responsePagePath: `/${errorDocument}`,
       },
     ],

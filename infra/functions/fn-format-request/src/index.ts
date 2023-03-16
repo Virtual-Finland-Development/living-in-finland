@@ -2,8 +2,8 @@
 function handler(
   event: AWSCloudFrontFunction.Event
 ): AWSCloudFrontFunction.Request {
-  var request = event.request;
-  var uri = request.uri;
+  const request = event.request;
+  const uri = request.uri;
 
   if (uri === '/') {
     // turns "/" to "/index.html"

@@ -1,4 +1,4 @@
-let routes = require('./routes-manifest.json');
+// let routes = require('./routes-manifest.json');
 
 const appendToDirs = 'index.html';
 
@@ -8,9 +8,7 @@ function handler(
   const request = event.request;
   const uri = request.uri;
 
-  const { dynamicRoutes, staticRoutes } = routes;
-
-  /* if (uri === '/') {
+  if (uri === '/') {
     // turns "/" to "/index.html"
     request.uri += 'index.html';
   } else if (uri.endsWith('/')) {
@@ -19,7 +17,10 @@ function handler(
   } else if (!uri.includes('.')) {
     // turns "/foo" to "/foo.html"
     request.uri += '.html';
-  } */
+  }
+
+  /*  const { dynamicRoutes, staticRoutes } = routes;
+
   if (!uri || uri === '/' || uri === '') {
     return request;
   }
@@ -46,7 +47,7 @@ function handler(
 
       return request;
     }
-  });
+  }); */
 
   return request;
 }

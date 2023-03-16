@@ -1,6 +1,7 @@
 import * as aws from '@pulumi/aws';
 import * as pulumi from '@pulumi/pulumi';
 import * as synced_folder from '@pulumi/synced-folder';
+import * as fs from 'fs';
 
 // Import the program's configuration settings.
 const config = new pulumi.Config();
@@ -31,6 +32,14 @@ const originAccessIdentity = new aws.cloudfront.OriginAccessIdentity(
     comment: `Origin access identity for ${projectName}`,
   }
 );
+
+// CloudFront function
+const formatRequestCFFunction = new aws.cloudfront.Function('test', {
+  runtime: 'cloudfront-js-1.0',
+  comment: 'fn-format-request',
+  publish: true,
+  code: fs.readFileSync('./functions/fn-format-request/build/index.js', 'utf8'),
+});
 
 // Create a CloudFront CDN to distribute and cache the website.
 const cdn = new aws.cloudfront.Distribution(
@@ -67,6 +76,12 @@ const cdn = new aws.cloudfront.Distribution(
           forward: 'all',
         },
       },
+      functionAssociations: [
+        {
+          eventType: 'viewer-request',
+          functionArn: formatRequestCFFunction.arn,
+        },
+      ],
     },
     orderedCacheBehaviors: [
       {
@@ -90,12 +105,12 @@ const cdn = new aws.cloudfront.Distribution(
     customErrorResponses: [
       {
         errorCode: 404,
-        responseCode: 404,
+        responseCode: 200,
         responsePagePath: `/${errorDocument}`,
       },
       {
         errorCode: 403,
-        responseCode: 403,
+        responseCode: 200,
         responsePagePath: `/${errorDocument}`,
       },
     ],

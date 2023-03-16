@@ -116,7 +116,7 @@ const DEFAULT_VALUES = {
         shareValueCurrency: 'EUR',
       },
     ],
-    shareholders: [
+    shareholder: [
       {
         name: `${pickRandomName('lastName')}-${pickRandomName(
           'firstName'

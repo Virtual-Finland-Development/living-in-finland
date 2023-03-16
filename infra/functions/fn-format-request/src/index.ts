@@ -1,4 +1,4 @@
-let routes = require('../routes-manifest.json');
+let routes = require('./routes-manifest.json');
 
 const appendToDirs = 'index.html';
 

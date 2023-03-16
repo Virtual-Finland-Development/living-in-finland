@@ -7,7 +7,7 @@ import * as fs from 'fs';
 const config = new pulumi.Config();
 const path = config.get('artifactPath') || '../out';
 const indexDocument = config.get('indexDocument') || 'index.html';
-const errorDocument = config.get('errorDocument') || 'index.html';
+const errorDocument = config.get('errorDocument') || '404.html';
 
 const env = pulumi.getStack();
 const projectName = pulumi.getProject();

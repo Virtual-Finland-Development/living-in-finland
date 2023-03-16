@@ -35,7 +35,7 @@ const originAccessIdentity = new aws.cloudfront.OriginAccessIdentity(
 
 // CloudFront function
 const formatRequestCFFunction = new aws.cloudfront.Function(
-  `${projectName}-cff-${env}`,
+  `${projectName}-cfF-${env}`,
   {
     runtime: 'cloudfront-js-1.0',
     comment: 'fn-format-request',

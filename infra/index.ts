@@ -90,12 +90,12 @@ const cdn = new aws.cloudfront.Distribution(
     customErrorResponses: [
       {
         errorCode: 404,
-        responseCode: 404,
+        responseCode: 200,
         responsePagePath: `/${errorDocument}`,
       },
       {
         errorCode: 403,
-        responseCode: 403,
+        responseCode: 200,
         responsePagePath: `/${errorDocument}`,
       },
     ],

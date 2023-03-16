@@ -167,7 +167,7 @@ new synced_folder.S3BucketFolder(`${projectName}-s3-bucket-folder-${env}`, {
   path: path,
   bucketName: bucket.bucket,
   acl: 'public-read',
-  managedObjects: true,
+  managedObjects: false,
 });
 
 // Export the URLs and hostnames of the bucket and distribution.

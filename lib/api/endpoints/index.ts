@@ -1,10 +1,5 @@
 import { removeTrailingSlash } from '@/lib/utils';
 
-console.log(process.env.NEXT_PUBLIC_AUTH_GW_BASE_URL);
-console.log(process.env.NEXT_PUBLIC_PRH_MOCK_BASE_URL);
-console.log(process.env.NEXT_PUBLIC_TESTBED_API_BASE_URL);
-console.log(process.env.NEXT_PUBLIC_CODESETS_BASE_URL);
-
 export const AUTH_GW_BASE_URL =
   process.env.NEXT_PUBLIC_AUTH_GW_BASE_URL ||
   'https://virtualfinland-authgw.localhost';

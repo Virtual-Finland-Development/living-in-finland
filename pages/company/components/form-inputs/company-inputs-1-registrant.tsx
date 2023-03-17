@@ -58,6 +58,7 @@ export default function CompanyRegistrant() {
         labelText="Email"
         control={control}
         rules={{ required: 'Email is required.' }}
+        readOnly
       />
       <FormPhoneInput
         name={`company.registrant.phoneNumber`}
@@ -66,6 +67,7 @@ export default function CompanyRegistrant() {
         labelText="Phone number"
         hintText="Use international format (+358xxx)"
         error={formState.errors?.company?.registrant?.phoneNumber}
+        readOnly
       />
     </div>
   );

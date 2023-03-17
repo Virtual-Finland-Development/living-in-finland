@@ -20,6 +20,7 @@ interface Props<T extends FieldValues> extends FormInputControllerProps<T> {
   optionalText?: string;
   placeholder?: string;
   showStatusText?: boolean;
+  readOnly?: boolean;
   type?:
     | 'number'
     | 'text'
@@ -41,6 +42,7 @@ export default function FormInput<T extends FieldValues>(props: Props<T>) {
     hintText,
     optionalText,
     showStatusText = true,
+    readOnly = false,
   } = props;
 
   return (
@@ -81,6 +83,7 @@ export default function FormInput<T extends FieldValues>(props: Props<T>) {
               onChange={onChange}
               onBlur={onBlur}
               min="1"
+              readOnly={readOnly}
             />
           )}
         </>

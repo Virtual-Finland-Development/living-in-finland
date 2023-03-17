@@ -21,6 +21,7 @@ interface Props<T extends FieldValues> extends PhoneInputControllerProps<T> {
   hintText?: string;
   optionalText?: string;
   error?: FieldError | undefined;
+  readOnly?: boolean;
   showStatusText?: boolean;
 }
 
@@ -28,7 +29,12 @@ const PhoneInputComponent = forwardRef<
   HTMLInputElement,
   Pick<
     TextInputProps,
-    'labelText' | 'hintText' | 'status' | 'statusText' | 'optionalText'
+    | 'labelText'
+    | 'hintText'
+    | 'status'
+    | 'statusText'
+    | 'optionalText'
+    | 'readOnly'
   >
 >((props, ref) => {
   return <TextInput ref={ref} {...props} autoComplete="off" />;
@@ -44,6 +50,7 @@ export default function FormPhoneInput<T extends FieldValues>(props: Props<T>) {
     labelText,
     hintText,
     error,
+    readOnly = false,
     showStatusText = true,
   } = props;
 
@@ -63,6 +70,7 @@ export default function FormPhoneInput<T extends FieldValues>(props: Props<T>) {
       hintText={hintText}
       status={error && 'error'}
       statusText={showStatusText && error ? error.message : ''}
+      readOnly={readOnly}
     />
   );
 }

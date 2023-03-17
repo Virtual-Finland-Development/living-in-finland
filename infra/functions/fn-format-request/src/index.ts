@@ -8,7 +8,12 @@ function handler(
     uri.includes('/company/edit/') &&
     !uri.includes('/_next/static/chunks/')
   ) {
-    request.uri = '/company/edit/[nationalIdentifier].html';
+    const subPath = uri.split('/').pop();
+    if (['edit', 'beneficial-owners', 'signatory-rights'].includes(subPath!)) {
+      request.uri = `/company/edit/[nationalIdentifier]/${subPath}.html`;
+    } else {
+      request.uri = '/company/edit/[nationalIdentifier].html';
+    }
     return request;
   }
 

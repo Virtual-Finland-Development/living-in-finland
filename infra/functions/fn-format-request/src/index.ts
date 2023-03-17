@@ -1,30 +1,14 @@
-const wcmatch = require('../node_modules/wildcard-match');
-
 function handler(
   event: AWSCloudFrontFunction.Event
 ): AWSCloudFrontFunction.Request {
   const request = event.request;
   const uri = request.uri;
 
-  /* if (
+  if (
     uri.includes('/company/edit/') &&
     !uri.includes('/_next/static/chunks/')
   ) {
     request.uri = '/company/edit/[nationalIdentifier].html';
-    return request;
-  } */
-
-  const isCompanyEditMatch = wcmatch('/company/edit/*');
-  const isCompanyEditSubMatch = wcmatch('/company/edit/**/*');
-
-  if (isCompanyEditMatch(uri)) {
-    request.uri = '/company/edit/[nationalIdentifier].html';
-    return request;
-  }
-
-  if (isCompanyEditSubMatch(request.uri)) {
-    const path = request.uri.split('/').pop();
-    request.uri = `/company/edit/[nationalIdentifier]/${path}.html`;
     return request;
   }
 

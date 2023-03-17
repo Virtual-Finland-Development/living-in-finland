@@ -1,3 +1,9 @@
+const COMPANY_EDIT_SUBPATHS = [
+  'details',
+  'beneficial-owners',
+  'signatory-rights',
+];
+
 function handler(
   event: AWSCloudFrontFunction.Event
 ): AWSCloudFrontFunction.Request {
@@ -9,7 +15,8 @@ function handler(
     !uri.includes('/_next/static/chunks/')
   ) {
     const subPath = uri.split('/').pop();
-    if (['edit', 'beneficial-owners', 'signatory-rights'].includes(subPath!)) {
+
+    if (subPath && COMPANY_EDIT_SUBPATHS.includes(subPath)) {
       request.uri = `/company/edit/[nationalIdentifier]/${subPath}.html`;
     } else {
       request.uri = '/company/edit/[nationalIdentifier].html';

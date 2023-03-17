@@ -57,7 +57,7 @@ export default function CompanyEstablishmentPage() {
                   <InlineAlert status="neutral">
                     <div className="flex flex-col gap-2">
                       <Text className="!font-bold">
-                        Company was created successfully!
+                        Company information received, pending registration.
                       </Text>
                       <CustomLink href="/company/edit">
                         View created companies

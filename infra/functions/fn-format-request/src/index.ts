@@ -1,4 +1,4 @@
-const wcmatch = require('wildcard-match');
+const wcmatch = require('../node_modules/wildcard-match');
 
 function handler(
   event: AWSCloudFrontFunction.Event

@@ -1,12 +1,16 @@
-// let routes = require('./routes-manifest.json');
-
-const appendToDirs = 'index.html';
-
 function handler(
   event: AWSCloudFrontFunction.Event
 ): AWSCloudFrontFunction.Request {
   const request = event.request;
   const uri = request.uri;
+
+  if (
+    uri.includes('/company/edit/') &&
+    !uri.includes('/_next/static/chunks/')
+  ) {
+    request.uri = '/company/edit/[nationalIdentifier].html';
+    return request;
+  }
 
   if (uri === '/') {
     // turns "/" to "/index.html"
@@ -18,36 +22,6 @@ function handler(
     // turns "/foo" to "/foo.html"
     request.uri += '.html';
   }
-
-  /*  const { dynamicRoutes, staticRoutes } = routes;
-
-  if (!uri || uri === '/' || uri === '') {
-    return request;
-  }
-
-  dynamicRoutes.forEach((route: any) => {
-    if (uri.match(route.regex)) {
-      if (uri.charAt(-1) === '/') {
-        request.uri = route.page + appendToDirs;
-      } else {
-        request.uri = route.page + '/' + appendToDirs;
-      }
-
-      return request;
-    }
-  });
-
-  staticRoutes.forEach((route: any) => {
-    if (uri.match(route.regex)) {
-      if (uri.charAt(-1) === '/') {
-        request.uri = route.page + appendToDirs;
-      } else {
-        request.uri = route.page + '/' + appendToDirs;
-      }
-
-      return request;
-    }
-  }); */
 
   return request;
 }

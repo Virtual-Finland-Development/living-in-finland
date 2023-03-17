@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { useAuth } from '@/context/auth-context';
 
 interface Props {
@@ -12,8 +12,13 @@ export default function AuthSentry(props: Props) {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
 
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push(redirectPath || '/');
+    }
+  }, [isAuthenticated, redirectPath, router]);
+
   if (!isAuthenticated) {
-    router.push(redirectPath || '/');
     return null;
   }
 

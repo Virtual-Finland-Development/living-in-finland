@@ -57,10 +57,7 @@ export default function CompanySearchPage() {
     <Page title="Search companies">
       <Page.Block className="bg-white">
         <div className="flex flex-col gap-4 mb-6">
-          <CustomHeading variant="h3">
-            Required information to provide for establishing a company in
-            Finland
-          </CustomHeading>
+          <CustomHeading variant="h3">Companies search</CustomHeading>
           <Text>
             Provide a valid national identifier and the source country.
           </Text>

@@ -36,6 +36,7 @@ export default function CompanySearchPage() {
 
   const onSubmit: SubmitHandler<FormProps> = async values => {
     setNotFound(false);
+    setCompanyData(undefined);
 
     try {
       const response = await api.company.getCompanyBasicInfo(values);

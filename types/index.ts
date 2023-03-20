@@ -171,6 +171,4 @@ export interface CountryOption {
 export interface CurrencyOption {
   id: string;
   name: string;
-  code: string;
-  country: string;
 }

@@ -11,7 +11,7 @@ export async function getCountries(): Promise<CountryOption[]> {
 
 export async function getCurrencies(): Promise<CurrencyOption[]> {
   const { data } = await apiClient.get(
-    `${CODESETS_BASE_URL}/resources/ISO4217Currencies?filters=testbed`
+    `${CODESETS_BASE_URL}/resources/ISO4217Currencies?filters=nsg`
   );
   return data;
 }

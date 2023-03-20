@@ -307,11 +307,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     contextIsLoading,
     codesets: {
       countries,
-      currencies: currencies
-        ? currencies.filter(c =>
-            ['EUR', 'SEK', 'NOK', 'ISK', 'DKK'].includes(c.id)
-          )
-        : undefined,
+      currencies,
     },
   };
 

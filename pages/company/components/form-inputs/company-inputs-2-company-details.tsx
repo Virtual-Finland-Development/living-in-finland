@@ -107,7 +107,7 @@ export default function CompanyDetails() {
           items={
             currencies
               ? currencies.map(c => ({
-                  labelText: `${c.code} (${c.name})`,
+                  labelText: `${c.id} (${c.name})`,
                   uniqueItemId: c.id,
                 }))
               : []
@@ -131,7 +131,7 @@ export default function CompanyDetails() {
           items={
             currencies
               ? currencies.map(c => ({
-                  labelText: `${c.code} (${c.name})`,
+                  labelText: `${c.id} (${c.name})`,
                   uniqueItemId: c.id,
                 }))
               : []

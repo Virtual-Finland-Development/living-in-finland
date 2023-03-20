@@ -24,8 +24,11 @@ interface FormProps {
 }
 
 export default function CompanySearchPage() {
-  const { control, handleSubmit } = useForm<FormProps>();
-  const [isLoading, setIsLoading] = useState(false);
+  const {
+    control,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<FormProps>();
   const [companyData, setCompanyData] = useState<
     undefined | CompanyBasicInformation
   >(undefined);
@@ -33,7 +36,6 @@ export default function CompanySearchPage() {
   const toast = useToast();
 
   const onSubmit: SubmitHandler<FormProps> = async values => {
-    setIsLoading(true);
     setNotFound(false);
 
     try {
@@ -49,8 +51,6 @@ export default function CompanySearchPage() {
         content: error?.message || 'Something went wrong.',
         status: 'error',
       });
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -84,22 +84,22 @@ export default function CompanySearchPage() {
                 rules={{ required: 'Please provide source.' }}
               />
             </div>
-            <Button type="submit" iconRight="search" disabled={isLoading}>
+            <Button type="submit" iconRight="search" disabled={isSubmitting}>
               Search
             </Button>
           </form>
 
           <div className="mt-8 min-h-[100px]">
-            {isLoading && <Loading />}
+            {isSubmitting && <Loading />}
 
-            {!isLoading && companyData && (
+            {!isSubmitting && companyData && (
               <PreviewExpander<CompanyBasicInformation>
                 title={companyData.name || 'Company details'}
                 values={companyData}
               />
             )}
 
-            {!isLoading && notFound && (
+            {!isSubmitting && notFound && (
               <InlineAlert className="mt-4">
                 <Text>No company information found with given identifier.</Text>
               </InlineAlert>

@@ -64,7 +64,7 @@ interface CompanyContextProps {
   ) => void;
   isStepDone: (step: Step) => boolean;
   isPrevStepDone: (currentStep: Step) => boolean;
-  doneSteps: any;
+  doneSteps: Record<Step, boolean>;
   setIsCurrentStepDone: (step: Step, done: boolean) => void;
   step: number;
   setStep: (step: number) => void;

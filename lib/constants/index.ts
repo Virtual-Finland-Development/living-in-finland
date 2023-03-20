@@ -53,6 +53,11 @@ export const COMPANY_DATA_LABELS: Record<string, any> = {
   signinRights: 'Signin rights',
   personalID: 'Personal ID',
   shareValueCurrency: 'Share value currency',
+  legalForm: 'Legal form',
+  legalStatus: 'Legal status',
+  registeredAddress: 'Registered address',
+  registrationDate: 'Registration date',
+  addressId: 'Address ID',
 };
 
 export const SHARE_SERIES_CLASS_OPTIONS = [

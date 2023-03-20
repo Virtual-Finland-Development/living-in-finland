@@ -2,6 +2,7 @@ import Cookies from 'js-cookie';
 import jwt_decode from 'jwt-decode';
 import type {
   BenecifialOwners,
+  CompanyBasicInformation,
   NonListedCompany,
   SignatoryRights,
 } from '@/types';
@@ -153,6 +154,18 @@ export async function saveSignatoryRights(
   const { data } = await apiClient.post(
     `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/SignatoryRights/Write`,
     { nationalIdentifier, data: signatoryRights }
+  );
+  return data;
+}
+
+export async function getCompanyBasicInfo(payload: {
+  nationalIdentifier: string;
+  source: string;
+}): Promise<CompanyBasicInformation> {
+  const { nationalIdentifier, source } = payload;
+  const { data } = await apiClient.post(
+    `${TESTBED_API_BASE_URL}/testbed/productizer/nsg/basic-information?source=${source}`,
+    { nationalIdentifier }
   );
   return data;
 }

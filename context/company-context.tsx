@@ -289,7 +289,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const setIsCurrentStepDone = useCallback((step: Step, done: boolean) => {
     setDoneSteps(prev => ({ ...prev, [step]: done }));
   }, []);
-  console.log(currencies);
+
   const contextValue = {
     values,
     setValues: setContextValues,

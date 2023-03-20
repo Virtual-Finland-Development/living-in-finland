@@ -113,7 +113,7 @@ export default function CompanyShareSeries() {
               items={
                 currencies
                   ? currencies.map(c => ({
-                      labelText: `${c.code} (${c.name})`,
+                      labelText: `${c.id} (${c.name})`,
                       uniqueItemId: c.id,
                     }))
                   : []

@@ -289,7 +289,7 @@ function CompanyContextProvider(props: CompanyProviderProps) {
   const setIsCurrentStepDone = useCallback((step: Step, done: boolean) => {
     setDoneSteps(prev => ({ ...prev, [step]: done }));
   }, []);
-
+  console.log(currencies);
   const contextValue = {
     values,
     setValues: setContextValues,
@@ -308,14 +308,9 @@ function CompanyContextProvider(props: CompanyProviderProps) {
     codesets: {
       countries,
       currencies: currencies
-        ? currencies
-            .filter(c => ['EUR', 'SEK', 'NOK', 'ISK', 'DKK'].includes(c.code))
-            .reduce((acc: CurrencyOption[], item) => {
-              if (!acc.some(i => i.code === item.code)) {
-                acc.push(item);
-              }
-              return acc;
-            }, [])
+        ? currencies.filter(c =>
+            ['EUR', 'SEK', 'NOK', 'ISK', 'DKK'].includes(c.id)
+          )
         : undefined,
     },
   };

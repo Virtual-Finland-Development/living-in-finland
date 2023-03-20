@@ -1,12 +1,16 @@
-import Cookies from 'js-cookie';
 import { LoggedInState } from '@/types';
+import {
+  LOCAL_STORAGE_AUTH_KEY,
+  LOCAL_STORAGE_REDIRECT_KEY,
+} from '@/lib/constants';
 import { generateAppContextHash } from '@/lib/utils';
+import { JSONLocalStorage } from '@/lib/utils/JSONStorage';
 import apiClient from '../api-client';
 import { AUTH_GW_BASE_URL } from '../endpoints';
 
 export function directToAuthGwLogin(redirectPath?: string) {
   if (redirectPath) {
-    localStorage.setItem('redirectPath', redirectPath);
+    JSONLocalStorage?.set(LOCAL_STORAGE_REDIRECT_KEY, redirectPath);
   }
 
   window.location.assign(
@@ -15,9 +19,8 @@ export function directToAuthGwLogin(redirectPath?: string) {
 }
 
 export function directToAuthGwLogout() {
-  const idToken = Cookies.get('idToken');
-  Cookies.remove('idToken');
-  localStorage.removeItem('redirectPath');
+  const idToken = JSONLocalStorage?.get(LOCAL_STORAGE_AUTH_KEY).idToken;
+  JSONLocalStorage?.clear();
 
   window.location.assign(
     `${AUTH_GW_BASE_URL}/auth/openid/testbed/logout-request?appContext=${generateAppContextHash()}&idToken=${idToken}`

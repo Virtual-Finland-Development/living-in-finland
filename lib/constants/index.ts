@@ -5,6 +5,11 @@ export const baseAppContextObj: AppContextObj = {
   redirectUrl: '',
 };
 
+export const LOCAL_STORAGE_AUTH_KEY = 'virtual-finland-auth';
+export const LOCAL_STORAGE_REDIRECT_KEY = 'redirect-path';
+
+export const REQUEST_NOT_AUTHORIZED = 'rna';
+
 export const COMPANY_DATA_LABELS: Record<string, any> = {
   registrant: 'Registrant',
   givenName: 'Given name',

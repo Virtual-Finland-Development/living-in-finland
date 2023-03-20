@@ -1,5 +1,7 @@
 import axios from 'axios';
-import Cookies from 'js-cookie';
+import { isPast, parseISO } from 'date-fns';
+import { LOCAL_STORAGE_AUTH_KEY, REQUEST_NOT_AUTHORIZED } from '../constants';
+import { JSONLocalStorage } from '../utils/JSONStorage';
 import { PRH_MOCK_BASE_URL, TESTBED_API_BASE_URL } from './endpoints';
 
 const apiClient = axios.create({});
@@ -17,12 +19,33 @@ const DATA_URLS = [
 apiClient.interceptors.request.use(config => {
   if (config.url !== undefined && config.headers !== undefined) {
     if (DATA_URLS.includes(config.url)) {
-      const idToken = Cookies.get('idToken');
+      const idToken = JSONLocalStorage?.get(LOCAL_STORAGE_AUTH_KEY).idToken;
       config.headers.Authorization = idToken ? `Bearer ${idToken}` : '';
     }
   }
 
   return config;
 });
+
+apiClient.interceptors.response.use(
+  response => response,
+  error => {
+    const storedAuthState = JSONLocalStorage?.get(LOCAL_STORAGE_AUTH_KEY);
+    const hasExpired = storedAuthState?.expiresAt
+      ? isPast(parseISO(storedAuthState.expiresAt))
+      : false;
+
+    if (
+      error.config?.url &&
+      DATA_URLS.includes(error.config.url) &&
+      hasExpired
+    ) {
+      window.postMessage(REQUEST_NOT_AUTHORIZED);
+      return new Promise(() => {});
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 export default apiClient;

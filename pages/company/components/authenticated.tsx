@@ -1,9 +1,14 @@
 import { useRouter } from 'next/router';
 import { Button, Text } from 'suomifi-ui-components';
+import { useCompanies } from '@/lib/hooks/companies';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
+import CustomLink from '@/components/ui/custom-link';
+import CustomText from '@/components/ui/custom-text';
+import Loading from '@/components/ui/loading';
 
 export default function Authenticated() {
+  const { data: companies, isLoading, isFetching } = useCompanies();
   const router = useRouter();
 
   return (
@@ -41,9 +46,26 @@ export default function Authenticated() {
             obcaecat cupiditat non proident, sunt in culpa qui officia deserunt
             mollit anim id est laborum.
           </Text>
-          <Button onClick={() => router.push('/company/edit')}>
-            Modify existing companies
-          </Button>
+          {isLoading || isFetching ? (
+            <Loading />
+          ) : (
+            <>
+              {!companies?.length ? (
+                <CustomText $bold>No companies established.</CustomText>
+              ) : (
+                <div className="flex flex-col gap-4">
+                  {companies.map((company, index) => (
+                    <CustomLink
+                      key={company.nationalIdentifier}
+                      href={`/company/edit/${company.nationalIdentifier}`}
+                    >{`${index + 1}. ${
+                      company.data.companyDetails.name
+                    }`}</CustomLink>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
         </div>
       </Page.Block>
     </>

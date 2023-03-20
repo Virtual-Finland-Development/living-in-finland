@@ -4,6 +4,7 @@ import AuthSentry from '@/components/auth-sentry';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 import CustomLink from '@/components/ui/custom-link';
+import CustomText from '@/components/ui/custom-text';
 import Loading from '@/components/ui/loading';
 
 export default function CompanyEditIndexPage() {
@@ -32,7 +33,7 @@ export default function CompanyEditIndexPage() {
             ) : (
               <>
                 {!companies?.length ? (
-                  <Text>No companies established.</Text>
+                  <CustomText $bold>No companies established.</CustomText>
                 ) : (
                   <div className="flex flex-col gap-4">
                     {companies.map((company, index) => (

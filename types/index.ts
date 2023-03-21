@@ -185,8 +185,8 @@ export interface CompanyBasicInformation {
   registeredAddress: {
     addressArea: string;
     addressId: string;
-    adminUnitLevel_1: string;
-    adminUnitLevel_2: string;
+    adminUnitLevel1: string;
+    adminUnitLevel2: string;
     fullAddress: string;
     locatorDesignator: string;
     locatorName: string;

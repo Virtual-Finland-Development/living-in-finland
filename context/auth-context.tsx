@@ -6,11 +6,13 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { getUnixTime, parseISO } from 'date-fns';
-import Cookies from 'js-cookie';
-import jwt_decode from 'jwt-decode';
+import { isPast, parseISO } from 'date-fns';
 import { LoggedInState } from '@/types';
-import api from '@/lib/api';
+import {
+  LOCAL_STORAGE_AUTH_KEY,
+  REQUEST_NOT_AUTHORIZED,
+} from '@/lib/constants';
+import { JSONLocalStorage } from '@/lib/utils/JSONStorage';
 
 interface AuthContextProps {
   isAuthenticated: boolean;
@@ -35,42 +37,52 @@ function AuthProvider(props: AuthProviderProps) {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadTokenFromCookie = () => {
-      const token = Cookies.get('idToken');
+    const loadAuthStateFromStorage = () => {
+      const storedAuthState: LoggedInState | undefined = JSONLocalStorage.get(
+        LOCAL_STORAGE_AUTH_KEY
+      );
+      const tokenNotExpired = storedAuthState?.expiresAt
+        ? !isPast(parseISO(storedAuthState.expiresAt))
+        : false;
 
-      if (token && token !== 'undefined') {
-        // api.client.defaults.headers.Authorization = `Bearer ${token}`;
-        const { email }: { email: string | undefined } = jwt_decode(token);
-        setUserEmail(email || null);
+      if (storedAuthState && tokenNotExpired) {
+        setUserEmail(storedAuthState.profileData?.email || null);
         setIsAuthenticated(true);
       }
 
       setLoading(false);
     };
 
-    loadTokenFromCookie();
+    loadAuthStateFromStorage();
   }, []);
 
   const logIn = useCallback(async (loggedInState: LoggedInState) => {
     if (loggedInState) {
-      Cookies.set('idToken', loggedInState.idToken, {
-        expires: getUnixTime(parseISO(loggedInState.expiresAt)),
-      });
-      const { email }: { email: string | undefined } = jwt_decode(
-        loggedInState.idToken
-      );
-      // api.defaults.headers.Authorization = `Bearer ${token.token}`;
-      setUserEmail(email || null);
+      JSONLocalStorage.set(LOCAL_STORAGE_AUTH_KEY, loggedInState);
+      setUserEmail(loggedInState.profileData?.email || null);
       setIsAuthenticated(true);
     }
   }, []);
 
   const logOut = useCallback(() => {
-    Cookies.remove('idToken');
-    // delete api.client.defaults.headers.Authorization;
+    JSONLocalStorage.clear();
     setUserEmail(null);
     setIsAuthenticated(false);
   }, []);
+
+  useEffect(() => {
+    const onWindowMessageEvent = (event: MessageEvent) => {
+      if (event.data === REQUEST_NOT_AUTHORIZED) {
+        alert('Your session has expired, please authenticate to continue.');
+        logOut();
+      }
+    };
+    // make sure Next.js is running on client-side (window is defined), before attempting to add window listeners
+    if (typeof window !== 'undefined') {
+      window.addEventListener('message', onWindowMessageEvent);
+      return () => window.removeEventListener('message', onWindowMessageEvent);
+    }
+  }, [logOut]);
 
   return (
     <AuthContext.Provider

@@ -21,7 +21,7 @@ import CompanyShares from '../form-inputs/company-inputs-4-share-series';
 import CompanyDirectors from '../form-inputs/company-inputs-5-managing-directors';
 import CompanyMembers from '../form-inputs/company-inputs-6-board-members';
 import CompanyAuditor from '../form-inputs/company-inputs-7-auditor';
-import SignatoryRightsSigningRights from '../form-inputs/signatory-rights-inputs-1-signing-rights';
+import SignatoryRightsInputs from '../form-inputs/signatory-rights-inputs-1';
 import Preview from '../preview/preview';
 import CompanyWizardActionButtons from './company-wizard-action-buttons';
 import CompanyWizardNav from './company-wizard-nav';
@@ -49,7 +49,7 @@ const WIZARD_STEPS = {
     <Preview key="4" previewType="beneficialOwners" stageHeader="Stage 3/3" />,
   ],
   signatoryRights: [
-    <SignatoryRightsSigningRights key="1" />,
+    <SignatoryRightsInputs key="1" />,
     <Preview key="2" previewType="signatoryRights" stageHeader="Stage 2/2" />,
   ],
 };
@@ -116,7 +116,7 @@ const DEFAULT_VALUES = {
         shareValueCurrency: 'EUR',
       },
     ],
-    shareholder: [
+    shareholders: [
       {
         name: `${pickRandomName('lastName')}-${pickRandomName(
           'firstName'
@@ -131,7 +131,7 @@ const DEFAULT_VALUES = {
     ],
   },
   signatoryRights: {
-    signingRights: [
+    signatoryRights: [
       {
         role: 'director' as const,
         givenName: pickRandomName('firstName'),

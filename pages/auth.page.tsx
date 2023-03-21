@@ -35,13 +35,12 @@ export default function AuthPage() {
   }, [logIn, loginCode, router]);
 
   const routerActions = useCallback(() => {
-    setLoading(true);
-
     // False positives
     if (!provider || !(event === 'login' || event === 'logout')) {
-      setLoading(false);
       return;
     }
+
+    setLoading(true);
 
     // Failures
     if (success !== 'true') {

@@ -38,7 +38,7 @@ function AuthProvider(props: AuthProviderProps) {
 
   useEffect(() => {
     const loadAuthStateFromStorage = () => {
-      const storedAuthState: LoggedInState | undefined = JSONLocalStorage?.get(
+      const storedAuthState: LoggedInState | undefined = JSONLocalStorage.get(
         LOCAL_STORAGE_AUTH_KEY
       );
       const tokenNotExpired = storedAuthState?.expiresAt
@@ -58,14 +58,14 @@ function AuthProvider(props: AuthProviderProps) {
 
   const logIn = useCallback(async (loggedInState: LoggedInState) => {
     if (loggedInState) {
-      JSONLocalStorage?.set(LOCAL_STORAGE_AUTH_KEY, loggedInState);
+      JSONLocalStorage.set(LOCAL_STORAGE_AUTH_KEY, loggedInState);
       setUserEmail(loggedInState.profileData?.email || null);
       setIsAuthenticated(true);
     }
   }, []);
 
   const logOut = useCallback(() => {
-    JSONLocalStorage?.clear();
+    JSONLocalStorage.clear();
     setUserEmail(null);
     setIsAuthenticated(false);
   }, []);
@@ -77,7 +77,7 @@ function AuthProvider(props: AuthProviderProps) {
         logOut();
       }
     };
-
+    // make sure Next.js is running on client-side (window is defined), before attempting to add window listeners
     if (typeof window !== 'undefined') {
       window.addEventListener('message', onWindowMessageEvent);
       return () => window.removeEventListener('message', onWindowMessageEvent);

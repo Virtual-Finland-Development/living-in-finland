@@ -15,7 +15,7 @@ interface CompanyResponse {
 }
 
 function getUserIdentifier() {
-  const token = JSONLocalStorage?.get(LOCAL_STORAGE_AUTH_KEY).idToken;
+  const token = JSONLocalStorage.get(LOCAL_STORAGE_AUTH_KEY).idToken;
 
   if (!token) {
     throw new Error('No token.');
@@ -26,27 +26,19 @@ function getUserIdentifier() {
 }
 
 export async function getCompanies(): Promise<CompanyResponse[]> {
-  try {
-    const userId = getUserIdentifier();
-    const { data } = await apiClient.get(
-      `${PRH_MOCK_BASE_URL}/users/${userId}/companies`
-    );
-    return data;
-  } catch (error) {
-    throw error;
-  }
+  const userId = getUserIdentifier();
+  const { data } = await apiClient.get(
+    `${PRH_MOCK_BASE_URL}/users/${userId}/companies`
+  );
+  return data;
 }
 
 export async function getLatestModifiedCompany(): Promise<CompanyResponse> {
-  try {
-    const userId = getUserIdentifier();
-    const { data } = await apiClient.get(
-      `${PRH_MOCK_BASE_URL}/users/${userId}/companies:last-modified`
-    );
-    return data;
-  } catch (error) {
-    throw error;
-  }
+  const userId = getUserIdentifier();
+  const { data } = await apiClient.get(
+    `${PRH_MOCK_BASE_URL}/users/${userId}/companies:last-modified`
+  );
+  return data;
 }
 
 export async function getCompany(
@@ -63,32 +55,24 @@ export async function getCompany(
 export async function createCompanyDirectlyToPRH(
   company: NonListedCompany
 ): Promise<string> {
-  try {
-    const userId = getUserIdentifier();
-    const { data } = await apiClient.post(
-      `${PRH_MOCK_BASE_URL}/users/${userId}/companies`,
-      company
-    );
-    return data;
-  } catch (error) {
-    throw error;
-  }
+  const userId = getUserIdentifier();
+  const { data } = await apiClient.post(
+    `${PRH_MOCK_BASE_URL}/users/${userId}/companies`,
+    company
+  );
+  return data;
 }
 
 export async function saveCompanyDirectlyToPRH(
   nationalIdentifier: string,
   payload: Partial<NonListedCompany>
 ) {
-  try {
-    const userId = getUserIdentifier();
-    const { data } = await apiClient.patch(
-      `${PRH_MOCK_BASE_URL}/users/${userId}/companies/${nationalIdentifier}`,
-      payload
-    );
-    return data;
-  } catch (error) {
-    throw error;
-  }
+  const userId = getUserIdentifier();
+  const { data } = await apiClient.patch(
+    `${PRH_MOCK_BASE_URL}/users/${userId}/companies/${nationalIdentifier}`,
+    payload
+  );
+  return data;
 }
 
 export async function saveCompany(

@@ -19,7 +19,7 @@ const DATA_URLS = [
 apiClient.interceptors.request.use(config => {
   if (config.url !== undefined && config.headers !== undefined) {
     if (DATA_URLS.includes(config.url)) {
-      const idToken = JSONLocalStorage?.get(LOCAL_STORAGE_AUTH_KEY).idToken;
+      const idToken = JSONLocalStorage.get(LOCAL_STORAGE_AUTH_KEY).idToken;
       config.headers.Authorization = idToken ? `Bearer ${idToken}` : '';
     }
   }
@@ -30,7 +30,7 @@ apiClient.interceptors.request.use(config => {
 apiClient.interceptors.response.use(
   response => response,
   error => {
-    const storedAuthState = JSONLocalStorage?.get(LOCAL_STORAGE_AUTH_KEY);
+    const storedAuthState = JSONLocalStorage.get(LOCAL_STORAGE_AUTH_KEY);
     const hasExpired = storedAuthState?.expiresAt
       ? isPast(parseISO(storedAuthState.expiresAt))
       : false;

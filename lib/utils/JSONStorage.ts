@@ -29,7 +29,7 @@ export const JSONLocalStorage = (() => {
   if (typeof window !== 'undefined') {
     return new JSONStorage(localStorage);
   } else {
-    return undefined;
+    return {} as JSONStorage; // Fails if used in server-side runtime
   }
 })();
 
@@ -37,6 +37,6 @@ export const JSONSessionStorage = (() => {
   if (typeof window !== 'undefined') {
     return new JSONStorage(sessionStorage);
   } else {
-    return undefined;
+    return {} as JSONStorage; // Fails if used in server-side runtime
   }
 })();

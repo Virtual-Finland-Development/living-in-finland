@@ -25,7 +25,7 @@ export default function AuthPage() {
       });
 
       logIn(loggedInState);
-      const redirectPath = JSONLocalStorage?.get(LOCAL_STORAGE_REDIRECT_KEY);
+      const redirectPath = JSONLocalStorage.get(LOCAL_STORAGE_REDIRECT_KEY);
       router.push(redirectPath || '/');
     } catch (error: any) {
       console.log(error);

@@ -10,7 +10,7 @@ import { AUTH_GW_BASE_URL } from '../endpoints';
 
 export function directToAuthGwLogin(redirectPath?: string) {
   if (redirectPath) {
-    JSONLocalStorage?.set(LOCAL_STORAGE_REDIRECT_KEY, redirectPath);
+    JSONLocalStorage.set(LOCAL_STORAGE_REDIRECT_KEY, redirectPath);
   }
 
   window.location.assign(
@@ -19,8 +19,8 @@ export function directToAuthGwLogin(redirectPath?: string) {
 }
 
 export function directToAuthGwLogout() {
-  const idToken = JSONLocalStorage?.get(LOCAL_STORAGE_AUTH_KEY).idToken;
-  JSONLocalStorage?.clear();
+  const idToken = JSONLocalStorage.get(LOCAL_STORAGE_AUTH_KEY).idToken;
+  JSONLocalStorage.clear();
 
   window.location.assign(
     `${AUTH_GW_BASE_URL}/auth/openid/testbed/logout-request?appContext=${generateAppContextHash()}&idToken=${idToken}`

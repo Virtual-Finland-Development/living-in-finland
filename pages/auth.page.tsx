@@ -37,6 +37,7 @@ export default function AuthPage() {
   const routerActions = useCallback(() => {
     // False positives
     if (!provider || !(event === 'login' || event === 'logout')) {
+      router.push('/');
       return;
     }
 

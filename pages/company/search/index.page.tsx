@@ -43,7 +43,10 @@ export default function CompanySearchPage() {
       const response = await api.company.getCompanyBasicInfo(values);
       setCompanyData(response);
     } catch (error: any) {
-      if (error?.response?.status === 422) {
+      if (
+        error?.response?.status &&
+        [404, 422].includes(error.response.status)
+      ) {
         setNotFound(true);
         return;
       }

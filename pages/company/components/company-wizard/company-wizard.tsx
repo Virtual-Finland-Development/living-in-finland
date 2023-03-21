@@ -113,7 +113,6 @@ const DEFAULT_VALUES = {
         shareSeriesClass: 'A' as const,
         numberOfShares: Math.floor(Math.random() * 100) + 1,
         votesPerShare: Math.floor(Math.random() * 100) + 1,
-        shareValueCurrency: 'EUR',
       },
     ],
     shareholders: [

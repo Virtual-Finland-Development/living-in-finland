@@ -11,7 +11,7 @@ export default function MultiValue({ index, valueObj }: MultiValueProps) {
   try {
     return (
       <div className="flex flex-row">
-        <Text className="!font-bold">{index + 1}.</Text>
+        <Text className="!font-bold shrink-0">{index + 1}.</Text>
 
         <div className="ml-2">
           {Object.keys(valueObj)

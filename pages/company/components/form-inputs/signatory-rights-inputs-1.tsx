@@ -98,7 +98,7 @@ export default function SignatoryRights() {
               items={SIGNING_RIGHTS_ROLE_OPTIONS}
             />
             <FormInput
-              name={`signatoryRights.signatoryRights.${index}.personalID`}
+              name={`signatoryRights.signatoryRights.${index}.personalId`}
               control={control}
               optionalText="optional"
               labelText="Personal ID"

@@ -39,7 +39,6 @@ export default function BeneficialOwnersShareSeries() {
       shareSeriesClass: 'A',
       numberOfShares: Math.floor(Math.random() * 100) + 1,
       votesPerShare: Math.floor(Math.random() * 100) + 1,
-      shareValueCurrency: 'EUR',
     });
   };
 

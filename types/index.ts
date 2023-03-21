@@ -54,8 +54,8 @@ export type CompanyAddress = {
   postCode: string;
   postName: string;
   poBox: string;
-  adminUnitLevel_1: string;
-  adminUnitLevel_2: string;
+  adminUnitLevel1: string;
+  adminUnitLevel2: string;
 };
 
 export type ShareSeries = {
@@ -120,13 +120,13 @@ export type Shareholder = {
 
 export interface BenecifialOwners {
   shareSeries: ShareSeries2[];
-  shareholder: Shareholder[];
+  shareholders: Shareholder[];
 }
 
 /**
  * NonListedCompany/SignatoryRights
  */
-export interface SigningRight {
+export interface SignatoryRight {
   role:
     | 'director'
     | 'deputy director'
@@ -148,12 +148,12 @@ export interface SigningRight {
   postCode: string;
   postName: string;
   poBox: string;
-  adminUnitLevel_1: string;
-  adminUnitLevel_2: string;
+  adminUnitLevel1: string;
+  adminUnitLevel2: string;
 }
 
 export interface SignatoryRights {
-  signinRights: SigningRight[];
+  signatoryRights: SignatoryRight[];
 }
 
 /**

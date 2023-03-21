@@ -95,13 +95,13 @@ export default function CompanyAddress() {
           optionalText="optional"
         />
         <FormInput
-          name={`company.companyAddress.adminUnitLevel_1`}
+          name={`company.companyAddress.adminUnitLevel1`}
           control={control}
           labelText="Admin unit level 1"
           optionalText="optional"
         />
         <FormInput
-          name={`company.companyAddress.adminUnitLevel_2`}
+          name={`company.companyAddress.adminUnitLevel2`}
           control={control}
           labelText="Admin unit level 2"
           optionalText="optional"

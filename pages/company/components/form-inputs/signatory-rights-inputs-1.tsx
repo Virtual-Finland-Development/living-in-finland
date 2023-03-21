@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import lodash_get from 'lodash.get';
 import { Button } from 'suomifi-ui-components';
-import type { SigningRight } from '@/types';
+import type { SignatoryRight } from '@/types';
 import { SIGNING_RIGHTS_ROLE_OPTIONS } from '@/lib/constants';
 import { pickRandomDateString, pickRandomName } from '@/lib/utils';
 import { useCompanyContext } from '@/context/company-context';
@@ -12,7 +12,7 @@ import CustomHeading from '@/components/ui/custom-heading';
 
 interface FieldProps {
   signatoryRights: {
-    signingRights: Partial<SigningRight>[];
+    signatoryRights: Partial<SignatoryRight>[];
   };
 }
 
@@ -33,17 +33,20 @@ const REQUIRED_FIELDS = [
   'nationality',
 ];
 
-export default function SignatoryRightsSigningRights() {
+export default function SignatoryRights() {
   const {
     values: { signatoryRights },
     setIsCurrentStepDone,
     codesets: { countries },
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
-  const { invalid } = getFieldState('signatoryRights.signingRights', formState);
+  const { invalid } = getFieldState(
+    'signatoryRights.signatoryRights',
+    formState
+  );
   const { fields, append, remove } = useFieldArray<FieldProps>({
     control,
-    name: 'signatoryRights.signingRights',
+    name: 'signatoryRights.signatoryRights',
   });
 
   const appendShareSeries = () => {
@@ -56,11 +59,11 @@ export default function SignatoryRightsSigningRights() {
 
   const isStepDone = useMemo(() => {
     const hasContextValues = (() => {
-      const signatoryRightsArr = lodash_get(signatoryRights, 'signinRights');
+      const signatoryRightsArr = lodash_get(signatoryRights, 'signatoryRights');
 
       if (Array.isArray(signatoryRightsArr)) {
         return signatoryRightsArr.every(i => {
-          REQUIRED_FIELDS.every(field => i[field as keyof SigningRight]);
+          REQUIRED_FIELDS.every(field => i[field as keyof SignatoryRight]);
         });
       }
 
@@ -71,7 +74,7 @@ export default function SignatoryRightsSigningRights() {
   }, [signatoryRights, formState.isValid, invalid]);
 
   useEffect(() => {
-    setIsCurrentStepDone('signatoryRights.signingRights', isStepDone);
+    setIsCurrentStepDone('signatoryRights.signatoryRights', isStepDone);
   }, [isStepDone, setIsCurrentStepDone]);
 
   return (
@@ -88,32 +91,32 @@ export default function SignatoryRightsSigningRights() {
         >
           <div className="grid sm:grid-cols-2 gap-6">
             <FormSingleSelect
-              name={`signatoryRights.signingRights.${index}.role`}
+              name={`signatoryRights.signatoryRights.${index}.role`}
               control={control}
               rules={{ required: 'Role is required.' }}
               labelText="Role"
               items={SIGNING_RIGHTS_ROLE_OPTIONS}
             />
             <FormInput
-              name={`signatoryRights.signingRights.${index}.personalID`}
+              name={`signatoryRights.signatoryRights.${index}.personalID`}
               control={control}
               optionalText="optional"
               labelText="Personal ID"
             />
             <FormInput
-              name={`signatoryRights.signingRights.${index}.givenName`}
+              name={`signatoryRights.signatoryRights.${index}.givenName`}
               control={control}
               rules={{ required: 'Given name is required.' }}
               labelText="Given name"
             />
             <FormInput
-              name={`signatoryRights.signingRights.${index}.middleNames`}
+              name={`signatoryRights.signatoryRights.${index}.middleNames`}
               control={control}
               rules={{ required: 'Middle names are required.' }}
               labelText="Middle names"
             />
             <FormInput
-              name={`signatoryRights.signingRights.${index}.lastName`}
+              name={`signatoryRights.signatoryRights.${index}.lastName`}
               control={control}
               rules={{ required: 'Last name is required.' }}
               labelText="Last name"
@@ -122,14 +125,14 @@ export default function SignatoryRightsSigningRights() {
           <div className="grid sm:grid-cols-2 gap-6">
             <FormInput
               type="date"
-              name={`signatoryRights.signingRights.${index}.dateOfBirth`}
+              name={`signatoryRights.signatoryRights.${index}.dateOfBirth`}
               control={control}
               rules={{ required: 'Given name is required.' }}
               labelText="Date of birth"
               hintText="Select from date picker"
             />
             <FormSingleSelect
-              name={`signatoryRights.signingRights.${index}.nationality`}
+              name={`signatoryRights.signatoryRights.${index}.nationality`}
               control={control}
               rules={{ required: 'Nationality is required.' }}
               labelText="Nationality"
@@ -146,19 +149,19 @@ export default function SignatoryRightsSigningRights() {
           </div>
           <div className="grid sm:grid-cols-2 gap-6">
             <FormInput
-              name={`signatoryRights.signingRights.${index}.fullAddress`}
+              name={`signatoryRights.signatoryRights.${index}.fullAddress`}
               control={control}
               labelText="Full address"
               optionalText="optional"
             />
             <FormInput
-              name={`signatoryRights.signingRights.${index}.thoroughfare`}
+              name={`signatoryRights.signatoryRights.${index}.thoroughfare`}
               control={control}
               optionalText="optional"
               labelText="Thoroughfare"
             />
             <FormInput
-              name={`signatoryRights.signingRights.${index}.locatorDesignator`}
+              name={`signatoryRights.signatoryRights.${index}.locatorDesignator`}
               control={control}
               rules={{
                 validate: value => {
@@ -170,43 +173,43 @@ export default function SignatoryRightsSigningRights() {
               labelText="Locator designator"
             />
             <FormInput
-              name={`signatoryRights.signingRights.${index}.locatorName`}
+              name={`signatoryRights.signatoryRights.${index}.locatorName`}
               control={control}
               optionalText="optional"
               labelText="Locator name"
             />
             <FormInput
-              name={`signatoryRights.signingRights.${index}.addressArea`}
+              name={`signatoryRights.signatoryRights.${index}.addressArea`}
               control={control}
               optionalText="optional"
               labelText="Address area"
             />
             <FormInput
-              name={`signatoryRights.signingRights.${index}.postCode`}
+              name={`signatoryRights.signatoryRights.${index}.postCode`}
               control={control}
               optionalText="optional"
               labelText="Post code"
             />
             <FormInput
-              name={`signatoryRights.signingRights.${index}.postName`}
+              name={`signatoryRights.signatoryRights.${index}.postName`}
               control={control}
               optionalText="optional"
               labelText="Post name"
             />
             <FormInput
-              name={`signatoryRights.signingRights.${index}.poBox`}
+              name={`signatoryRights.signatoryRights.${index}.poBox`}
               control={control}
               optionalText="optional"
               labelText="Post box"
             />
             <FormInput
-              name={`signatoryRights.signingRights.${index}.adminUnitLevel_1`}
+              name={`signatoryRights.signatoryRights.${index}.adminUnitLevel1`}
               control={control}
               optionalText="optional"
               labelText="Admin unit level 1"
             />
             <FormInput
-              name={`signatoryRights.signingRights.${index}.adminUnitLevel_2`}
+              name={`signatoryRights.signatoryRights.${index}.adminUnitLevel2`}
               control={control}
               optionalText="optional"
               labelText="Admin unit level 2"

@@ -12,7 +12,7 @@ import CustomHeading from '@/components/ui/custom-heading';
 
 interface FieldProps {
   beneficialOwners: {
-    shareholder: Shareholder[];
+    shareholders: Shareholder[];
   };
 }
 
@@ -24,10 +24,10 @@ export default function BeneficialOwnersShareholders() {
     setIsCurrentStepDone,
   } = useCompanyContext();
   const { control, formState, getFieldState } = useFormContext<FieldProps>();
-  const { invalid } = getFieldState('beneficialOwners.shareholder', formState);
+  const { invalid } = getFieldState('beneficialOwners.shareholders', formState);
   const { fields, append, remove } = useFieldArray<FieldProps>({
     control,
-    name: 'beneficialOwners.shareholder',
+    name: 'beneficialOwners.shareholders',
   });
 
   const appendShareSeries = () => {
@@ -48,7 +48,7 @@ export default function BeneficialOwnersShareholders() {
 
   const isStepDone = useMemo(() => {
     const hasContextValues = (() => {
-      const shareSeriesArr = lodash_get(beneficialOwners, 'shareholder');
+      const shareSeriesArr = lodash_get(beneficialOwners, 'shareholders');
 
       if (Array.isArray(shareSeriesArr)) {
         return shareSeriesArr.every(i => {
@@ -63,7 +63,7 @@ export default function BeneficialOwnersShareholders() {
   }, [beneficialOwners, formState.isValid, invalid]);
 
   useEffect(() => {
-    setIsCurrentStepDone('beneficialOwners.shareholder', isStepDone);
+    setIsCurrentStepDone('beneficialOwners.shareholders', isStepDone);
   }, [isStepDone, setIsCurrentStepDone]);
 
   return (
@@ -82,7 +82,7 @@ export default function BeneficialOwnersShareholders() {
         >
           <div className="flex flex-col gap-4">
             <FormInput
-              name={`beneficialOwners.shareholder.${index}.name`}
+              name={`beneficialOwners.shareholders.${index}.name`}
               control={control}
               rules={{ required: 'Shareholder name is required.' }}
               labelText={`${index + 1}. Shareholder name`}
@@ -117,7 +117,7 @@ function Ownerships({ index }: { index: number }) {
 
   const { fields, append, remove } = useFieldArray<FieldProps>({
     control,
-    name: `beneficialOwners.shareholder.${index}.shareOwnership`,
+    name: `beneficialOwners.shareholders.${index}.shareOwnership`,
   });
 
   const appendOwnership = () => {
@@ -139,7 +139,7 @@ function Ownerships({ index }: { index: number }) {
           className="grid grid-cols-1 md:grid-cols-3 gap-3 items-end justify-start border-b-gray-300 mb-6"
         >
           <FormSingleSelect
-            name={`beneficialOwners.shareholder.${index}.shareOwnership.${i}.shareSeriesClass`}
+            name={`beneficialOwners.shareholders.${index}.shareOwnership.${i}.shareSeriesClass`}
             control={control}
             rules={{ required: true }}
             items={SHARE_SERIES_CLASS_OPTIONS}
@@ -148,7 +148,7 @@ function Ownerships({ index }: { index: number }) {
           />
           <FormInput
             type="number"
-            name={`beneficialOwners.shareholder.${index}.shareOwnership.${i}.quantity`}
+            name={`beneficialOwners.shareholders.${index}.shareOwnership.${i}.quantity`}
             control={control}
             rules={{
               required: true,

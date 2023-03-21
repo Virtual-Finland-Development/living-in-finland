@@ -47,14 +47,14 @@ const BENEFICIAL_OWNER_STEPS: NavStep[] = [
   { label: '1. Share series', step: 'beneficialOwners.shareSeries' },
   {
     label: '2. Shareholders',
-    step: 'beneficialOwners.shareholder',
+    step: 'beneficialOwners.shareholders',
   },
 ];
 
 const SIGNATORY_RIGHTS_STEPS: NavStep[] = [
   {
-    label: '1. Signing rights',
-    step: 'signatoryRights.signingRights',
+    label: '1. Signatory rights',
+    step: 'signatoryRights.signatoryRights',
   },
 ];
 

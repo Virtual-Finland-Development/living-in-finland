@@ -56,7 +56,7 @@ export const COMPANY_DATA_LABELS: Record<string, any> = {
   shareOwnership: 'Share ownership',
   quantity: 'Quantity',
   signinRights: 'Signin rights',
-  personalID: 'Personal ID',
+  personalId: 'Personal ID',
   shareValueCurrency: 'Share value currency',
   legalForm: 'Legal form',
   legalStatus: 'Legal status',

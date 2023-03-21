@@ -104,7 +104,10 @@ export interface NonListedCompany {
  * NonListedCompany/BeneficialOwners
  */
 
-export type ShareSeries2 = Omit<ShareSeries, 'shareValue'> & {
+export type ShareSeries2 = Omit<
+  ShareSeries,
+  'shareValue' | 'shareValueCurrency'
+> & {
   votesPerShare: number;
 };
 
@@ -134,7 +137,7 @@ export interface SignatoryRight {
     | 'board member'
     | 'deputy board member'
     | 'other';
-  personalID: string;
+  personalId: string;
   givenName: string;
   middleNames: string;
   lastName: string;

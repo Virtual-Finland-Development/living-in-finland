@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button, InlineAlert, Text } from 'suomifi-ui-components';
-import type { CompanyBasicInformation } from '@/types';
+import type {
+  BenecifialOwners,
+  CompanyBasicInformation,
+  SignatoryRight,
+  SignatoryRights,
+} from '@/types';
 import api from '@/lib/api';
 import { useToast } from '@/context/toast-context';
 import FormInput from '@/components/form/form-input';
@@ -9,6 +14,9 @@ import FormSingleSelect from '@/components/form/form-single-select';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 import Loading from '@/components/ui/loading';
+import dummyCompanyDataFI from '../../../lib/fake-data/company-search-fi.json';
+import dummyCompanyDataNO from '../../../lib/fake-data/company-search-no.json';
+import dummyCompanyDataSE from '../../../lib/fake-data/company-search-se.json';
 import PreviewExpander from '../components/preview/preview-expander';
 
 const SOURCE_OPTIONS = [
@@ -23,6 +31,11 @@ interface FormProps {
   source: string;
 }
 
+interface DummyData {
+  beneficialOwners: Partial<BenecifialOwners>;
+  signatoryRights: Partial<SignatoryRight>[];
+}
+
 export default function CompanySearchPage() {
   const {
     control,
@@ -32,12 +45,25 @@ export default function CompanySearchPage() {
   const [companyData, setCompanyData] = useState<
     undefined | CompanyBasicInformation
   >(undefined);
+  const [dummyData, setDummyData] = useState<DummyData | undefined>(undefined);
   const [notFound, setNotFound] = useState(false);
   const toast = useToast();
 
   const onSubmit: SubmitHandler<FormProps> = async values => {
     setNotFound(false);
     setCompanyData(undefined);
+
+    switch (values.source) {
+      case 'no':
+        setDummyData(dummyCompanyDataNO as DummyData);
+      case 'se':
+        setDummyData(dummyCompanyDataSE as DummyData);
+      case 'fi':
+      case 'virtualfinland':
+        setDummyData(dummyCompanyDataFI as DummyData);
+      default:
+        setDummyData(dummyCompanyDataFI as DummyData);
+    }
 
     try {
       const response = await api.company.getCompanyBasicInfo(values);
@@ -89,14 +115,29 @@ export default function CompanySearchPage() {
           </Button>
         </form>
 
-        <div className="mt-8 min-h-[100px]">
+        <div className="mt-8 min-h-[260px]">
           {isSubmitting && <Loading />}
 
           {!isSubmitting && companyData && (
-            <PreviewExpander<CompanyBasicInformation>
-              title={companyData.name || 'Company details'}
-              values={companyData}
-            />
+            <div className="flex flex-col gap-4 w-full">
+              <CustomHeading variant="h3">
+                {companyData.name || 'Company details'}
+              </CustomHeading>
+              <PreviewExpander<CompanyBasicInformation>
+                title="1. Details"
+                values={companyData}
+              />
+
+              <PreviewExpander<Partial<BenecifialOwners>>
+                title="2. Benefical owners"
+                values={dummyData!.beneficialOwners}
+              />
+
+              <PreviewExpander<Partial<SignatoryRights>>
+                title="3. Signatory rights"
+                values={{ signatoryRights: dummyData!.signatoryRights }}
+              />
+            </div>
           )}
 
           {!isSubmitting && notFound && (

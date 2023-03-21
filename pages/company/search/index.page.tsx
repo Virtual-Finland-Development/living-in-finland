@@ -61,6 +61,8 @@ export default function CompanySearchPage() {
       case 'fi':
       case 'virtualfinland':
         setDummyData(fakeCompanyDataFI as DummyData);
+      default:
+        setDummyData(fakeCompanyDataFI as DummyData);
     }
 
     try {

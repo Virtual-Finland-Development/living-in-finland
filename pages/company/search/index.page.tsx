@@ -12,9 +12,10 @@ import Loading from '@/components/ui/loading';
 import PreviewExpander from '../components/preview/preview-expander';
 
 const SOURCE_OPTIONS = [
-  { labelText: 'Norway', name: 'no', uniqueItemId: 'no' },
-  { labelText: 'Sweden', name: 'se', uniqueItemId: 'se' },
-  { labelText: 'Finland', name: 'fi', uniqueItemId: 'fi' },
+  { labelText: 'Norway', uniqueItemId: 'no' },
+  { labelText: 'Sweden', uniqueItemId: 'se' },
+  { labelText: 'Finland', uniqueItemId: 'fi' },
+  { labelText: 'Virtual Finland', uniqueItemId: 'virtualfinland' },
 ];
 
 interface FormProps {

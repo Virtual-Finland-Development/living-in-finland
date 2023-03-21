@@ -34,7 +34,7 @@ export default function PreviewExpander<T>(props: PreviewExpanderProps<T>) {
       <ExpanderTitleButton>
         <div className="flex flex-row gap-2 items-center">
           <span>{title}</span>{' '}
-          {allStepsDone !== undefined && (
+          {typeof allStepsDone === 'boolean' && (
             <>
               {allStepsDone ? (
                 <MdDone size={22} color="green" />

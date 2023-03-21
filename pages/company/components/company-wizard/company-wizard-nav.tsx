@@ -90,7 +90,7 @@ export default function CompanyWizardNav(props: Props) {
   const trackedDoneSteps = Object.keys(doneSteps)
     .filter(key => key.includes(wizardType))
     .reduce((cur, key) => {
-      return Object.assign(cur, { [key]: doneSteps[key] });
+      return Object.assign(cur, { [key]: doneSteps[key as Step] });
     }, {});
   const doneStepValues = Object.values(trackedDoneSteps);
   const allStepsDone =

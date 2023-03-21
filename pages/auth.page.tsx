@@ -15,7 +15,7 @@ export default function AuthPage() {
   const [isLoading, setLoading] = useState(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const router = useRouter();
-  const { provider, loginCode, logout, intent, error, type } = router.query;
+  const { provider, loginCode, event, success, message } = router.query;
 
   const handleAuth = useCallback(async () => {
     try {
@@ -37,37 +37,31 @@ export default function AuthPage() {
   const routerActions = useCallback(() => {
     setLoading(true);
 
-    if (provider && loginCode) {
+    // False positives
+    if (!provider || !(event === 'login' || event === 'logout')) {
+      setLoading(false);
+      return;
+    }
+
+    // Failures
+    if (success !== 'true') {
+      setLoading(false);
+      setAuthError(message ? (message as string) : `${event} failed.`);
+      return;
+    }
+
+    // Successes
+    if (event === 'login') {
       if (provider === AuthProvider.TESTBED) {
         handleAuth();
       } else {
         router.push('/');
       }
-    } else if (logout || intent === 'LogoutRequest') {
-      if (
-        logout === 'success' ||
-        (type === 'info' && error === 'Already logged out')
-      ) {
-        logOut();
-        router.push('/');
-      } else {
-        setLoading(false);
-        setAuthError(error ? (error as string) : 'Logging out failed.');
-      }
     } else {
+      logOut();
       router.push('/');
     }
-  }, [
-    error,
-    handleAuth,
-    intent,
-    logOut,
-    loginCode,
-    logout,
-    provider,
-    router,
-    type,
-  ]);
+  }, [provider, event, success, message, handleAuth, router, logOut]);
 
   useEffect(() => {
     if (router.isReady) {

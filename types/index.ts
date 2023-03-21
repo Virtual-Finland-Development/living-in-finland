@@ -172,3 +172,26 @@ export interface CurrencyOption {
   id: string;
   name: string;
 }
+
+/**
+ * NSG company BasicInformation
+ */
+export interface CompanyBasicInformation {
+  legalForm: string;
+  legalStatus: string;
+  name: string;
+  registeredAddress: {
+    addressArea: string;
+    addressId: string;
+    adminUnitLevel1: string;
+    adminUnitLevel2: string;
+    fullAddress: string;
+    locatorDesignator: string;
+    locatorName: string;
+    poBox: string;
+    postCode: string;
+    postName: string;
+    thoroughfare: string;
+  };
+  registrationDate: string;
+}

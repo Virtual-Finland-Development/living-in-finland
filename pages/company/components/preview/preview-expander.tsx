@@ -6,62 +6,57 @@ import {
   ExpanderTitleButton,
 } from 'suomifi-ui-components';
 import { COMPANY_DATA_LABELS } from '@/lib/constants';
-import { useCompanyContext } from '@/context/company-context';
 import CustomHeading from '@/components/ui/custom-heading';
 import MultiValue from './multi-value';
 import SingleValue from './single-value';
 
-interface PreviewExpanderProps {
-  type: 'company' | 'beneficialOwners' | 'signatoryRights';
+interface PreviewExpanderProps<T> {
   title: string;
   showEditButtons?: boolean;
   onEditClick?: () => void;
   onClearClick?: () => void;
+  allStepsDone?: boolean;
+  values: Partial<Record<keyof T, any>> | undefined;
 }
 
-export default function PreviewExpander(props: PreviewExpanderProps) {
+export default function PreviewExpander<T>(props: PreviewExpanderProps<T>) {
   const {
-    type,
     title,
     showEditButtons = false,
     onEditClick = () => {},
     onClearClick = () => {},
+    allStepsDone,
+    values,
   } = props;
-  const { values, doneSteps } = useCompanyContext();
-
-  const trackedValues = values[type];
-
-  const trackedDoneSteps = Object.keys(doneSteps)
-    .filter(key => key.includes(type))
-    .reduce((cur, key) => {
-      return Object.assign(cur, { [key]: doneSteps[key] });
-    }, {});
-  const doneStepValues = Object.values(trackedDoneSteps);
-  const allStepsDone = doneStepValues.every(isDone => isDone);
 
   return (
     <Expander>
       <ExpanderTitleButton>
         <div className="flex flex-row gap-2 items-center">
           <span>{title}</span>{' '}
-          {allStepsDone ? (
-            <MdDone size={22} color="green" />
-          ) : (
-            <MdOutlineInfo size={22} color="orange" />
+          {typeof allStepsDone === 'boolean' && (
+            <>
+              {allStepsDone ? (
+                <MdDone size={22} color="green" />
+              ) : (
+                <MdOutlineInfo size={22} color="orange" />
+              )}
+            </>
           )}
         </div>
       </ExpanderTitleButton>
       <ExpanderContent className="!text-base">
         <div className="flex flex-col gap-4 mt-4">
-          {!allStepsDone && (
+          {allStepsDone !== undefined && !allStepsDone && (
             <CustomHeading variant="h3">Missing information.</CustomHeading>
           )}
 
-          {trackedValues !== undefined &&
-            Object.keys(trackedValues).map(dataKey => {
-              const value: Record<string, any> =
-                trackedValues[dataKey as keyof typeof trackedValues];
+          {values !== undefined &&
+            Object.keys(values).map(dataKey => {
+              const value: any = values[dataKey as keyof typeof values];
               const isArray = Array.isArray(value);
+              const isString =
+                typeof value === 'string' || value instanceof String;
 
               return (
                 <div key={dataKey}>
@@ -70,26 +65,27 @@ export default function PreviewExpander(props: PreviewExpanderProps) {
                   </CustomHeading>
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 mt-2 gap-4">
-                    {isArray ? (
+                    {isArray &&
                       value.map((_, index: number) => (
                         <MultiValue
                           key={`${dataKey}-${index}`}
                           index={index}
                           valueObj={value[index]}
                         />
-                      ))
-                    ) : (
+                      ))}
+                    {!isArray && !isString && (
                       <div>
                         {value &&
-                          Object.keys(value!).map((key, i) => {
-                            const nestedValue = value![key];
+                          Object.keys(value).map((key, i) => {
+                            const nestedValue =
+                              value[key as keyof typeof value];
                             const isArray = Array.isArray(nestedValue);
 
                             return !isArray ? (
                               <SingleValue
                                 key={i}
                                 label={COMPANY_DATA_LABELS[key] || ''}
-                                value={nestedValue}
+                                value={nestedValue as string}
                               />
                             ) : (
                               <MultiValue
@@ -100,6 +96,12 @@ export default function PreviewExpander(props: PreviewExpanderProps) {
                             );
                           })}
                       </div>
+                    )}
+                    {isString && (
+                      <SingleValue
+                        label={COMPANY_DATA_LABELS[dataKey] || ''}
+                        value={value as string}
+                      />
                     )}
                   </div>
                 </div>

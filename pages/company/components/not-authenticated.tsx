@@ -1,4 +1,5 @@
 import ExportedImage from 'next-image-export-optimizer';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Button, Text } from 'suomifi-ui-components';
 import { StaticIcon } from 'suomifi-ui-components';
@@ -9,6 +10,7 @@ import CustomText from '@/components/ui/custom-text';
 import manLaptopImage from '../../../public/images/man-laptop.jpg';
 
 export default function NotAuthenticated() {
+  const router = useRouter();
   const [isLoading, setLoading] = useState(false);
 
   const loginHandler = () => {
@@ -67,6 +69,23 @@ export default function NotAuthenticated() {
             obcaecat cupiditat non proident, sunt in culpa qui officia deserunt
             mollit anim id est laborum.
           </Text>
+        </div>
+        <div className="flex flex-col mt-8 gap-6 items-start">
+          <CustomHeading variant="h2" suomiFiBlue="dark">
+            Search companies
+          </CustomHeading>
+          <Text>
+            Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod
+            tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim
+            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquid ex
+            ea commodi consequat. Quis aute iure reprehenderit in voluptate
+            velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+            obcaecat cupiditat non proident, sunt in culpa qui officia deserunt
+            mollit anim id est laborum.
+          </Text>
+          <Button onClick={() => router.push('/company/search')}>
+            Search companies
+          </Button>
         </div>
       </Page.Block>
     </>

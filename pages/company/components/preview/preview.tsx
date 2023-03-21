@@ -1,5 +1,7 @@
 import { useRouter } from 'next/router';
+import { BenecifialOwners, NonListedCompany, SignatoryRights } from '@/types';
 import { useCompanyContext } from '@/context/company-context';
+import type { Step } from '@/context/company-context';
 import CustomHeading from '@/components/ui/custom-heading';
 import PreviewExpander from './preview-expander';
 
@@ -8,9 +10,27 @@ interface Props {
   stageHeader?: string;
 }
 
+function isAllStepsDone(
+  type: 'company' | 'beneficialOwners' | 'signatoryRights',
+  doneSteps: Record<Step, boolean>
+) {
+  const trackedDoneSteps = Object.keys(doneSteps)
+    .filter(key => key.includes(type))
+    .reduce((cur, key) => {
+      return Object.assign(cur, { [key]: doneSteps[key as Step] });
+    }, {});
+  const doneStepValues = Object.values(trackedDoneSteps);
+  const allStepsDone = doneStepValues.every(isDone => isDone);
+  return allStepsDone;
+}
+
 export default function Preview(props: Props) {
   const { previewType, stageHeader } = props;
-  const { clearValues } = useCompanyContext();
+  const {
+    clearValues,
+    values: { company, beneficialOwners, signatoryRights },
+    doneSteps,
+  } = useCompanyContext();
   const router = useRouter();
   const { nationalIdentifier } = router.query;
   const editUrlBase = !nationalIdentifier
@@ -29,9 +49,10 @@ export default function Preview(props: Props) {
       )}
 
       {['all', 'company'].includes(previewType) && (
-        <PreviewExpander
-          type="company"
+        <PreviewExpander<Partial<NonListedCompany>>
           title={previewType === 'all' ? '1. Details' : 'Details'}
+          values={company}
+          allStepsDone={isAllStepsDone('company', doneSteps)}
           showEditButtons={previewType === 'all'}
           onEditClick={() => router.push(`${editUrlBase}/details`)}
           onClearClick={() => {
@@ -42,11 +63,12 @@ export default function Preview(props: Props) {
       )}
 
       {['all', 'beneficialOwners'].includes(previewType) && (
-        <PreviewExpander
-          type="beneficialOwners"
+        <PreviewExpander<Partial<BenecifialOwners>>
           title={
             previewType === 'all' ? '2. Beneficial owners' : 'Beneficial owners'
           }
+          values={beneficialOwners}
+          allStepsDone={isAllStepsDone('beneficialOwners', doneSteps)}
           showEditButtons={previewType === 'all'}
           onEditClick={() => router.push(`${editUrlBase}/beneficial-owners`)}
           onClearClick={() => {
@@ -55,13 +77,13 @@ export default function Preview(props: Props) {
           }}
         />
       )}
-
       {['all', 'signatoryRights'].includes(previewType) && (
-        <PreviewExpander
-          type="signatoryRights"
+        <PreviewExpander<SignatoryRights>
           title={
             previewType === 'all' ? '3. Signatory rights' : 'Signatory rights'
           }
+          values={signatoryRights}
+          allStepsDone={isAllStepsDone('signatoryRights', doneSteps)}
           showEditButtons={previewType === 'all'}
           onEditClick={() => router.push(`${editUrlBase}/signatory-rights`)}
           onClearClick={() => {

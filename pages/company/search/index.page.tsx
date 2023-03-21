@@ -14,9 +14,9 @@ import FormSingleSelect from '@/components/form/form-single-select';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 import Loading from '@/components/ui/loading';
-import fakeCompanyDataFI from '../../../lib/fake-data/company-search-fi.json';
-import fakeCompanyDataNO from '../../../lib/fake-data/company-search-no.json';
-import fakeCompanyDataSE from '../../../lib/fake-data/company-search-se.json';
+import dummyCompanyDataFI from '../../../lib/fake-data/company-search-fi.json';
+import dummyCompanyDataNO from '../../../lib/fake-data/company-search-no.json';
+import dummyCompanyDataSE from '../../../lib/fake-data/company-search-se.json';
 import PreviewExpander from '../components/preview/preview-expander';
 
 const SOURCE_OPTIONS = [
@@ -55,14 +55,14 @@ export default function CompanySearchPage() {
 
     switch (values.source) {
       case 'no':
-        setDummyData(fakeCompanyDataNO as DummyData);
+        setDummyData(dummyCompanyDataNO as DummyData);
       case 'se':
-        setDummyData(fakeCompanyDataSE as DummyData);
+        setDummyData(dummyCompanyDataSE as DummyData);
       case 'fi':
       case 'virtualfinland':
-        setDummyData(fakeCompanyDataFI as DummyData);
+        setDummyData(dummyCompanyDataFI as DummyData);
       default:
-        setDummyData(fakeCompanyDataFI as DummyData);
+        setDummyData(dummyCompanyDataFI as DummyData);
     }
 
     try {

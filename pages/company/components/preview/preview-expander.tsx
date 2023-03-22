@@ -48,7 +48,7 @@ export default function PreviewExpander<T>(props: PreviewExpanderProps<T>) {
       <ExpanderContent className="!text-base">
         <div className="flex flex-col gap-4 mt-4">
           {allStepsDone !== undefined && !allStepsDone && (
-            <CustomHeading variant="h3">Missing information.</CustomHeading>
+            <CustomHeading variant="h4">Missing information.</CustomHeading>
           )}
 
           {values !== undefined &&

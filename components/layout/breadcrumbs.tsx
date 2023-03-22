@@ -69,7 +69,7 @@ export default function Breadcrumbs() {
   }
 
   return (
-    <div className="hidden lg:block pt-4 mb-4">
+    <div className="hidden md:block pt-4 mb-4">
       <Breadcrumb aria-label="Breadcrumb">
         {breadcrumbs.map(item => (
           <Link key={item.href} href={item.href} passHref legacyBehavior>

@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { ReactNode } from 'react';
 import { Block } from 'suomifi-ui-components';
 import CustomHeading from '../ui/custom-heading';
+import BackButton from './back-button';
 import Breadcrumbs from './breadcrumbs';
 
 interface Props {
@@ -29,6 +30,8 @@ function Page(props: Props) {
           </CustomHeading>
         </div>
       )}
+
+      <BackButton />
 
       <Block variant="main">
         <div

@@ -1,6 +1,6 @@
 import Link, { LinkProps } from 'next/link';
 import { useRouter } from 'next/router';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useRef, useState } from 'react';
 import { Dialog, Popover, Transition } from '@headlessui/react';
 import {
   Button,
@@ -128,6 +128,7 @@ function MobileNavigationPanel({
   setIsOpen: (isOpen: boolean) => void;
 }) {
   const router = useRouter();
+  const backdropRef = useRef(null);
 
   return (
     <Transition show={isOpen}>
@@ -135,6 +136,7 @@ function MobileNavigationPanel({
         open={isOpen}
         onClose={() => setIsOpen(false)}
         className="md:hidden absolute inset-0 top-[60px]"
+        initialFocus={backdropRef}
       >
         <Transition.Child
           enter="transition-opacity duration-300"
@@ -147,6 +149,7 @@ function MobileNavigationPanel({
           <div
             className="fixed inset-0 top-[60px] bg-black/60"
             aria-hidden="true"
+            ref={backdropRef}
           />
         </Transition.Child>
         <div className="fixed inset-x-0">

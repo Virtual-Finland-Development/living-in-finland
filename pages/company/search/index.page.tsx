@@ -115,7 +115,7 @@ export default function CompanySearchPage() {
           </Button>
         </form>
 
-        <div className="mt-8 min-h-[260px]">
+        <div className="mt-8 min-h-[100px]">
           {isSubmitting && <Loading />}
 
           {!isSubmitting && companyData && (

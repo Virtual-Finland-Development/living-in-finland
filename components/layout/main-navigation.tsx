@@ -29,6 +29,9 @@ const MobileMenuToggleButton = styled(Button).attrs({
   variant: 'secondaryNoBorder',
 })`
   ${tw`p-0 px-2`}
+  &:hover {
+    background: transparent !important;
+  }
 `;
 
 interface MobileLink extends LinkProps {

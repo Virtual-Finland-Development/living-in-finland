@@ -173,7 +173,6 @@ export default function CompanyWizard(props: Props) {
     values => {
       const submitValues = nullifyUndefinedValues<Partial<FormProps>>(values);
       setValues(submitValues);
-      window.scrollTo(0, 0);
     },
     [setValues]
   );
@@ -192,6 +191,7 @@ export default function CompanyWizard(props: Props) {
       } else {
         setStep(step - 1);
       }
+      window.scrollTo(0, 0);
     },
     [formMethods, onSubmit, setStep, step]
   );

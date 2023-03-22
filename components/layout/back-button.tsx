@@ -11,6 +11,7 @@ export default function BackButton() {
   return (
     <div className="block md:hidden px-4 -mb-2">
       <Button
+        key={router.route}
         variant="secondaryNoBorder"
         icon="arrowLeft"
         className="!px-0"

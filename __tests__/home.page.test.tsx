@@ -1,9 +1,12 @@
-import { render, screen } from '@testing-library/react';
-import HomePage from '../pages/index.page';
+import HomePage from '@/pages/index.page';
+import {
+  renderWithProviders,
+  screen,
+} from '@/lib/testing/utils/testing-library-utils';
 
-describe('Home', () => {
+describe('Home page', () => {
   it('renders a heading', () => {
-    render(<HomePage />);
+    renderWithProviders(<HomePage />);
 
     const heading = screen.getByRole('heading', {
       name: /the only service you need for moving into Finland/i,

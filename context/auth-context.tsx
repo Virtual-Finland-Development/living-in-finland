@@ -6,12 +6,12 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { isPast, parseISO } from 'date-fns';
 import { LoggedInState } from '@/types';
 import {
   LOCAL_STORAGE_AUTH_KEY,
   REQUEST_NOT_AUTHORIZED,
 } from '@/lib/constants';
+import { getValidAuthState } from '@/lib/utils';
 import { JSONLocalStorage } from '@/lib/utils/JSONStorage';
 
 interface AuthContextProps {
@@ -25,21 +25,20 @@ interface AuthContextProps {
 
 interface AuthProviderProps {
   children: ReactNode;
-  authenticated?: boolean; // for testing purposes only, default authentication state can be provided as prop
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 const AuthConsumer = AuthContext.Consumer;
 
 function AuthProvider(props: AuthProviderProps) {
-  const { children, authenticated = false } = props;
-  const [isAuthenticated, setIsAuthenticated] = useState(authenticated);
+  const { children } = props;
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userEmail, setUserEmail] = useState<string | null>(null);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadAuthStateFromStorage = () => {
-      const { isValid, storedAuthState } = validAuthState();
+      const { isValid, storedAuthState } = getValidAuthState();
 
       if (isValid) {
         setUserEmail(storedAuthState.profileData?.email || null);
@@ -106,17 +105,4 @@ function useAuth() {
   return context;
 }
 
-function validAuthState() {
-  const storedAuthState: LoggedInState | undefined = JSONLocalStorage.get(
-    LOCAL_STORAGE_AUTH_KEY
-  );
-  const tokenNotExpired = storedAuthState?.expiresAt
-    ? !isPast(parseISO(storedAuthState.expiresAt))
-    : false;
-  return {
-    isValid: storedAuthState !== undefined && tokenNotExpired,
-    storedAuthState: storedAuthState as LoggedInState,
-  };
-}
-
-export { AuthProvider, AuthConsumer, useAuth, validAuthState };
+export { AuthProvider, AuthConsumer, useAuth };

@@ -1,29 +1,16 @@
-import jwt_decode from 'jwt-decode';
 import type {
   BenecifialOwners,
   CompanyBasicInformation,
   NonListedCompany,
   SignatoryRights,
 } from '@/types';
-import { LOCAL_STORAGE_AUTH_KEY } from '@/lib/constants';
-import { JSONLocalStorage } from '@/lib/utils/JSONStorage';
+import { getUserIdentifier } from '@/lib/utils';
 import apiClient from '../api-client';
 import { PRH_MOCK_BASE_URL, TESTBED_API_BASE_URL } from '../endpoints';
 
 interface CompanyResponse {
   nationalIdentifier: string;
   data: NonListedCompany;
-}
-
-function getUserIdentifier() {
-  const token = JSONLocalStorage.get(LOCAL_STORAGE_AUTH_KEY).idToken;
-
-  if (!token) {
-    throw new Error('No token.');
-  }
-
-  const { sub }: { sub: string | undefined } = jwt_decode(token);
-  return sub;
 }
 
 export async function getCompanies(): Promise<CompanyResponse[]> {

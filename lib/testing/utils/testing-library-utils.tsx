@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import React, { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RenderOptions, render } from '@testing-library/react';
 import { AuthProvider } from '@/context/auth-context';
@@ -7,16 +7,11 @@ import { ToastProvider } from '@/context/toast-context';
 
 const queryClient = new QueryClient();
 
-interface WrapperProps {
-  children: ReactElement;
-  authenticated?: boolean;
-}
-
 // Custom render
 // Wrap with context providers
-const WrapperWithProviders = ({ children, authenticated }: WrapperProps) => (
+const WrapperWithProviders = ({ children }: { children: ReactElement }) => (
   <QueryClientProvider client={queryClient}>
-    <AuthProvider authenticated={authenticated}>
+    <AuthProvider>
       <ModalProvider>
         <ToastProvider>{children}</ToastProvider>
       </ModalProvider>
@@ -26,12 +21,10 @@ const WrapperWithProviders = ({ children, authenticated }: WrapperProps) => (
 
 const renderWithProviders = (
   ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'> & { authenticated?: boolean }
+  options?: Omit<RenderOptions, 'wrapper'>
 ) =>
   render(ui, {
-    wrapper: (props: any) => (
-      <WrapperWithProviders {...props} authenticated={options?.authenticated} />
-    ),
+    wrapper: WrapperWithProviders,
     ...options,
   });
 

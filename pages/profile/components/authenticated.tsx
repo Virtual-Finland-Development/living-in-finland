@@ -12,7 +12,7 @@ export default function ProfileAuthenticated() {
   return (
     <>
       {loading ? (
-        <Page.Block className="bg-white">
+        <Page.Block className="bg-white flex items-center justify-center min-h-[200px]">
           <Loading />
         </Page.Block>
       ) : (
@@ -22,7 +22,7 @@ export default function ProfileAuthenticated() {
               <div className="flex flex-row items-center">
                 <StaticIcon icon="userProfile" className="h-16 w-16" />
                 <CustomHeading variant="h2" suomiFiBlue="dark">
-                  Let’s create your profile
+                  {profile ? 'Edit your profile' : 'Let’s create your profile'}
                 </CustomHeading>
               </div>
               <Text>

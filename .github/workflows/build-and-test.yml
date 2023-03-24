@@ -1,4 +1,4 @@
-name: Build the app
+name: Build and test the app
 
 on:
   pull_request:
@@ -27,6 +27,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: App install, test
+        run: |
+          npm install
+          npm run test:ci
       - name: auth-gw url from Pulumi
         if: ${{ inputs.deployment_stage }}
         uses: Virtual-Finland-Development/pulumi-outputs-action@v1

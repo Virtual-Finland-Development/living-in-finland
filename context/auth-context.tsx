@@ -6,12 +6,12 @@ import {
   useEffect,
   useState,
 } from 'react';
-import { isPast, parseISO } from 'date-fns';
 import { LoggedInState } from '@/types';
 import {
   LOCAL_STORAGE_AUTH_KEY,
   REQUEST_NOT_AUTHORIZED,
 } from '@/lib/constants';
+import { getValidAuthState } from '@/lib/utils';
 import { JSONLocalStorage } from '@/lib/utils/JSONStorage';
 
 interface AuthContextProps {
@@ -38,14 +38,9 @@ function AuthProvider(props: AuthProviderProps) {
 
   useEffect(() => {
     const loadAuthStateFromStorage = () => {
-      const storedAuthState: LoggedInState | undefined = JSONLocalStorage.get(
-        LOCAL_STORAGE_AUTH_KEY
-      );
-      const tokenNotExpired = storedAuthState?.expiresAt
-        ? !isPast(parseISO(storedAuthState.expiresAt))
-        : false;
+      const { isValid, storedAuthState } = getValidAuthState();
 
-      if (storedAuthState && tokenNotExpired) {
+      if (isValid) {
         setUserEmail(storedAuthState.profileData?.email || null);
         setIsAuthenticated(true);
       }

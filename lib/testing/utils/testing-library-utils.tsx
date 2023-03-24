@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import { ReactElement } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RenderOptions, render } from '@testing-library/react';
 import { AuthProvider } from '@/context/auth-context';

@@ -29,6 +29,5 @@ describe('Company index page', () => {
     });
 
     expect(establishCompanyButton).toBeInTheDocument();
-    jest.clearAllMocks();
   });
 });

@@ -9,7 +9,7 @@ import CustomHeading from '@/components/ui/custom-heading';
 import CustomText from '@/components/ui/custom-text';
 import manLaptopImage from '../../../public/images/man-laptop.jpg';
 
-export default function NotAuthenticated() {
+export default function CompanyNotAuthenticated() {
   const router = useRouter();
   const [isLoading, setLoading] = useState(false);
 

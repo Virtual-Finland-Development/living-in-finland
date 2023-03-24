@@ -67,6 +67,16 @@ jobs:
           stack: ${{ inputs.deployment_stage }}
           resource: url
           access-token: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+      - name: users-api url from Pulumi
+        if: ${{ inputs.deployment_stage }}
+        uses: Virtual-Finland-Development/pulumi-outputs-action@v1
+        id: users-api-url
+        with:
+          organization: virtualfinland
+          project: users-api
+          stack: ${{ inputs.deployment_stage }}
+          resource: ApplicationUrl
+          access-token: ${{ secrets.PULUMI_ACCESS_TOKEN }}
       - name: App build
         if: ${{ inputs.deployment_stage }}
         run: npm install && npm run export
@@ -75,6 +85,7 @@ jobs:
           NEXT_PUBLIC_PRH_MOCK_BASE_URL: ${{ steps.prh-mock-url.outputs.resource-output }}
           NEXT_PUBLIC_TESTBED_API_BASE_URL: ${{ steps.testbed-api-url.outputs.resource-output }}
           NEXT_PUBLIC_CODESETS_BASE_URL: ${{ steps.codesets-url.outputs.resource-output }}
+          NEXT_PUBLIC_USERS_API_BASE_URL: ${{ steps.users-api-url.outputs.resource-output }}
       - name: Archive the build artifacts
         if: ${{ inputs.wants_artifacts }}
         uses: actions/upload-artifact@v3

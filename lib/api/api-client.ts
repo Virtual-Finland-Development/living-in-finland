@@ -2,11 +2,15 @@ import axios from 'axios';
 import { isPast, parseISO } from 'date-fns';
 import { LOCAL_STORAGE_AUTH_KEY, REQUEST_NOT_AUTHORIZED } from '../constants';
 import { JSONLocalStorage } from '../utils/JSONStorage';
-import { PRH_MOCK_BASE_URL, TESTBED_API_BASE_URL } from './endpoints';
+import {
+  PRH_MOCK_BASE_URL,
+  TESTBED_API_BASE_URL,
+  USERS_API_BASE_URL,
+} from './endpoints';
 
 const apiClient = axios.create({});
 
-const DATA_URLS = [
+const PROTECTED_URLS = [
   `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/Establishment`,
   `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/establishment`,
   `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/Establishment/Write`,
@@ -14,11 +18,13 @@ const DATA_URLS = [
   `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/BeneficialOwners/Write`,
   `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/signatory-rights`,
   `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/SignatoryRights/Write`,
+  `${USERS_API_BASE_URL}/productizer/draft/Person/BasicInformation`,
+  `${USERS_API_BASE_URL}/productizer/draft/Person/BasicInformation/Write`,
 ];
 
 apiClient.interceptors.request.use(config => {
   if (config.url !== undefined && config.headers !== undefined) {
-    if (DATA_URLS.includes(config.url)) {
+    if (PROTECTED_URLS.includes(config.url)) {
       const idToken = JSONLocalStorage.get(LOCAL_STORAGE_AUTH_KEY).idToken;
       config.headers.Authorization = idToken ? `Bearer ${idToken}` : '';
     }
@@ -37,7 +43,7 @@ apiClient.interceptors.response.use(
 
     if (
       error.config?.url &&
-      DATA_URLS.includes(error.config.url) &&
+      PROTECTED_URLS.includes(error.config.url) &&
       hasExpired
     ) {
       window.postMessage(REQUEST_NOT_AUTHORIZED);

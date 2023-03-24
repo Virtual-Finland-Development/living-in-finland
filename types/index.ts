@@ -198,3 +198,14 @@ export interface CompanyBasicInformation {
   };
   registrationDate: string;
 }
+
+/**
+ * Profile/BasicInformation
+ */
+export interface ProfileBasicInformation {
+  givenName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  residency: string;
+}

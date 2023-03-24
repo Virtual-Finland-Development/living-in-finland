@@ -7,7 +7,7 @@ import CustomLink from '@/components/ui/custom-link';
 import CustomText from '@/components/ui/custom-text';
 import Loading from '@/components/ui/loading';
 
-export default function Authenticated() {
+export default function CompanyAuthenticated() {
   const { data: companies, isLoading, isFetching } = useCompanies();
   const router = useRouter();
 

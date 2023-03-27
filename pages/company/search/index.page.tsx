@@ -53,19 +53,32 @@ export default function CompanySearchPage() {
     setNotFound(false);
     setCompanyData(undefined);
 
-    switch (values.source) {
-      case 'no':
-        setDummyData(dummyCompanyDataNO as DummyData);
-      case 'se':
-        setDummyData(dummyCompanyDataSE as DummyData);
-      case 'fi':
-      case 'virtualfinland':
-        setDummyData(dummyCompanyDataFI as DummyData);
-      default:
-        setDummyData(dummyCompanyDataFI as DummyData);
-    }
-
     try {
+      switch (values.source) {
+        case 'no':
+          setDummyData(dummyCompanyDataNO as DummyData);
+          break;
+        case 'se':
+          setDummyData(dummyCompanyDataSE as DummyData);
+          break;
+        case 'fi':
+          setDummyData(dummyCompanyDataFI as DummyData);
+          break;
+        case 'virtualfinland':
+          // Use actual mock data for virtual finland
+          setDummyData({
+            beneficialOwners: await api.company.getBeneficialOwners(
+              values.nationalIdentifier
+            ),
+            ...(await api.company.getSignatoryRights(
+              values.nationalIdentifier
+            )),
+          });
+          break;
+        default:
+          setDummyData(dummyCompanyDataFI as DummyData);
+      }
+
       const response = await api.company.getCompanyBasicInfo(values);
       setCompanyData(response);
     } catch (error: any) {

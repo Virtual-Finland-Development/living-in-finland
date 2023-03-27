@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import api from '../api';
+import useErrorToast from './use-error-toast';
 
 const OPTIONS = {
   refetchOnWindowFocus: false,
@@ -14,9 +15,10 @@ function useCountries() {
     OPTIONS
   );
 
-  if (query.isError) {
-    console.log(query.error);
-  }
+  useErrorToast({
+    title: 'Could not fetch codesets: countries',
+    error: query.error,
+  });
 
   return query;
 }
@@ -28,11 +30,42 @@ function useCurrencies() {
     OPTIONS
   );
 
-  if (query.isError) {
-    console.log(query.error);
-  }
+  useErrorToast({
+    title: 'Could not fetch codesets: currencies',
+    error: query.error,
+  });
 
   return query;
 }
 
-export { useCountries, useCurrencies };
+function useLanguages() {
+  const query = useQuery(
+    ['languages'],
+    async () => await api.codesets.getLanguages(),
+    OPTIONS
+  );
+
+  useErrorToast({
+    title: 'Could not fetch codesets: languages',
+    error: query.error,
+  });
+
+  return query;
+}
+
+function useNaceCodes() {
+  const query = useQuery(
+    ['nace'],
+    async () => await api.codesets.getNaceCodes(),
+    OPTIONS
+  );
+
+  useErrorToast({
+    title: 'Could not fetch codesets: nace codes',
+    error: query.error,
+  });
+
+  return query;
+}
+
+export { useCountries, useCurrencies, useLanguages, useNaceCodes };

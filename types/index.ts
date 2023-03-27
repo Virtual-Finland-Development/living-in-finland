@@ -162,7 +162,7 @@ export interface SignatoryRights {
 /**
  * Codesets
  */
-export interface CountryOption {
+export interface Country {
   displayName: string;
   englishName: string;
   id: string;
@@ -171,9 +171,33 @@ export interface CountryOption {
   twoLetterISORegionName: string;
 }
 
-export interface CurrencyOption {
+export interface Currency {
   id: string;
   name: string;
+}
+
+export interface Language {
+  id: string;
+  englishName: string;
+  twoLetterISOLanguageName: string;
+}
+
+export interface Nace {
+  codeValue: string;
+  dotNotationCodeValue?: string;
+  topLevelGroupCode?: string;
+  order: number;
+  uri: string;
+  hierarchyLevel: number;
+  prefLabel: {
+    en: string;
+  };
+  broaderCode?: {
+    codeValue: string;
+    order: number;
+    hierarchyLevel: number;
+  };
+  children?: Nace[];
 }
 
 /**
@@ -200,12 +224,196 @@ export interface CompanyBasicInformation {
 }
 
 /**
- * Profile/BasicInformation
+ * Person/BasicInformation
  */
-export interface ProfileBasicInformation {
+export interface PersonBasicInformation {
   givenName: string;
   lastName: string;
   email: string;
   phoneNumber: string;
   residency: string;
+}
+
+/**
+ * Person/JobApplicationProfile
+ */
+export interface Occupation {
+  escoIdentifier: string;
+  escoCode: string;
+  workExperience: number;
+  employer: string;
+}
+
+export interface Education {
+  educationName: string;
+  educationLevel: string;
+  educationField: string;
+  graduationDate: string;
+  institutionName: string;
+}
+
+export enum SkillLevel {
+  'beginner',
+  'intermediate',
+  'master',
+}
+
+export interface OtherSkill {
+  escoIdentifier: string;
+  skillLevel: SkillLevel;
+}
+
+export enum CERFLevel {
+  'native',
+  'A1',
+  'A2',
+  'B1',
+  'B2',
+  'C1',
+  'C2',
+}
+
+export interface LanguageSkill {
+  escoIdentifier: string;
+  languageCode: string;
+  skillLevel: CERFLevel;
+}
+
+export interface Certification {
+  certificationName: string;
+  escoIdentifier: string;
+  institutionName: string;
+}
+
+export enum EmploymentType {
+  'permanent',
+  'temporary',
+  'seasonal',
+  'summerJob',
+}
+
+export enum WorkingTime {
+  '01',
+  '02',
+  '03',
+  '04',
+  '05',
+  '06',
+  '07',
+  '08',
+}
+
+export enum Permit {
+  '001',
+  '002',
+  '003',
+  '004',
+  '005',
+  '006',
+  '007',
+  '008',
+  '009',
+  '010',
+  '011',
+  '012',
+  '013',
+  '014',
+  '015',
+  '016',
+  '017',
+  '018',
+  '019',
+  '020',
+  '021',
+  '022',
+  '023',
+  '024',
+  '025',
+  '026',
+  '027',
+  '028',
+  '029',
+  '030',
+  '031',
+  '032',
+  '033',
+  '034',
+  '035',
+  '036',
+  '037',
+  '038',
+  '039',
+  '040',
+  '041',
+  '042',
+  '043',
+  '044',
+  '045',
+  '046',
+  '047',
+  '048',
+  '049',
+  '050',
+  '051',
+  '052',
+  '053',
+  '054',
+  '055',
+  '056',
+  '057',
+  '058',
+  '059',
+  '060',
+  '061',
+  '062',
+  '063',
+  '064',
+  '065',
+  '066',
+  '067',
+  '068',
+  '069',
+  '070',
+  '071',
+  '072',
+  '073',
+  '074',
+  '075',
+  '076',
+  '077',
+  '078',
+  '079',
+  '080',
+  '081',
+  '082',
+  '083',
+  '084',
+  '085',
+  '086',
+  '087',
+  '088',
+  '089',
+  '090',
+  '091',
+  '092',
+  '093',
+  '094',
+  '095',
+}
+
+export interface JobApplicationProfile {
+  occupations: Occupation[];
+  educations: Education[];
+  languageSkills: LanguageSkill[];
+  otherSkills: OtherSkill[];
+  certifications: Certification[];
+  permits: Permit[];
+  workPreferences: {
+    preferredRegion: string[];
+    preferredMunicipality: string[];
+    typeOfEmployment: EmploymentType;
+    workingTime: WorkingTime;
+    workingLanguage: string[];
+    naceCode: string;
+  };
 }

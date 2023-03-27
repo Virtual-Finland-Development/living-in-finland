@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
-import { ProfileBasicInformation } from '@/types';
+import type { PersonBasicInformation } from '@/types';
 import api from '@/lib/api';
 import { useCountries } from '@/lib/hooks/codesets';
 import { pickRandomName } from '@/lib/utils';
@@ -9,14 +9,16 @@ import { useToast } from '@/context/toast-context';
 import FormInput from '@/components/form/form-input';
 import FormPhoneInput from '@/components/form/form-phone-input';
 import FormSingleSelect from '@/components/form/form-single-select';
+import CustomHeading from '@/components/ui/custom-heading';
 import Loading from '@/components/ui/loading';
 
 interface Props {
-  profile: ProfileBasicInformation | undefined;
+  personBasicInformation: PersonBasicInformation | undefined;
+  onSubmitSuccess: () => void;
 }
 
-export default function ProfileForm(props: Props) {
-  const { profile } = props;
+export default function PersonalProfileForm(props: Props) {
+  const { personBasicInformation, onSubmitSuccess } = props;
   const { userEmail } = useAuth();
   const { data: countries, isLoading } = useCountries();
   const toast = useToast();
@@ -24,10 +26,10 @@ export default function ProfileForm(props: Props) {
   const {
     control,
     handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<ProfileBasicInformation>({
-    defaultValues: profile
-      ? { ...profile }
+    formState: { isSubmitting, dirtyFields },
+  } = useForm<PersonBasicInformation>({
+    defaultValues: personBasicInformation
+      ? { ...personBasicInformation }
       : {
           givenName: pickRandomName('firstName'),
           lastName: pickRandomName('lastName'),
@@ -36,16 +38,19 @@ export default function ProfileForm(props: Props) {
           residency: '',
         },
   });
-
-  const onSubmit: SubmitHandler<ProfileBasicInformation> = async values => {
+  const onSubmit: SubmitHandler<PersonBasicInformation> = async values => {
     try {
-      const response = await api.profile.saveProfile(values);
-      console.log(response);
-      toast({
-        status: 'neutral',
-        title: 'Success',
-        content: 'Profile information saved successfully!',
-      });
+      if (Object.keys(dirtyFields).length) {
+        await api.profile.savePersonBasicInfo(values);
+        toast({
+          status: 'neutral',
+          title: 'Success',
+          content: 'Profile information saved successfully!',
+        });
+        onSubmitSuccess();
+      } else {
+        onSubmitSuccess();
+      }
     } catch (error: any) {
       toast({
         status: 'error',
@@ -60,7 +65,10 @@ export default function ProfileForm(props: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
+      <CustomHeading variant="h2" suomiFiBlue="dark">
+        Personal information
+      </CustomHeading>
       <div className="flex flex-col gap-4 items-start">
         <FormInput
           name={`givenName`}
@@ -110,7 +118,7 @@ export default function ProfileForm(props: Props) {
       </div>
       <div className="mt-8">
         <Button type="submit" disabled={isSubmitting}>
-          Save profile
+          Next
         </Button>
       </div>
     </form>

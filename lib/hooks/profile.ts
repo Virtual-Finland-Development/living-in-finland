@@ -3,23 +3,26 @@ import { AxiosError } from 'axios';
 import api from '../api';
 import useErrorToast from './use-error-toast';
 
-const PROFILE_QUERY_KEYS = ['profile'];
+const BASIC_INFO_KEYS = ['basic-information'];
+const JOB_APPLICATION_KEYS = ['job-application-profile'];
+
+const QUERY_OPTIONS = {
+  refetchOnWindowFocus: false,
+  retry: false,
+};
 
 /**
- * Get user profile.
+ * Get person basic information.
  */
-function useProfile() {
+function usePersonBasicInfo() {
   const query = useQuery(
-    PROFILE_QUERY_KEYS,
-    async () => await api.profile.getProfile(),
-    {
-      refetchOnWindowFocus: false,
-      retry: false,
-    }
+    BASIC_INFO_KEYS,
+    async () => await api.profile.getPersonBasicInfo(),
+    QUERY_OPTIONS
   );
 
   useErrorToast({
-    title: 'Could not fetch user profile',
+    title: 'Could not fetch person basic information',
     error:
       query.error && (query.error as AxiosError).response?.status !== 404
         ? query.error
@@ -29,4 +32,25 @@ function useProfile() {
   return query;
 }
 
-export { useProfile };
+/**
+ * Get person job application profile.
+ */
+function useJobApplicationProfile() {
+  const query = useQuery(
+    JOB_APPLICATION_KEYS,
+    async () => await api.profile.getJobApplicationProfile(),
+    QUERY_OPTIONS
+  );
+
+  useErrorToast({
+    title: 'Could not fetch person job application profile.',
+    error:
+      query.error && (query.error as AxiosError).response?.status !== 404
+        ? query.error
+        : undefined,
+  });
+
+  return query;
+}
+
+export { usePersonBasicInfo, useJobApplicationProfile };

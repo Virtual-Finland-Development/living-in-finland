@@ -1,5 +1,7 @@
 import { format } from 'date-fns';
-import { AppContextObj } from '@/types';
+import lodash_groupby from 'lodash.groupby';
+import { AppContextObj, Nace } from '@/types';
+import naceDotNotated from '../codes/nace-dot-notated.json';
 import { baseAppContextObj } from '../constants';
 import firstNames from '../fake-data/first-names.json';
 import lastNames from '../fake-data/last-names.json';
@@ -49,3 +51,73 @@ export function pickRandomDateString() {
 export function removeTrailingSlash(str: string) {
   return str.endsWith('/') ? str.slice(0, -1) : str;
 }
+
+// get grouped nace codes in hierarchy-level
+// only include nace codes that are part of data definition
+// include dot-notaded version of code for each (data definition, nace-dot-notaded.json)
+export function getGroupedNaceCodes(naceCodes: any) {
+  const addChildren = (
+    item: Nace,
+    groupedByBroader: any,
+    topLevelGroupCode: string
+  ) => {
+    if (item.children) {
+      for (let i = 0; i < item.children.length; i++) {
+        const child = item.children[i];
+
+        if (groupedByBroader[child.codeValue]) {
+          item.children[i] = {
+            ...child,
+            children: groupedByBroader[child.codeValue],
+            topLevelGroupCode,
+          };
+          addChildren(item.children[i], groupedByBroader, topLevelGroupCode);
+        } else {
+          item.children[i] = {
+            ...child,
+            topLevelGroupCode,
+          };
+        }
+      }
+    }
+  };
+
+  const codes: Nace[] = naceCodes as Nace[];
+  const topLevel = codes.filter(c => !c.broaderCode && c.codeValue !== 'X');
+
+  const groupedByBroader = lodash_groupby(
+    codes.reduce((acc: Nace[], c) => {
+      const dotNotationCodeValue = naceDotNotated.find(
+        dn => dn.replace('.', '') === c.codeValue
+      );
+      if (c.broaderCode && dotNotationCodeValue) {
+        acc.push({ ...c, dotNotationCodeValue });
+      }
+      return acc;
+    }, []),
+    item => item.broaderCode?.codeValue
+  );
+
+  const groupedNaces = topLevel.map(item => {
+    if (groupedByBroader[item.codeValue]) {
+      const newItem: Nace = {
+        ...item,
+        children: groupedByBroader[item.codeValue],
+        topLevelGroupCode: item.codeValue,
+      };
+      addChildren(newItem, groupedByBroader, item.codeValue);
+      return newItem;
+    }
+    return item;
+  });
+
+  return groupedNaces;
+}
+
+export const findNace = (
+  options: Nace[],
+  identifier: string
+): Nace | undefined => {
+  const formattedId = identifier.replace('.', '');
+  return options.find(item => item.codeValue === formattedId);
+};

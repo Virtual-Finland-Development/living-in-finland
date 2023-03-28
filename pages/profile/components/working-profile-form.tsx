@@ -1,20 +1,28 @@
+import { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
 import { Label, Text } from 'suomifi-ui-components';
 import { EmploymentType, JobApplicationProfile, WorkingTime } from '@/types';
 import api from '@/lib/api';
 import { EMPLOYMENT_TYPE_LABELS, WORKING_TIME_LABELS } from '@/lib/constants';
-import { useLanguages, useNaceCodes } from '@/lib/hooks/codesets';
+import {
+  useEducationLevels,
+  useLanguages,
+  useNaceCodes,
+  useWorkPermits,
+} from '@/lib/hooks/codesets';
 import {
   findNace,
   getGroupedNaceCodes,
   nullifyUndefinedValues,
 } from '@/lib/utils';
+import { useModal } from '@/context/modal-context';
 import { useToast } from '@/context/toast-context';
 import FormMultiSelect from '@/components/form/form-multi-select';
 import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
 import Loading from '@/components/ui/loading';
+import NaceSelect from './nace-select/nace-select';
 
 interface Props {
   jobApplicationProfile: JobApplicationProfile | undefined;
@@ -22,26 +30,41 @@ interface Props {
 
 export default function WorkingProfileForm(props: Props) {
   const { jobApplicationProfile } = props;
+
   const { data: languages, isLoading: languagesLoading } = useLanguages();
   const { data: naceCodes, isLoading: naceCodesLoading } = useNaceCodes();
-  const isLoading = languagesLoading || naceCodesLoading;
+  const { data: permits, isLoading: permitsLoading } = useWorkPermits();
+  const { data: educationLevels, isLoading: educationLevelsLoading } =
+    useEducationLevels();
+  const isLoading =
+    languagesLoading ||
+    naceCodesLoading ||
+    permitsLoading ||
+    educationLevelsLoading;
+
+  console.log(permits);
+  console.log(naceCodes);
+  console.log(educationLevels);
+
+  const { openModal, closeModal } = useModal();
   const toast = useToast();
 
-  console.log(naceCodes);
-  const groupedNaceCodes = getGroupedNaceCodes(naceCodes || []);
-  console.log(groupedNaceCodes);
+  const groupedNaceCodes = useMemo(
+    () => getGroupedNaceCodes(naceCodes || []),
+    [naceCodes]
+  );
 
   const {
     control,
     handleSubmit,
     formState: { isSubmitting },
     watch,
+    setValue,
   } = useForm<JobApplicationProfile>({
     defaultValues: jobApplicationProfile && { ...jobApplicationProfile },
   });
 
   const { workPreferences } = watch();
-  console.log(workPreferences);
 
   const onSubmit: SubmitHandler<JobApplicationProfile> = async values => {
     try {
@@ -61,6 +84,31 @@ export default function WorkingProfileForm(props: Props) {
       });
     }
   };
+
+  const openNaceSelect = () =>
+    openModal({
+      title: 'Select your preferred industry',
+      content: (
+        <NaceSelect
+          items={groupedNaceCodes}
+          defaultSelected={
+            workPreferences?.naceCode
+              ? findNace(groupedNaceCodes, workPreferences.naceCode)
+              : undefined
+          }
+          onSelect={selected => {
+            setValue(
+              'workPreferences.naceCode',
+              selected?.dotNotationCodeValue || null,
+              { shouldDirty: true }
+            );
+            closeModal();
+          }}
+          onCancel={closeModal}
+        />
+      ),
+      onClose: () => {},
+    });
 
   if (isLoading) {
     return <Loading />;
@@ -118,6 +166,7 @@ export default function WorkingProfileForm(props: Props) {
             <span
               role="button"
               className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+              onClick={openNaceSelect}
             >
               {!workPreferences?.naceCode
                 ? 'click here to add.'

@@ -200,6 +200,25 @@ export interface Nace {
   children?: Nace[];
 }
 
+export interface WorkPermit {
+  codeValue: string;
+  order: number;
+  uri: string;
+  hierarchyLevel: number;
+  prefLabel: {
+    en: string;
+  };
+}
+export interface EducationLevel {
+  codeValue: string;
+  order: number;
+  uri: string;
+  hierarchyLevel: number;
+  prefLabel: {
+    en: string;
+  };
+}
+
 /**
  * NSG company BasicInformation
  */
@@ -414,6 +433,6 @@ export interface JobApplicationProfile {
     typeOfEmployment: EmploymentType;
     workingTime: WorkingTime;
     workingLanguage: string[];
-    naceCode: string;
+    naceCode: string | null;
   };
 }

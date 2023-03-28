@@ -1,7 +1,6 @@
 import { format } from 'date-fns';
 import lodash_groupby from 'lodash.groupby';
 import { AppContextObj, Nace } from '@/types';
-import naceDotNotated from '../codes/nace-dot-notated.json';
 import { baseAppContextObj } from '../constants';
 import firstNames from '../fake-data/first-names.json';
 import lastNames from '../fake-data/last-names.json';
@@ -87,11 +86,8 @@ export function getGroupedNaceCodes(naceCodes: any) {
 
   const groupedByBroader = lodash_groupby(
     codes.reduce((acc: Nace[], c) => {
-      const dotNotationCodeValue = naceDotNotated.find(
-        dn => dn.replace('.', '') === c.codeValue
-      );
-      if (c.broaderCode && dotNotationCodeValue) {
-        acc.push({ ...c, dotNotationCodeValue });
+      if (c.broaderCode && c.dotNotationCodeValue) {
+        acc.push(c);
       }
       return acc;
     }, []),
@@ -114,10 +110,19 @@ export function getGroupedNaceCodes(naceCodes: any) {
   return groupedNaces;
 }
 
+// recursive function to find nace code from hierarchived nace codes
 export const findNace = (
   options: Nace[],
   identifier: string
 ): Nace | undefined => {
   const formattedId = identifier.replace('.', '');
-  return options.find(item => item.codeValue === formattedId);
+
+  for (const item of options) {
+    const result =
+      item.codeValue === formattedId
+        ? item
+        : findNace(item.children || [], formattedId);
+
+    if (result) return result;
+  }
 };

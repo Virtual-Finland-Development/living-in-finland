@@ -68,4 +68,31 @@ function useNaceCodes() {
   return query;
 }
 
-export { useCountries, useCurrencies, useLanguages, useNaceCodes };
+function useEducationLevels() {
+  const query = useQuery(
+    ['education-levels'],
+    async () => await api.codesets.getEducationLevels(),
+    OPTIONS
+  );
+
+  return query;
+}
+
+function useWorkPermits() {
+  const query = useQuery(
+    ['permits'],
+    async () => await api.codesets.getWorkPermits(),
+    OPTIONS
+  );
+
+  return query;
+}
+
+export {
+  useCountries,
+  useCurrencies,
+  useLanguages,
+  useNaceCodes,
+  useEducationLevels,
+  useWorkPermits,
+};

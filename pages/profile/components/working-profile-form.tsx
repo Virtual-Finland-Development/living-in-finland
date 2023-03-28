@@ -71,9 +71,16 @@ export default function WorkingProfileForm(props: Props) {
     [naceCodes]
   );
 
+  const permitOptions = useMemo(() => {
+    if (!permits) return [];
+    return permits.map(p => ({
+      labelText: p.prefLabel.en,
+      uniqueItemId: p.codeValue,
+    }));
+  }, [permits]);
+
   const languageOptions = useMemo(() => {
     if (!languages) return [];
-
     return languages.map(c => ({
       labelText: c.englishName,
       uniqueItemId: c.twoLetterISOLanguageName,
@@ -81,19 +88,20 @@ export default function WorkingProfileForm(props: Props) {
   }, [languages]);
 
   const regionOptions = useMemo(() => {
-    if (!regions || !municipalities) return [];
+    if (!regions) return [];
+    return regions.map(r => ({
+      labelText: r.label.en,
+      uniqueItemId: r.code,
+    }));
+  }, [regions]);
 
-    return [
-      ...regions.map(r => ({
-        labelText: r.label.en,
-        uniqueItemId: r.code,
-      })),
-      ...municipalities.map(m => ({
-        labelText: m.Selitteet.find(s => s.Kielikoodi === 'en')?.Teksti || '',
-        uniqueItemId: m.Koodi,
-      })),
-    ];
-  }, [municipalities, regions]);
+  const municipalityOptions = useMemo(() => {
+    if (!municipalities) return [];
+    return municipalities.map(m => ({
+      labelText: m.Selitteet.find(s => s.Kielikoodi === 'en')?.Teksti || '',
+      uniqueItemId: m.Koodi,
+    }));
+  }, [municipalities]);
 
   const onSubmit: SubmitHandler<JobApplicationProfile> = async values => {
     try {
@@ -146,6 +154,17 @@ export default function WorkingProfileForm(props: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <CustomHeading variant="h2" suomiFiBlue="dark">
+        Some header
+      </CustomHeading>
+      <div className="flex flex-col gap-4 items-start">
+        <FormMultiSelect
+          name={'permits'}
+          control={control}
+          labelText="Your acquired permits"
+          items={permitOptions}
+        />
+      </div>
+      <CustomHeading variant="h2" suomiFiBlue="dark">
         Work preferences
       </CustomHeading>
       <div className="flex flex-col gap-4 items-start">
@@ -186,6 +205,12 @@ export default function WorkingProfileForm(props: Props) {
           control={control}
           labelText="Preferred regions to work in"
           items={regionOptions}
+        />
+        <FormMultiSelect
+          name={`workPreferences.preferredMunicipality`}
+          control={control}
+          labelText="Preferred municipalities to work in"
+          items={municipalityOptions}
         />
         <div>
           <Label>Preferred industry</Label>

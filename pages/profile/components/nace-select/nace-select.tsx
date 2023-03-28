@@ -53,7 +53,7 @@ export default function NaceSelect(props: Props) {
 
         {selected && (
           <div className="flex items-start mt-2">
-            <div className="flex flex-row items-center gap-2 bg-suomifi-light text-white font-bold rounded-md px-2">
+            <div className="flex flex-row items-center gap-2 bg-suomifi-light text-white font-bold rounded-xl px-2">
               <span>{selected.prefLabel.en}</span>
               <IoClose
                 className="flex-shrink-0"

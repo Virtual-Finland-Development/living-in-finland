@@ -12,12 +12,12 @@ const apiClient = axios.create({});
 
 const PROTECTED_URLS = [
   `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/Establishment`,
-  `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/establishment`,
   `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/Establishment/Write`,
-  `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/beneficial-owners`,
   `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/BeneficialOwners/Write`,
-  `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/signatory-rights`,
   `${PRH_MOCK_BASE_URL}/draft/NSG/Agent/LegalEntity/NonListedCompany/SignatoryRights/Write`,
+  `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/establishment`,
+  `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/beneficial-owners`,
+  `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/signatory-rights`,
   `${USERS_API_BASE_URL}/productizer/draft/Person/BasicInformation`,
   `${USERS_API_BASE_URL}/productizer/draft/Person/BasicInformation/Write`,
 ];

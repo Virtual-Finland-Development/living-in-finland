@@ -3,7 +3,9 @@ import type {
   Currency,
   EducationLevel,
   Language,
+  Municipality,
   Nace,
+  Region,
   WorkPermit,
 } from '@/types';
 import apiClient from '../api-client';
@@ -47,6 +49,20 @@ export async function getEducationLevels(): Promise<EducationLevel[]> {
 export async function getWorkPermits(): Promise<WorkPermit[]> {
   const { data } = await apiClient.get(
     `${CODESETS_BASE_URL}/resources/WorkPermits`
+  );
+  return data;
+}
+
+export async function getRegions(): Promise<Region[]> {
+  const { data } = await apiClient.get(
+    `${CODESETS_BASE_URL}/resources/Regions`
+  );
+  return data;
+}
+
+export async function getMunicipalities(): Promise<Municipality[]> {
+  const { data } = await apiClient.get(
+    `${CODESETS_BASE_URL}/resources/Municipalities`
   );
   return data;
 }

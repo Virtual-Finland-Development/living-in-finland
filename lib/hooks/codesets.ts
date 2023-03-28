@@ -75,6 +75,11 @@ function useEducationLevels() {
     OPTIONS
   );
 
+  useErrorToast({
+    title: 'Could not fetch codesets: education levels',
+    error: query.error,
+  });
+
   return query;
 }
 
@@ -84,6 +89,41 @@ function useWorkPermits() {
     async () => await api.codesets.getWorkPermits(),
     OPTIONS
   );
+
+  useErrorToast({
+    title: 'Could not fetch codesets: work permits',
+    error: query.error,
+  });
+
+  return query;
+}
+
+function useRegions() {
+  const query = useQuery(
+    ['regions'],
+    async () => await api.codesets.getRegions(),
+    OPTIONS
+  );
+
+  useErrorToast({
+    title: 'Could not fetch codesets: regions',
+    error: query.error,
+  });
+
+  return query;
+}
+
+function useMunicipalities() {
+  const query = useQuery(
+    ['municipalities'],
+    async () => await api.codesets.getMunicipalities(),
+    OPTIONS
+  );
+
+  useErrorToast({
+    title: 'Could not fetch codesets: municipalities',
+    error: query.error,
+  });
 
   return query;
 }
@@ -95,4 +135,6 @@ export {
   useNaceCodes,
   useEducationLevels,
   useWorkPermits,
+  useRegions,
+  useMunicipalities,
 };

@@ -8,7 +8,9 @@ import { EMPLOYMENT_TYPE_LABELS, WORKING_TIME_LABELS } from '@/lib/constants';
 import {
   useEducationLevels,
   useLanguages,
+  useMunicipalities,
   useNaceCodes,
+  useRegions,
   useWorkPermits,
 } from '@/lib/hooks/codesets';
 import {
@@ -31,28 +33,25 @@ interface Props {
 export default function WorkingProfileForm(props: Props) {
   const { jobApplicationProfile } = props;
 
+  const { openModal, closeModal } = useModal();
+  const toast = useToast();
+
   const { data: languages, isLoading: languagesLoading } = useLanguages();
   const { data: naceCodes, isLoading: naceCodesLoading } = useNaceCodes();
   const { data: permits, isLoading: permitsLoading } = useWorkPermits();
+  const { data: regions, isLoading: regionsLoading } = useRegions();
+  const { data: municipalities, isLoading: municipalitiesLoading } =
+    useMunicipalities();
   const { data: educationLevels, isLoading: educationLevelsLoading } =
     useEducationLevels();
+
   const isLoading =
     languagesLoading ||
     naceCodesLoading ||
     permitsLoading ||
-    educationLevelsLoading;
-
-  console.log(permits);
-  console.log(naceCodes);
-  console.log(educationLevels);
-
-  const { openModal, closeModal } = useModal();
-  const toast = useToast();
-
-  const groupedNaceCodes = useMemo(
-    () => getGroupedNaceCodes(naceCodes || []),
-    [naceCodes]
-  );
+    educationLevelsLoading ||
+    regionsLoading ||
+    municipalitiesLoading;
 
   const {
     control,
@@ -65,6 +64,36 @@ export default function WorkingProfileForm(props: Props) {
   });
 
   const { workPreferences } = watch();
+  // console.log(workPreferences);
+
+  const groupedNaceCodes = useMemo(
+    () => getGroupedNaceCodes(naceCodes || []),
+    [naceCodes]
+  );
+
+  const languageOptions = useMemo(() => {
+    if (!languages) return [];
+
+    return languages.map(c => ({
+      labelText: c.englishName,
+      uniqueItemId: c.twoLetterISOLanguageName,
+    }));
+  }, [languages]);
+
+  const regionOptions = useMemo(() => {
+    if (!regions || !municipalities) return [];
+
+    return [
+      ...regions.map(r => ({
+        labelText: r.label.en,
+        uniqueItemId: r.code,
+      })),
+      ...municipalities.map(m => ({
+        labelText: m.Selitteet.find(s => s.Kielikoodi === 'en')?.Teksti || '',
+        uniqueItemId: m.Koodi,
+      })),
+    ];
+  }, [municipalities, regions]);
 
   const onSubmit: SubmitHandler<JobApplicationProfile> = async values => {
     try {
@@ -150,14 +179,13 @@ export default function WorkingProfileForm(props: Props) {
           name={'workPreferences.workingLanguage'}
           control={control}
           labelText="Working languages"
-          items={
-            languages
-              ? languages.map(c => ({
-                  labelText: c.englishName,
-                  uniqueItemId: c.twoLetterISOLanguageName,
-                }))
-              : []
-          }
+          items={languageOptions}
+        />
+        <FormMultiSelect
+          name={`workPreferences.preferredRegion`}
+          control={control}
+          labelText="Preferred regions to work in"
+          items={regionOptions}
         />
         <div>
           <Label>Preferred industry</Label>

@@ -50,7 +50,7 @@ function DisclosureLabel(props: DisclosureLabelProps) {
   );
 }
 
-interface NaceDisclosureProps {
+interface IndustryDisclosureProps {
   item: Nace;
   selected: Nace | undefined;
   onSelect: (
@@ -60,7 +60,7 @@ interface NaceDisclosureProps {
   ) => void;
 }
 
-export default function NaceDisclosure(props: NaceDisclosureProps) {
+export default function IndustryDisclosure(props: IndustryDisclosureProps) {
   const { item, selected, onSelect } = props;
 
   const isChecked = Boolean(
@@ -93,7 +93,7 @@ export default function NaceDisclosure(props: NaceDisclosureProps) {
                     key={item.codeValue}
                     className="flex flex-col ml-4 items-start"
                   >
-                    <NaceDisclosure
+                    <IndustryDisclosure
                       item={item}
                       selected={selected}
                       onSelect={onSelect}

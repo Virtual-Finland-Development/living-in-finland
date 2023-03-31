@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
-import { Label, Text } from 'suomifi-ui-components';
 import { EmploymentType, JobApplicationProfile, WorkingTime } from '@/types';
 import api from '@/lib/api';
 import { EMPLOYMENT_TYPE_LABELS, WORKING_TIME_LABELS } from '@/lib/constants';
@@ -9,22 +8,19 @@ import {
   useEducationLevels,
   useLanguages,
   useMunicipalities,
-  useNaceCodes,
+  useOccupationsFlat,
   useRegions,
   useWorkPermits,
 } from '@/lib/hooks/codesets';
-import {
-  findNace,
-  getGroupedNaceCodes,
-  nullifyUndefinedValues,
-} from '@/lib/utils';
-import { useModal } from '@/context/modal-context';
+import { nullifyUndefinedValues } from '@/lib/utils';
 import { useToast } from '@/context/toast-context';
 import FormMultiSelect from '@/components/form/form-multi-select';
 import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
 import Loading from '@/components/ui/loading';
-import NaceSelect from './nace-select/nace-select';
+import IndustrySelect from './industry-select/industry-select';
+import LanguageSkillSelect from './language-skill-select/language-skill-select';
+import OccupationsSelect from './occupations-select/occupations-select';
 
 interface Props {
   jobApplicationProfile: JobApplicationProfile | undefined;
@@ -33,11 +29,11 @@ interface Props {
 export default function WorkingProfileForm(props: Props) {
   const { jobApplicationProfile } = props;
 
-  const { openModal, closeModal } = useModal();
   const toast = useToast();
 
+  const { data: occupationsFlat, isLoading: occupationsFlatLoading } =
+    useOccupationsFlat();
   const { data: languages, isLoading: languagesLoading } = useLanguages();
-  const { data: naceCodes, isLoading: naceCodesLoading } = useNaceCodes();
   const { data: permits, isLoading: permitsLoading } = useWorkPermits();
   const { data: regions, isLoading: regionsLoading } = useRegions();
   const { data: municipalities, isLoading: municipalitiesLoading } =
@@ -46,8 +42,8 @@ export default function WorkingProfileForm(props: Props) {
     useEducationLevels();
 
   const isLoading =
+    occupationsFlatLoading ||
     languagesLoading ||
-    naceCodesLoading ||
     permitsLoading ||
     educationLevelsLoading ||
     regionsLoading ||
@@ -63,13 +59,11 @@ export default function WorkingProfileForm(props: Props) {
     defaultValues: jobApplicationProfile && { ...jobApplicationProfile },
   });
 
-  const { workPreferences } = watch();
-  // console.log(workPreferences);
-
-  const groupedNaceCodes = useMemo(
-    () => getGroupedNaceCodes(naceCodes || []),
-    [naceCodes]
-  );
+  const {
+    occupations: userOccupations,
+    workPreferences,
+    languageSkills,
+  } = watch();
 
   const permitOptions = useMemo(() => {
     if (!permits) return [];
@@ -105,9 +99,25 @@ export default function WorkingProfileForm(props: Props) {
 
   const onSubmit: SubmitHandler<JobApplicationProfile> = async values => {
     try {
-      const payload = nullifyUndefinedValues(values);
-      // const response = await api.profile.saveJobApplicationProfile(values);
+      const def_values = {
+        occupations: [],
+        educations: [],
+        languageSkills: [],
+        otherSkills: [],
+        certifications: [],
+        permits: [],
+        workPreferences: {
+          naceCode: null,
+          preferredRegion: [],
+          preferredMunicipality: [],
+          typeOfEmployment: null,
+          workingTime: null,
+          workingLanguage: [],
+        },
+      };
+      const payload = nullifyUndefinedValues({ ...def_values, ...values });
       console.log(payload);
+      await api.profile.saveJobApplicationProfile(payload);
       toast({
         status: 'neutral',
         title: 'Success',
@@ -122,31 +132,6 @@ export default function WorkingProfileForm(props: Props) {
     }
   };
 
-  const openNaceSelect = () =>
-    openModal({
-      title: 'Select your preferred industry',
-      content: (
-        <NaceSelect
-          items={groupedNaceCodes}
-          defaultSelected={
-            workPreferences?.naceCode
-              ? findNace(groupedNaceCodes, workPreferences.naceCode)
-              : undefined
-          }
-          onSelect={selected => {
-            setValue(
-              'workPreferences.naceCode',
-              selected?.dotNotationCodeValue || null,
-              { shouldDirty: true }
-            );
-            closeModal();
-          }}
-          onCancel={closeModal}
-        />
-      ),
-      onClose: () => {},
-    });
-
   if (isLoading) {
     return <Loading />;
   }
@@ -154,9 +139,31 @@ export default function WorkingProfileForm(props: Props) {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
       <CustomHeading variant="h2" suomiFiBlue="dark">
-        Some header
+        Occupational and skill information
       </CustomHeading>
       <div className="flex flex-col gap-4 items-start">
+        {/* <OccupationsSelect
+          userOccupations={userOccupations}
+          occupations={occupationsFlat || []}
+          handleSave={occupations => {
+            setValue(
+              'occupations',
+              occupations.map(o => ({
+                escoIdentifier: o.escoIdentifier!,
+                escoCode: o.escoCode!,
+                workExperience: o.workExperience!,
+                employer: o.employer!,
+              })),
+              { shouldDirty: true }
+            );
+          }}
+        /> */}
+        <LanguageSkillSelect
+          userLanguages={languageSkills}
+          onSelect={selected =>
+            setValue('languageSkills', selected, { shouldDirty: true })
+          }
+        />
         <FormMultiSelect
           name={'permits'}
           control={control}
@@ -212,22 +219,16 @@ export default function WorkingProfileForm(props: Props) {
           labelText="Preferred municipalities to work in"
           items={municipalityOptions}
         />
-        <div>
-          <Label>Preferred industry</Label>
-          <Text className="!text-base">
-            {!workPreferences?.naceCode && <span>No industry selected, </span>}
-            <span
-              role="button"
-              className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-              onClick={openNaceSelect}
-            >
-              {!workPreferences?.naceCode
-                ? 'click here to add.'
-                : findNace(naceCodes || [], workPreferences.naceCode)?.prefLabel
-                    .en}
-            </span>
-          </Text>
-        </div>
+        <IndustrySelect
+          userNaceCode={workPreferences?.naceCode}
+          handleSelect={selected => {
+            setValue(
+              'workPreferences.naceCode',
+              selected?.dotNotationCodeValue || null,
+              { shouldDirty: true }
+            );
+          }}
+        />
       </div>
       <div className="mt-8">
         <Button type="submit" disabled={isSubmitting}>

@@ -2,9 +2,12 @@ import type {
   Country,
   Currency,
   EducationLevel,
+  EscoLanguage,
   Language,
+  LanguageSkillLevel,
   Municipality,
   Nace,
+  Occupation,
   Region,
   WorkPermit,
 } from '@/types';
@@ -28,6 +31,20 @@ export async function getCurrencies(): Promise<Currency[]> {
 export async function getLanguages(): Promise<Language[]> {
   const { data } = await apiClient.get(
     `${CODESETS_BASE_URL}/resources/ISO639Languages`
+  );
+  return data;
+}
+
+export async function getEscoLanguages(): Promise<EscoLanguage[]> {
+  const { data } = await apiClient.get(
+    `${CODESETS_BASE_URL}/resources/EscoLanguages`
+  );
+  return data;
+}
+
+export async function getLanguageSkillLevels(): Promise<LanguageSkillLevel[]> {
+  const { data } = await apiClient.get(
+    `${CODESETS_BASE_URL}/resources/LanguageSkillLevels`
   );
   return data;
 }
@@ -63,6 +80,20 @@ export async function getRegions(): Promise<Region[]> {
 export async function getMunicipalities(): Promise<Municipality[]> {
   const { data } = await apiClient.get(
     `${CODESETS_BASE_URL}/resources/Municipalities`
+  );
+  return data;
+}
+
+export async function getOccupations(): Promise<Occupation[]> {
+  const { data } = await apiClient.get(
+    `${CODESETS_BASE_URL}/resources/OccupationsEscoURL`
+  );
+  return data;
+}
+
+export async function getOccupationsFlat(): Promise<Occupation[]> {
+  const { data } = await apiClient.get(
+    `${CODESETS_BASE_URL}/resources/OccupationsFlatURL`
   );
   return data;
 }

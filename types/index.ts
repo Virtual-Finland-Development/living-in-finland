@@ -232,6 +232,32 @@ export interface Municipality {
   Selitteet: { Kielikoodi: string; Teksti: string }[];
 }
 
+export interface Occupation {
+  notation: string;
+  uri: string;
+  prefLabel: {
+    en: string;
+  };
+  narrower?: Occupation[];
+}
+
+export interface EscoLanguage {
+  id: string;
+  name: string;
+  twoLetterISOLanguageName: string;
+  threeLetterISOLanguageName: string;
+  escoUri: string;
+}
+
+export interface LanguageSkillLevel {
+  codeValue: string;
+  prefLabel: {
+    en: string;
+    fi: string;
+  };
+  uri: string;
+}
+
 /**
  * NSG company BasicInformation
  */
@@ -269,12 +295,12 @@ export interface PersonBasicInformation {
 /**
  * Person/JobApplicationProfile
  */
-export interface Occupation {
+/* export interface Occupation {
   escoIdentifier: string;
   escoCode: string;
   workExperience: number;
   employer: string;
-}
+} */
 
 export interface Education {
   educationName: string;
@@ -295,20 +321,10 @@ export interface OtherSkill {
   skillLevel: SkillLevel;
 }
 
-export enum CERFLevel {
-  'native',
-  'A1',
-  'A2',
-  'B1',
-  'B2',
-  'C1',
-  'C2',
-}
-
 export interface LanguageSkill {
   escoIdentifier: string;
   languageCode: string;
-  skillLevel: CERFLevel;
+  skillLevel: string;
 }
 
 export interface Certification {
@@ -335,8 +351,14 @@ export enum WorkingTime {
   '08',
 }
 
+export interface UserOccupation {
+  escoIdentifier: string;
+  escoCode: string;
+  workExperience: number;
+  employer: string;
+}
 export interface JobApplicationProfile {
-  occupations: Occupation[];
+  occupations: UserOccupation[];
   educations: Education[];
   languageSkills: LanguageSkill[];
   otherSkills: OtherSkill[];
@@ -350,4 +372,21 @@ export interface JobApplicationProfile {
     workingLanguage: string[];
     naceCode: string | null;
   };
+}
+
+export interface JmfRecommendation {
+  uri: string;
+  label: string;
+}
+
+export interface JmfRecommendationsRequestPayload {
+  text: string;
+  maxNumberOfSkills: number;
+  maxNumberOfOccupations: number;
+  language: string;
+}
+
+export interface JmfRecommendationsResponse {
+  skills: JmfRecommendation[];
+  occupations: JmfRecommendation[];
 }

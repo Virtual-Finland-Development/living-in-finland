@@ -20,6 +20,8 @@ const PROTECTED_URLS = [
   `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/signatory-rights`,
   `${USERS_API_BASE_URL}/productizer/draft/Person/BasicInformation`,
   `${USERS_API_BASE_URL}/productizer/draft/Person/BasicInformation/Write`,
+  `${USERS_API_BASE_URL}/productizer/draft/Person/JobApplicantProfile`,
+  `${USERS_API_BASE_URL}/productizer/draft/Person/JobApplicantProfile/Write`,
 ];
 
 apiClient.interceptors.request.use(config => {

@@ -21,7 +21,7 @@ export async function savePersonBasicInfo(
 
 export async function getJobApplicationProfile(): Promise<JobApplicationProfile> {
   const { data } = await apiClient.post(
-    `${USERS_API_BASE_URL}/productizer/draft/Person/JobApplicationProfile`
+    `${USERS_API_BASE_URL}/productizer/draft/Person/JobApplicantProfile`
   );
   return data;
 }
@@ -30,7 +30,7 @@ export async function saveJobApplicationProfile(
   payload: JobApplicationProfile
 ): Promise<JobApplicationProfile> {
   const { data } = await apiClient.post(
-    `${USERS_API_BASE_URL}/productizer/draft/Person/JobApplicationProfile/Write`,
+    `${USERS_API_BASE_URL}/productizer/draft/Person/JobApplicantProfile/Write`,
     payload
   );
   return data;

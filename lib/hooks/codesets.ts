@@ -4,8 +4,9 @@ import useErrorToast from './use-error-toast';
 
 const OPTIONS = {
   refetchOnWindowFocus: false,
+  retry: false,
   cacheTime: Infinity,
-  staleTime: 30_000,
+  staleTime: 300_000,
 };
 
 function useCountries() {
@@ -47,6 +48,36 @@ function useLanguages() {
 
   useErrorToast({
     title: 'Could not fetch codesets: languages',
+    error: query.error,
+  });
+
+  return query;
+}
+
+function useEscoLanguages() {
+  const query = useQuery(
+    ['esco-languages'],
+    async () => await api.codesets.getEscoLanguages(),
+    OPTIONS
+  );
+
+  useErrorToast({
+    title: 'Could not fetch codesets: esco languages',
+    error: query.error,
+  });
+
+  return query;
+}
+
+function useLanguageSkillLevels() {
+  const query = useQuery(
+    ['language-skill-levels'],
+    async () => await api.codesets.getLanguageSkillLevels(),
+    OPTIONS
+  );
+
+  useErrorToast({
+    title: 'Could not fetch codesets: language skill levels',
     error: query.error,
   });
 
@@ -128,13 +159,47 @@ function useMunicipalities() {
   return query;
 }
 
+function useOccupations() {
+  const query = useQuery(
+    ['occupations'],
+    async () => await api.codesets.getOccupations(),
+    OPTIONS
+  );
+  console.log(query.error);
+  useErrorToast({
+    title: 'Could not fetch codesets: occupations',
+    error: query.error,
+  });
+
+  return query;
+}
+
+function useOccupationsFlat() {
+  const query = useQuery(
+    ['occupations-flat'],
+    async () => await api.codesets.getOccupationsFlat(),
+    OPTIONS
+  );
+
+  useErrorToast({
+    title: 'Could not fetch codesets: occupations flat',
+    error: query.error,
+  });
+
+  return query;
+}
+
 export {
   useCountries,
   useCurrencies,
   useLanguages,
+  useEscoLanguages,
+  useLanguageSkillLevels,
   useNaceCodes,
   useEducationLevels,
   useWorkPermits,
   useRegions,
   useMunicipalities,
+  useOccupations,
+  useOccupationsFlat,
 };

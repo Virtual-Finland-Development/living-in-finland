@@ -52,7 +52,7 @@ export default function FormMultiSelect<T extends FieldValues>(
           ariaSelectedAmountText="option selected"
           ariaChipActionLabel="Remove"
           ariaOptionChipRemovedText="removed"
-          removeAllButtonLabel="Remove all selected"
+          // removeAllButtonLabel="Remove all selected"
           chipListVisible
           status={error && 'error'}
           statusText={showStatusText && error ? error.message : ''}

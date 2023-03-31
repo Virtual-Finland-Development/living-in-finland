@@ -4,7 +4,7 @@ import { Button, Text } from 'suomifi-ui-components';
 import type { Nace } from '@/types';
 import { findNace } from '@/lib/utils';
 import CustomHeading from '@/components/ui/custom-heading';
-import NaceDisclosure from './nace-disclosure';
+import IndustryDisclosure from './industry-disclosure';
 
 interface Props {
   items: Nace[];
@@ -13,7 +13,7 @@ interface Props {
   onCancel: () => void;
 }
 
-export default function NaceSelect(props: Props) {
+export default function IndustryEdit(props: Props) {
   const { items, defaultSelected, onSelect, onCancel } = props;
   const [selected, setSelected] = useState<Nace | undefined>(defaultSelected);
 
@@ -41,7 +41,7 @@ export default function NaceSelect(props: Props) {
         <div className="py-2 border bg-white h-auto md:h-[300px] overflow-y-auto">
           <div className="flex flex-col gap-1 items-start mx-2">
             {items.map(item => (
-              <NaceDisclosure
+              <IndustryDisclosure
                 key={item.codeValue}
                 item={item}
                 selected={selected}
@@ -67,7 +67,7 @@ export default function NaceSelect(props: Props) {
         )}
       </div>
 
-      <div className="flex flex-row gap-2 mt-4">
+      <div className="flex flex-row gap-3 mt-4">
         <Button variant="secondary" onClick={onCancel}>
           Cancel
         </Button>

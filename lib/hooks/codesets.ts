@@ -99,6 +99,21 @@ function useNaceCodes() {
   return query;
 }
 
+function useEducationFields() {
+  const query = useQuery(
+    ['education-fields'],
+    async () => await api.codesets.getEducationFields(),
+    OPTIONS
+  );
+
+  useErrorToast({
+    title: 'Could not fetch codesets: education fields',
+    error: query.error,
+  });
+
+  return query;
+}
+
 function useEducationLevels() {
   const query = useQuery(
     ['education-levels'],
@@ -196,6 +211,7 @@ export {
   useEscoLanguages,
   useLanguageSkillLevels,
   useNaceCodes,
+  useEducationFields,
   useEducationLevels,
   useWorkPermits,
   useRegions,

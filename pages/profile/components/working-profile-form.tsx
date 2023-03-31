@@ -18,8 +18,9 @@ import FormMultiSelect from '@/components/form/form-multi-select';
 import FormSingleSelect from '@/components/form/form-single-select';
 import CustomHeading from '@/components/ui/custom-heading';
 import Loading from '@/components/ui/loading';
+import EducationsSelect from './educations-select/educations-select';
 import IndustrySelect from './industry-select/industry-select';
-import LanguageSkillSelect from './language-skill-select/language-skill-select';
+import LanguageSkillsSelect from './language-skills-select/language-skills-select';
 import OccupationsSelect from './occupations-select/occupations-select';
 
 interface Props {
@@ -63,6 +64,7 @@ export default function WorkingProfileForm(props: Props) {
     occupations: userOccupations,
     workPreferences,
     languageSkills,
+    educations,
   } = watch();
 
   const permitOptions = useMemo(() => {
@@ -158,7 +160,13 @@ export default function WorkingProfileForm(props: Props) {
             );
           }}
         /> */}
-        <LanguageSkillSelect
+        <EducationsSelect
+          userEducations={educations}
+          onSelect={selected =>
+            setValue('educations', selected, { shouldDirty: true })
+          }
+        />
+        <LanguageSkillsSelect
           userLanguages={languageSkills}
           onSelect={selected =>
             setValue('languageSkills', selected, { shouldDirty: true })

@@ -209,6 +209,14 @@ export interface WorkPermit {
     en: string;
   };
 }
+
+export interface EducationField {
+  codeValue: string;
+  hierarchyLevel: number;
+  order: number;
+  prefLabel: { fi: string };
+  uri: string;
+}
 export interface EducationLevel {
   codeValue: string;
   order: number;

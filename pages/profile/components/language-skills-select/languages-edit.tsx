@@ -15,7 +15,11 @@ interface FormProps {
   languages: LanguageSkill[];
 }
 
-const DEFAULT_VALUE = { escoIdentifier: '', languageCode: '', skillLevel: '' };
+const DEFAULT_VALUE: LanguageSkill = {
+  escoIdentifier: '',
+  languageCode: '',
+  skillLevel: '',
+};
 
 export default function LanguagesEdit(props: Props) {
   const {

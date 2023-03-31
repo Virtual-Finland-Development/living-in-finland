@@ -1,6 +1,7 @@
 import type {
   Country,
   Currency,
+  EducationField,
   EducationLevel,
   EscoLanguage,
   Language,
@@ -52,6 +53,13 @@ export async function getLanguageSkillLevels(): Promise<LanguageSkillLevel[]> {
 export async function getNaceCodes(): Promise<Nace[]> {
   const { data } = await apiClient.get(
     `${CODESETS_BASE_URL}/resources/SuomiFiKoodistotNace`
+  );
+  return data;
+}
+
+export async function getEducationFields(): Promise<EducationField[]> {
+  const { data } = await apiClient.get(
+    `${CODESETS_BASE_URL}/resources/EducationFields`
   );
   return data;
 }

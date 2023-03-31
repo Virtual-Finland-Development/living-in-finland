@@ -10,7 +10,7 @@ interface Props {
   onSelect: (selected: LanguageSkill[]) => void;
 }
 
-export default function LanguageSkillSelect(props: Props) {
+export default function LanguageSkillsSelect(props: Props) {
   const { userLanguages, onSelect } = props;
 
   const { data: escoLanguages, isLoading: escoLanguagesLoading } =

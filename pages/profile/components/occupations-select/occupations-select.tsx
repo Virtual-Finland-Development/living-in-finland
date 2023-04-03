@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { IoAdd } from 'react-icons/io5';
-import { TextInput } from 'suomifi-ui-components';
+import { Label, Text, TextInput } from 'suomifi-ui-components';
 import type { Occupation, UserOccupation } from '@/types';
 import { useModal } from '@/context/modal-context';
 import OccupationsEdit from './occupations-edit';
@@ -48,14 +48,14 @@ export default function OccupationsSelect(props: Props) {
             handleSave(selected);
             closeModal();
           }}
-          onCancel={() => closeModal()}
+          onClose={() => closeModal()}
         />
       ),
       onClose: () => {},
     });
   };
 
-  return (
+  /* return (
     <div className="relative">
       <TextInput
         labelText="Occupations"
@@ -71,6 +71,39 @@ export default function OccupationsSelect(props: Props) {
         tabIndex={0}
         onClick={openEdit}
       />
+    </div>
+  ); */
+
+  return (
+    <div>
+      <Label>Occupations</Label>
+      {!userOccupations?.length ? (
+        <Text className="!text-base">
+          <span>No languages selected,</span>
+          <span
+            role="button"
+            className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+            onClick={openEdit}
+          >
+            click here to add.
+          </span>
+        </Text>
+      ) : (
+        <div className="flex flex-col flex-wrap gap-2">
+          {userOccupations.map((uo, index) => (
+            <Text key={`${uo.escoIdentifier}-${index}`} className="!text-base">
+              <span
+                role="button"
+                className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                onClick={openEdit}
+              >
+                {occupations?.find(o => o.uri === uo.escoIdentifier)?.prefLabel
+                  .en || ''}
+              </span>
+            </Text>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

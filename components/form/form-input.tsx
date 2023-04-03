@@ -30,6 +30,9 @@ interface Props<T extends FieldValues> extends FormInputControllerProps<T> {
     | 'url'
     | 'date'
     | undefined;
+  formatDefaultValue?: (value: any) => any;
+  min?: number;
+  step?: number;
 }
 
 export default function FormInput<T extends FieldValues>(props: Props<T>) {
@@ -43,8 +46,11 @@ export default function FormInput<T extends FieldValues>(props: Props<T>) {
     optionalText,
     showStatusText = true,
     readOnly = false,
+    formatDefaultValue,
+    min = 1,
+    step = 1,
   } = props;
-
+  console.log(min);
   return (
     <Controller
       name={name}
@@ -79,10 +85,15 @@ export default function FormInput<T extends FieldValues>(props: Props<T>) {
               optionalText={optionalText}
               status={error && 'error'}
               statusText={showStatusText && error ? error.message : ''}
-              defaultValue={value}
+              defaultValue={
+                typeof formatDefaultValue === 'function' && value
+                  ? formatDefaultValue(value)
+                  : value
+              }
               onChange={onChange}
               onBlur={onBlur}
-              min="1"
+              min={min}
+              step={step}
               readOnly={readOnly}
             />
           )}

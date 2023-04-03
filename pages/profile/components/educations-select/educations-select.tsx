@@ -1,5 +1,5 @@
 import { Label, Text } from 'suomifi-ui-components';
-import type { Education, EducationField, EducationLevel } from '@/types';
+import type { Education } from '@/types';
 import { useEducationFields, useEducationLevels } from '@/lib/hooks/codesets';
 import { useModal } from '@/context/modal-context';
 import Loading from '@/components/ui/loading';
@@ -12,7 +12,6 @@ interface Props {
 
 export default function EducationsSelect(props: Props) {
   const { userEducations, onSelect } = props;
-  console.log(userEducations);
 
   const { openModal, closeModal } = useModal();
 
@@ -24,9 +23,6 @@ export default function EducationsSelect(props: Props) {
   if (educationFieldsLoading || educationLevelsLoading) {
     return <Loading />;
   }
-
-  console.log(educationFields);
-  console.log(educationLevels);
 
   const openEducationEdit = () =>
     openModal({

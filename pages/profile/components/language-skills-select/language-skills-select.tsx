@@ -58,8 +58,8 @@ export default function LanguageSkillsSelect(props: Props) {
         </Text>
       ) : (
         <div className="flex flex-col flex-wrap gap-2">
-          {userLanguages.map(l => (
-            <Text key={l.escoIdentifier} className="!text-base">
+          {userLanguages.map((l, index) => (
+            <Text key={`${l.escoIdentifier}-${index}`} className="!text-base">
               <span
                 role="button"
                 className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"

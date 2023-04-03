@@ -69,7 +69,7 @@ export default function EducationsSelect(props: Props) {
                 className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
                 onClick={openEducationEdit}
               >
-                {e.educationField}
+                {e.educationName}
               </span>
             </Text>
           ))}

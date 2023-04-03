@@ -52,7 +52,7 @@ export default function EducationsEdit(props: Props) {
 
         {fields.map((field, index) => (
           <div key={field.id} className="border-b border-gray-300 pb-4">
-            <div className="grid md:grid-cols-2 gap-3 items-end">
+            <div className="grid sm:grid-cols-2 gap-3 items-end">
               <FormInput
                 name={`educations.${index}.educationName`}
                 control={control}
@@ -63,10 +63,10 @@ export default function EducationsEdit(props: Props) {
                 name={`educations.${index}.institutionName`}
                 control={control}
                 rules={{ required: true }}
-                labelText="Education name"
+                labelText="Institution name"
               />
             </div>
-            <div className="grid md:grid-cols-2 gap-3 items-end mt-3">
+            <div className="grid sm:grid-cols-2 gap-3 items-end mt-3">
               <FormSingleSelect
                 name={`educations.${index}.educationField`}
                 control={control}

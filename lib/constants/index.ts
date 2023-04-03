@@ -114,6 +114,12 @@ export const EMPLOYMENT_TYPE_LABELS = {
   summerJob: 'Summer job',
 };
 
+export const SKILL_LEVEL_LABELS = {
+  beginner: 'Beginner',
+  intermediate: 'Intermediate',
+  master: 'Master',
+};
+
 export const WORKING_TIME_LABELS = {
   '01': 'Day shift',
   '02': 'Evening shift',

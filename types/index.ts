@@ -319,9 +319,9 @@ export interface Education {
 }
 
 export enum SkillLevel {
-  'beginner',
-  'intermediate',
-  'master',
+  'beginner' = 'beginner',
+  'intermediate' = 'intermediate',
+  'master' = 'master',
 }
 
 export interface OtherSkill {

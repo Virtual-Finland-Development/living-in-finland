@@ -21,6 +21,7 @@ import EducationsSelect from './educations-select/educations-select';
 import IndustrySelect from './industry-select/industry-select';
 import LanguageSkillsSelect from './language-skills-select/language-skills-select';
 import OccupationsSelect from './occupations-select/occupations-select';
+import OtherSkillsSelect from './other-skills-select/other-skills-select';
 
 interface Props {
   jobApplicationProfile: JobApplicantProfile | undefined;
@@ -61,6 +62,7 @@ export default function WorkingProfileForm(props: Props) {
     workPreferences,
     languageSkills,
     educations,
+    otherSkills,
   } = watch();
 
   const permitOptions = useMemo(() => {
@@ -143,7 +145,7 @@ export default function WorkingProfileForm(props: Props) {
         <OccupationsSelect
           userOccupations={userOccupations}
           occupations={occupationsFlat || []}
-          handleSave={occupations => {
+          handleSave={occupations =>
             setValue(
               'occupations',
               occupations.map(o => ({
@@ -153,8 +155,8 @@ export default function WorkingProfileForm(props: Props) {
                 employer: o.employer!,
               })),
               { shouldDirty: true }
-            );
-          }}
+            )
+          }
         />
         <EducationsSelect
           userEducations={educations}
@@ -166,6 +168,13 @@ export default function WorkingProfileForm(props: Props) {
           userLanguages={languageSkills}
           onSelect={selected =>
             setValue('languageSkills', selected, { shouldDirty: true })
+          }
+        />
+        <OtherSkillsSelect
+          userOtherSkills={otherSkills}
+          occupations={occupationsFlat || []}
+          handleSave={skills =>
+            setValue('otherSkills', skills, { shouldDirty: true })
           }
         />
         <FormMultiSelect

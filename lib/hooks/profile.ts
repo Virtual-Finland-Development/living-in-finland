@@ -33,12 +33,12 @@ function usePersonBasicInfo() {
 }
 
 /**
- * Get person job application profile.
+ * Get person job applicant profile.
  */
-function useJobApplicationProfile() {
+function useJobApplicantProfile() {
   const query = useQuery(
     JOB_APPLICATION_KEYS,
-    async () => await api.profile.getJobApplicationProfile(),
+    async () => await api.profile.getJobApplicantProfile(),
     QUERY_OPTIONS
   );
 
@@ -53,4 +53,4 @@ function useJobApplicationProfile() {
   return query;
 }
 
-export { usePersonBasicInfo, useJobApplicationProfile };
+export { usePersonBasicInfo, useJobApplicantProfile };

@@ -1,4 +1,4 @@
-import { JobApplicationProfile, PersonBasicInformation } from '@/types';
+import { JobApplicantProfile, PersonBasicInformation } from '@/types';
 import apiClient from '../api-client';
 import { USERS_API_BASE_URL } from '../endpoints';
 
@@ -19,16 +19,16 @@ export async function savePersonBasicInfo(
   return data;
 }
 
-export async function getJobApplicationProfile(): Promise<JobApplicationProfile> {
+export async function getJobApplicantProfile(): Promise<JobApplicantProfile> {
   const { data } = await apiClient.post(
     `${USERS_API_BASE_URL}/productizer/draft/Person/JobApplicantProfile`
   );
   return data;
 }
 
-export async function saveJobApplicationProfile(
-  payload: JobApplicationProfile
-): Promise<JobApplicationProfile> {
+export async function saveJobApplicantProfile(
+  payload: JobApplicantProfile
+): Promise<JobApplicantProfile> {
   const { data } = await apiClient.post(
     `${USERS_API_BASE_URL}/productizer/draft/Person/JobApplicantProfile/Write`,
     payload

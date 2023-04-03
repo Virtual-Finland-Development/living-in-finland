@@ -365,7 +365,7 @@ export interface UserOccupation {
   workExperience: number;
   employer: string;
 }
-export interface JobApplicationProfile {
+export interface JobApplicantProfile {
   occupations: UserOccupation[];
   educations: Education[];
   languageSkills: LanguageSkill[];

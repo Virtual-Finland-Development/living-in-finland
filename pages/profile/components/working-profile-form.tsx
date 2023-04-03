@@ -1,11 +1,10 @@
 import { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Button } from 'suomifi-ui-components';
-import { EmploymentType, JobApplicationProfile, WorkingTime } from '@/types';
+import { EmploymentType, JobApplicantProfile, WorkingTime } from '@/types';
 import api from '@/lib/api';
 import { EMPLOYMENT_TYPE_LABELS, WORKING_TIME_LABELS } from '@/lib/constants';
 import {
-  useEducationLevels,
   useLanguages,
   useMunicipalities,
   useOccupationsFlat,
@@ -24,7 +23,7 @@ import LanguageSkillsSelect from './language-skills-select/language-skills-selec
 import OccupationsSelect from './occupations-select/occupations-select';
 
 interface Props {
-  jobApplicationProfile: JobApplicationProfile | undefined;
+  jobApplicationProfile: JobApplicantProfile | undefined;
 }
 
 export default function WorkingProfileForm(props: Props) {
@@ -39,14 +38,11 @@ export default function WorkingProfileForm(props: Props) {
   const { data: regions, isLoading: regionsLoading } = useRegions();
   const { data: municipalities, isLoading: municipalitiesLoading } =
     useMunicipalities();
-  const { data: educationLevels, isLoading: educationLevelsLoading } =
-    useEducationLevels();
 
   const isLoading =
     occupationsFlatLoading ||
     languagesLoading ||
     permitsLoading ||
-    educationLevelsLoading ||
     regionsLoading ||
     municipalitiesLoading;
 
@@ -56,7 +52,7 @@ export default function WorkingProfileForm(props: Props) {
     formState: { isSubmitting },
     watch,
     setValue,
-  } = useForm<JobApplicationProfile>({
+  } = useForm<JobApplicantProfile>({
     defaultValues: jobApplicationProfile && { ...jobApplicationProfile },
   });
 
@@ -99,7 +95,7 @@ export default function WorkingProfileForm(props: Props) {
     }));
   }, [municipalities]);
 
-  const onSubmit: SubmitHandler<JobApplicationProfile> = async values => {
+  const onSubmit: SubmitHandler<JobApplicantProfile> = async values => {
     try {
       const def_values = {
         occupations: [],
@@ -119,7 +115,7 @@ export default function WorkingProfileForm(props: Props) {
       };
       const payload = nullifyUndefinedValues({ ...def_values, ...values });
       console.log(payload);
-      await api.profile.saveJobApplicationProfile(payload);
+      await api.profile.saveJobApplicantProfile(payload);
       toast({
         status: 'neutral',
         title: 'Success',
@@ -144,7 +140,7 @@ export default function WorkingProfileForm(props: Props) {
         Occupational and skill information
       </CustomHeading>
       <div className="flex flex-col gap-4 items-start">
-        {/* <OccupationsSelect
+        <OccupationsSelect
           userOccupations={userOccupations}
           occupations={occupationsFlat || []}
           handleSave={occupations => {
@@ -159,7 +155,7 @@ export default function WorkingProfileForm(props: Props) {
               { shouldDirty: true }
             );
           }}
-        /> */}
+        />
         <EducationsSelect
           userEducations={educations}
           onSelect={selected =>

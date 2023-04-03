@@ -1,6 +1,6 @@
 import { StaticIcon } from 'suomifi-ui-components';
 import { Text } from 'suomifi-ui-components';
-import { useJobApplicationProfile } from '@/lib/hooks/profile';
+import { useJobApplicantProfile } from '@/lib/hooks/profile';
 import AuthSentry from '@/components/auth-sentry';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
@@ -12,7 +12,7 @@ export default function WorkingProfilePage() {
     data: jobApplicationProfile,
     isLoading,
     isFetching,
-  } = useJobApplicationProfile();
+  } = useJobApplicantProfile();
   const loading = isLoading || isFetching;
 
   return (

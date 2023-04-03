@@ -57,11 +57,14 @@ export default function LanguagesEdit(props: Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
+      <div className="flex flex-col gap-3">
         {!fields.length && <Text>No language skills selected.</Text>}
 
         {fields.map((field, index) => (
-          <div key={field.id} className="grid grid-cols-3 gap-3 items-end">
+          <div
+            key={field.id}
+            className="grid grid-cols-3 gap-3 items-end border-b border-gray-300 pb-4"
+          >
             <FormSingleSelect
               name={`languages.${index}.languageCode`}
               control={control}

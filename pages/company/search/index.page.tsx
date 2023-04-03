@@ -56,11 +56,14 @@ export default function CompanySearchPage() {
     switch (values.source) {
       case 'no':
         setDummyData(dummyCompanyDataNO as DummyData);
+        break;
       case 'se':
         setDummyData(dummyCompanyDataSE as DummyData);
+        break;
       case 'fi':
       case 'virtualfinland':
         setDummyData(dummyCompanyDataFI as DummyData);
+        break;
       default:
         setDummyData(dummyCompanyDataFI as DummyData);
     }

@@ -58,41 +58,40 @@ export default function OccupationsEdit(props: Props) {
     );
   };
 
-  if (phase === 'additional-info') {
-    return (
-      <OccupationsAdditionalInfo
-        selected={selected}
-        onBack={() => setPhase('selections')}
-        onSave={onSave}
-      />
-    );
-  }
-
   return (
     <>
-      <JmfRecommendationsSelect
-        type="occupations"
-        isControlled
-        controlledSelected={selected.map(s => ({
-          uri: s.escoIdentifier,
-          label: s.label!,
-        }))}
-        onSelect={selectOccupation}
-        onSave={handleSave}
-        onCancel={onClose}
-      />
+      {phase === 'additional-info' && (
+        <OccupationsAdditionalInfo
+          selected={selected}
+          onBack={() => setPhase('selections')}
+          onSave={onSave}
+        />
+      )}
 
-      <div className="flex flecx-row items-start gap-3 mt-4">
-        <Button variant="secondary" onClick={onClose}>
-          Close
-        </Button>
-        <Button
-          disabled={!selected.length}
-          iconRight="arrowRight"
-          onClick={() => setPhase('additional-info')}
-        >
-          ({userOccupations?.length || 0}) Selected
-        </Button>
+      <div className={phase === 'selections' ? 'block' : 'hidden'}>
+        <JmfRecommendationsSelect
+          type="occupations"
+          isControlled
+          controlledSelected={selected.map(s => ({
+            uri: s.escoIdentifier,
+            label: s.label!,
+          }))}
+          onSelect={selectOccupation}
+          onSave={handleSave}
+          onCancel={onClose}
+        />
+        <div className="flex flecx-row items-start gap-3 mt-4">
+          <Button variant="secondary" onClick={onClose}>
+            Close
+          </Button>
+          <Button
+            disabled={!selected.length}
+            iconRight="arrowRight"
+            onClick={() => setPhase('additional-info')}
+          >
+            ({selected?.length || 0}) Selected
+          </Button>
+        </div>
       </div>
     </>
   );

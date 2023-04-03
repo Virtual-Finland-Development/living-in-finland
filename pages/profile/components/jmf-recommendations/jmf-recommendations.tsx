@@ -1,19 +1,13 @@
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { FiUpload } from 'react-icons/fi';
-import { Button, Text, TextInput, Textarea } from 'suomifi-ui-components';
+import { Button, Text, Textarea } from 'suomifi-ui-components';
 import { JmfRecommendation } from '@/types';
 import useJmfRecommendations from '@/lib/hooks/use-jmf-recommendations';
 import { useToast } from '@/context/toast-context';
-import FormInput from '@/components/form/form-input';
 import CustomHeading from '@/components/ui/custom-heading';
 import Loading from '@/components/ui/loading';
-import { UserOccupationSelection } from '../occupations-select/occupations-edit';
 import RecommendationItem from './recommendation-item';
 import { convertRtfToPlainText, extractPdfTextContent } from './utils';
-
-// import MoreRecommendations from './MoreRecommendations';
-// import RecommendationItem from './RecommendationItem';
 
 const FILE_TYPES = {
   pdf: 'application/pdf',
@@ -218,42 +212,74 @@ export default function JmfRecommendationsSelect(
 
         {!recommendationsFetching && recommendations && (
           <div className="p-4 border border-gray-300 w-full">
-            <CustomHeading variant="h4">Suggested occupations</CustomHeading>
-            {recommendations.occupations.length ? (
-              <div className="flex flex-row flex-wrap gap-2 mt-2">
-                {recommendations.occupations.map(item => (
-                  <RecommendationItem
-                    type="occupation"
-                    key={item.uri}
-                    item={item}
-                    isSelected={
-                      selected.findIndex(s => s.uri === item.uri && !s.delete) >
-                      -1
-                    }
-                    handleClick={() => handleSelect(item)}
-                  />
-                ))}
+            {['both', 'occupations'].includes(type) && (
+              <div>
+                <CustomHeading variant="h4">
+                  Suggested occupations
+                </CustomHeading>
+                {recommendations.occupations.length ? (
+                  <div className="flex flex-row flex-wrap gap-2 mt-2">
+                    {recommendations.occupations.map(item => (
+                      <RecommendationItem
+                        type="occupation"
+                        key={item.uri}
+                        item={item}
+                        isSelected={
+                          selected.findIndex(
+                            s => s.uri === item.uri && !s.delete
+                          ) > -1
+                        }
+                        handleClick={() => handleSelect(item)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <Text className="!text-base">No suggestions found.</Text>
+                )}
               </div>
-            ) : (
-              <Text className="!text-base">No suggestions found.</Text>
+            )}
+
+            {['both', 'skills'].includes(type) && (
+              <div>
+                <CustomHeading variant="h4">Suggested skills</CustomHeading>
+                {recommendations.skills.length ? (
+                  <div className="flex flex-row flex-wrap gap-2 mt-2">
+                    {recommendations.skills.map(item => (
+                      <RecommendationItem
+                        type="skill"
+                        key={item.uri}
+                        item={item}
+                        isSelected={
+                          selected.findIndex(
+                            s => s.uri === item.uri && !s.delete
+                          ) > -1
+                        }
+                        handleClick={() => handleSelect(item)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <Text className="!text-base">No suggestions found.</Text>
+                )}
+              </div>
             )}
           </div>
         )}
 
-        {/*  <div className="flex flecx-row items-start gap-3">
-          <Button variant="secondary" onClick={onCancel}>
-            Cancel
-          </Button>
-          <Button
-            disabled={!selected.length}
-            iconRight="arrowRight"
-            onClick={() =>
-              setPhase('additional-info')
-            }
-          >
-            Next
-          </Button>
-        </div> */}
+        {!isControlled && (
+          <div className="flex flecx-row items-start gap-3">
+            <Button variant="secondary" onClick={onCancel}>
+              Close
+            </Button>
+            <Button
+              disabled={!selected.length}
+              iconRight="arrowRight"
+              onClick={handleSave}
+            >
+              Save
+            </Button>
+          </div>
+        )}
       </div>
     </>
   );

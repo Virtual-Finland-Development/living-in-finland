@@ -104,24 +104,7 @@ export default function WorkingProfileForm(props: Props) {
 
   const onSubmit: SubmitHandler<JobApplicantProfile> = async values => {
     try {
-      const def_values = {
-        occupations: [],
-        educations: [],
-        languageSkills: [],
-        otherSkills: [],
-        certifications: [],
-        permits: [],
-        workPreferences: {
-          naceCode: null,
-          preferredRegion: [],
-          preferredMunicipality: [],
-          typeOfEmployment: null,
-          workingTime: null,
-          workingLanguage: [],
-        },
-      };
-      const payload = nullifyUndefinedValues({ ...def_values, ...values });
-      console.log(payload);
+      const payload = nullifyUndefinedValues(values);
       await api.profile.saveJobApplicantProfile(payload);
       toast({
         status: 'neutral',

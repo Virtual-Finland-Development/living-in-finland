@@ -1,8 +1,12 @@
 import { GlobalWorkerOptions, getDocument } from 'pdfjs-dist';
 import { TextItem } from 'pdfjs-dist/types/src/display/api';
 
-// GlobalWorkerOptions.workerSrc = `${window.location.origin}/pdf.worker.min.js`; <------ FIGURE THIS OUT
-GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.worker.js`;
+GlobalWorkerOptions.workerSrc = (() => {
+  if (typeof window !== 'undefined') {
+    return `${window.location.origin}/pdf.worker.min.js`;
+  }
+  return 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.worker.js';
+})();
 
 function isValidTextItem(item: any): item is TextItem {
   return Boolean(item.str);

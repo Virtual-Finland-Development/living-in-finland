@@ -47,6 +47,7 @@ export default function MoreRecommendations(props: Props) {
       {/*
           // @ts-ignore */}
       <MultiSelect
+        className="!w-full"
         labelText="Search related skills"
         visualPlaceholder="Type to search"
         itemAdditionHelpText=""

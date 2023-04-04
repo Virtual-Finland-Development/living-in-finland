@@ -49,20 +49,22 @@ export default function CertificationsEdit(props: Props) {
         {fields.map((field, index) => (
           <div
             key={field.id}
-            className="grid grid-cols-2 gap-3 items-end border-b border-gray-300 pb-4"
+            className="flex flex-col gap-3 items-start border-b border-gray-300 pb-4"
           >
-            <FormInput
-              name={`certifications.${index}.certificationName`}
-              control={control}
-              rules={{ required: true }}
-              labelText="Certification name"
-            />
-            <FormInput
-              name={`certifications.${index}.institutionName`}
-              control={control}
-              rules={{ required: true }}
-              labelText="Institution name"
-            />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-end">
+              <FormInput
+                name={`certifications.${index}.certificationName`}
+                control={control}
+                rules={{ required: true }}
+                labelText="Certification name"
+              />
+              <FormInput
+                name={`certifications.${index}.institutionName`}
+                control={control}
+                rules={{ required: true }}
+                labelText="Institution name"
+              />
+            </div>
             <Controller
               name={`certifications.${index}.escoIdentifier`}
               control={control}
@@ -82,15 +84,13 @@ export default function CertificationsEdit(props: Props) {
               )}
             />
 
-            <div>
-              <Button
-                variant="link"
-                iconRight="remove"
-                onClick={() => remove(index)}
-              >
-                Remove
-              </Button>
-            </div>
+            <Button
+              variant="link"
+              iconRight="remove"
+              onClick={() => remove(index)}
+            >
+              Remove
+            </Button>
           </div>
         ))}
       </div>

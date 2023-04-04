@@ -1,27 +1,50 @@
 import { useMemo } from 'react';
 import { Label, Text } from 'suomifi-ui-components';
-import type { Occupation, OtherSkill } from '@/types';
+import type { EscoSkill, OtherSkill } from '@/types';
 import { useModal } from '@/context/modal-context';
 import OtherSkillsEdit from './other-skills-edit';
 
+export interface UserOtherSkill extends OtherSkill {
+  label?: string;
+}
+
 interface Props {
   userOtherSkills: OtherSkill[] | undefined;
-  occupations: Occupation[];
+  escoSkills: EscoSkill[];
   handleSave: (selected: OtherSkill[]) => void;
 }
 
 export default function OtherSkillsSelect(props: Props) {
-  const { userOtherSkills, occupations, handleSave } = props;
-
+  const { userOtherSkills, handleSave, escoSkills } = props;
   const { openModal, closeModal } = useModal();
+
+  const userOtherSkillsWithLabels = useMemo(() => {
+    if (userOtherSkills?.length && escoSkills?.length) {
+      const skills: UserOtherSkill[] = [];
+
+      for (const s of userOtherSkills) {
+        const escoIndex = escoSkills.findIndex(
+          skill => skill.uri === s.escoIdentifier
+        );
+        skills.push({
+          ...s,
+          label:
+            escoIndex > -1
+              ? escoSkills[escoIndex].prefLabel.en
+              : s.escoIdentifier,
+        });
+      }
+      return skills;
+    }
+    return [];
+  }, [escoSkills, userOtherSkills]);
 
   const openEdit = () => {
     openModal({
       title: 'Other skills',
       content: (
         <OtherSkillsEdit
-          // userOccupations={userOccupationsWithLables}
-          userOtherSkills={userOtherSkills || []}
+          userOtherSkillsWithLabels={userOtherSkillsWithLabels}
           onSave={selected => {
             handleSave(selected);
             closeModal();
@@ -49,14 +72,14 @@ export default function OtherSkillsSelect(props: Props) {
         </Text>
       ) : (
         <div className="flex flex-col flex-wrap gap-2">
-          {userOtherSkills.map((s, index) => (
+          {userOtherSkillsWithLabels.map((s, index) => (
             <Text key={`${s.escoIdentifier}-${index}`} className="!text-base">
               <span
                 role="button"
                 className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
                 onClick={openEdit}
               >
-                {s.escoIdentifier}
+                {s.label}
               </span>
             </Text>
           ))}

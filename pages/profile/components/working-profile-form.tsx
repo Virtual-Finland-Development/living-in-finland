@@ -5,6 +5,7 @@ import { EmploymentType, JobApplicantProfile, WorkingTime } from '@/types';
 import api from '@/lib/api';
 import { EMPLOYMENT_TYPE_LABELS, WORKING_TIME_LABELS } from '@/lib/constants';
 import {
+  useEscoSkills,
   useLanguages,
   useMunicipalities,
   useOccupationsFlat,
@@ -40,13 +41,15 @@ export default function WorkingProfileForm(props: Props) {
   const { data: regions, isLoading: regionsLoading } = useRegions();
   const { data: municipalities, isLoading: municipalitiesLoading } =
     useMunicipalities();
+  const { data: escoSkills, isLoading: escoSkillsLoading } = useEscoSkills();
 
   const isLoading =
     occupationsFlatLoading ||
     languagesLoading ||
     permitsLoading ||
     regionsLoading ||
-    municipalitiesLoading;
+    municipalitiesLoading ||
+    escoSkillsLoading;
 
   const {
     control,
@@ -180,7 +183,7 @@ export default function WorkingProfileForm(props: Props) {
         />
         <OtherSkillsSelect
           userOtherSkills={otherSkills}
-          occupations={occupationsFlat || []}
+          escoSkills={escoSkills || []}
           handleSave={skills =>
             setValue('otherSkills', skills, { shouldDirty: true })
           }

@@ -3,17 +3,16 @@ import { Button, Text } from 'suomifi-ui-components';
 import { OtherSkill, SkillLevel } from '@/types';
 import { SKILL_LEVEL_LABELS } from '@/lib/constants';
 import FormSingleSelect from '@/components/form/form-single-select';
-import Loading from '@/components/ui/loading';
-import type { UserSkillSelection } from './other-skills-edit';
+import type { UserOtherSkill } from './other-skills-select';
 
 interface Props {
-  selected: UserSkillSelection[];
+  selected: UserOtherSkill[];
   onBack: () => void;
   onSave: (selected: OtherSkill[]) => void;
 }
 
 interface FormProps {
-  otherSkills: UserSkillSelection[];
+  otherSkills: UserOtherSkill[];
 }
 
 export default function OtherSkillsAdditionalInfo(props: Props) {

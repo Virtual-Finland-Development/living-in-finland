@@ -3,25 +3,22 @@ import { Button } from 'suomifi-ui-components';
 import { JmfRecommendation, OtherSkill, SkillLevel } from '@/types';
 import JmfRecommendationsSelect from '../jmf-recommendations/jmf-recommendations';
 import OtherSkillsAdditionalInfo from './other-skills-additional-info';
-
-export interface UserSkillSelection extends OtherSkill {
-  label?: string;
-}
+import { UserOtherSkill } from './other-skills-select';
 
 interface Props {
-  userOtherSkills: OtherSkill[] | null;
+  userOtherSkillsWithLabels: UserOtherSkill[] | null;
   onSave: (selected: OtherSkill[]) => void;
   onClose: () => void;
 }
 
 export default function OtherSkillsEdit(props: Props) {
-  const { userOtherSkills, onClose, onSave } = props;
+  const { userOtherSkillsWithLabels, onClose, onSave } = props;
 
   const [phase, setPhase] = useState<'selections' | 'additional-info'>(
     'selections'
   );
-  const [selected, setSelected] = useState<UserSkillSelection[]>(
-    userOtherSkills || []
+  const [selected, setSelected] = useState<UserOtherSkill[]>(
+    userOtherSkillsWithLabels || []
   );
 
   const selectSkill = useCallback((skill: JmfRecommendation) => {

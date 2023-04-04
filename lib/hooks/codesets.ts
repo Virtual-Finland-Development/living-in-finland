@@ -180,7 +180,7 @@ function useOccupations() {
     async () => await api.codesets.getOccupations(),
     OPTIONS
   );
-  console.log(query.error);
+
   useErrorToast({
     title: 'Could not fetch codesets: occupations',
     error: query.error,
@@ -204,6 +204,21 @@ function useOccupationsFlat() {
   return query;
 }
 
+function useEscoSkills() {
+  const query = useQuery(
+    ['esco-skills'],
+    async () => await api.codesets.getEscoSkills(),
+    OPTIONS
+  );
+
+  useErrorToast({
+    title: 'Could not fetch codesets: esco skills',
+    error: query.error,
+  });
+
+  return query;
+}
+
 export {
   useCountries,
   useCurrencies,
@@ -218,4 +233,5 @@ export {
   useMunicipalities,
   useOccupations,
   useOccupationsFlat,
+  useEscoSkills,
 };

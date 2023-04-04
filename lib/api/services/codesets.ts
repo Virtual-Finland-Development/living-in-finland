@@ -4,6 +4,7 @@ import type {
   EducationField,
   EducationLevel,
   EscoLanguage,
+  EscoSkill,
   Language,
   LanguageSkillLevel,
   Municipality,
@@ -102,6 +103,13 @@ export async function getOccupations(): Promise<Occupation[]> {
 export async function getOccupationsFlat(): Promise<Occupation[]> {
   const { data } = await apiClient.get(
     `${CODESETS_BASE_URL}/resources/OccupationsFlatURL`
+  );
+  return data;
+}
+
+export async function getEscoSkills(): Promise<EscoSkill[]> {
+  const { data } = await apiClient.get(
+    `${CODESETS_BASE_URL}/resources/Skills?locales=en`
   );
   return data;
 }

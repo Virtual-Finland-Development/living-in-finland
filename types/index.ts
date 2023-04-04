@@ -266,6 +266,13 @@ export interface LanguageSkillLevel {
   uri: string;
 }
 
+export interface EscoSkill {
+  uri: string;
+  prefLabel: {
+    en: string;
+  };
+}
+
 /**
  * NSG company BasicInformation
  */

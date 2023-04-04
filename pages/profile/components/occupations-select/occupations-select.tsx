@@ -7,8 +7,6 @@ import OccupationsEdit from './occupations-edit';
 
 export interface UserOccupationSelection extends Partial<UserOccupation> {
   label?: string;
-  // delete?: boolean;
-  // id?: string;
 }
 
 interface Props {
@@ -26,16 +24,12 @@ export default function OccupationsSelect(props: Props) {
   const userOccupationsWithLables = useMemo(() => {
     if (!userOccupations?.length || !occupations) return [];
 
-    return (
-      userOccupations
-        // .filter(o => !o.delete)
-        .map(o => ({
-          ...o,
-          label:
-            occupations.find(option => option.uri === o.escoIdentifier)
-              ?.prefLabel?.en || '',
-        }))
-    );
+    return userOccupations.map(o => ({
+      ...o,
+      label:
+        occupations.find(option => option.uri === o.escoIdentifier)?.prefLabel
+          ?.en || '',
+    }));
   }, [occupations, userOccupations]);
 
   const openEdit = () => {

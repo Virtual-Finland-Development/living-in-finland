@@ -5,12 +5,13 @@ import {
   useForm,
 } from 'react-hook-form';
 import { Button, Text } from 'suomifi-ui-components';
-import type { Certification } from '@/types';
+import type { Certification, EscoSkill } from '@/types';
 import FormInput from '@/components/form/form-input';
 import MoreRecommendations from '../jmf-recommendations/more-recommendations';
 
 interface Props {
   userCertifications: Certification[];
+  escoSkills: EscoSkill[];
   onSave: (selected: Certification[]) => void;
   onCancel: () => void;
 }
@@ -26,9 +27,9 @@ const DEFAULT_VALUE: Certification = {
 };
 
 export default function CertificationsEdit(props: Props) {
-  const { userCertifications, onSave, onCancel } = props;
+  const { userCertifications, escoSkills, onSave, onCancel } = props;
 
-  const { handleSubmit, control, watch } = useForm<FormProps>({
+  const { handleSubmit, control } = useForm<FormProps>({
     defaultValues: { certifications: userCertifications },
   });
 
@@ -68,10 +69,7 @@ export default function CertificationsEdit(props: Props) {
             <Controller
               name={`certifications.${index}.escoIdentifier`}
               control={control}
-              render={({
-                field: { onChange, value },
-                fieldState: { error },
-              }) => (
+              render={({ field: { onChange, value } }) => (
                 <MoreRecommendations
                   onSelect={(
                     selected: {
@@ -79,7 +77,18 @@ export default function CertificationsEdit(props: Props) {
                       uniqueItemId: string;
                     }[]
                   ) => onChange(selected.map(s => s.uniqueItemId))}
-                  defaultValue={value}
+                  defaultValue={value.map(escoIdentifier => {
+                    const escoIndex = escoSkills.findIndex(
+                      skill => skill.uri === escoIdentifier
+                    );
+                    return {
+                      labelText:
+                        escoIndex > -1
+                          ? escoSkills[escoIndex].prefLabel.en
+                          : escoIdentifier,
+                      uniqueItemId: escoIdentifier,
+                    };
+                  })}
                 />
               )}
             />

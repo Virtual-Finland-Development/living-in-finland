@@ -171,6 +171,7 @@ export default function WorkingProfileForm(props: Props) {
         />
         <CertificationsSelect
           userCertifications={certifications}
+          escoSkills={escoSkills || []}
           onSelect={selected =>
             setValue('certifications', selected, { shouldDirty: true })
           }

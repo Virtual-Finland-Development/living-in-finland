@@ -6,7 +6,7 @@ import useJmfRecommendations from '@/lib/hooks/use-jmf-recommendations';
 
 interface Props {
   onSelect: (selected: any) => void;
-  defaultValue: any;
+  defaultValue: { labelText: string; uniqueItemId: string }[];
 }
 
 export default function MoreRecommendations(props: Props) {

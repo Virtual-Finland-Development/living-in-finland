@@ -172,11 +172,11 @@ export default function JmfRecommendationsSelect(
       <div className="flex flex-col gap-4">
         <div className="flex flex-col gap-3 p-4 border border-gray-300 bg-suomifi-blue-bg-light w-full">
           <CustomHeading variant="h4">
-            Please describe the skills related to the job you are looking for
+            Please describe the occupations and skills you are looking for
           </CustomHeading>
           <Textarea
             className="!w-full"
-            labelText="You will get keyword suggestions based on your text. Please choose the most suitable ones. Keywords are used for job recommendations. You can also upload a text file or your CV (PDF)."
+            labelText="You will get keyword suggestions based on your text. Please choose the most suitable ones. You can also upload a text file or your CV (PDF)."
             hintText=""
             visualPlaceholder={
               selectedFileName ? `Using upload: ${selectedFileName}` : ''

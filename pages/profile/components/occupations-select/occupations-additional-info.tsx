@@ -66,7 +66,7 @@ export default function OccupationsAdditionalInfo(props: Props) {
             className="border border-gray-300 p-2 bg-suomifi-blue-bg-light"
           >
             <Text className="!italic">{field.label}</Text>
-            <div className="grid grid-cols-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2">
               <FormInput
                 name={`occupations.${index}.employer`}
                 control={control}

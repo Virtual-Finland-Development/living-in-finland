@@ -47,7 +47,7 @@ export default function LanguageSkillsSelect(props: Props) {
       <Label>Language skills</Label>
       {!userLanguages?.length ? (
         <Text className="!text-base">
-          <span>No languages selected,</span>
+          <span>No languages selected, </span>
           <span
             role="button"
             className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"

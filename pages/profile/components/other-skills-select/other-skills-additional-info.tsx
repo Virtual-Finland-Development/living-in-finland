@@ -52,7 +52,7 @@ export default function OtherSkillsAdditionalInfo(props: Props) {
             <Text className="!italic">
               {field.label || field.escoIdentifier}
             </Text>
-            <div className="grid grid-cols-2 items-end">
+            <div className="grid grid-cols-1 sm:grid-cols-2 items-end">
               <FormSingleSelect
                 name={`otherSkills.${index}.skillLevel`}
                 control={control}

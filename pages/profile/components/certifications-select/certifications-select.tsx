@@ -1,44 +1,40 @@
-import { useMemo } from 'react';
 import { Label, Text } from 'suomifi-ui-components';
-import type { Occupation, OtherSkill } from '@/types';
+import type { Certification } from '@/types';
 import { useModal } from '@/context/modal-context';
-import OtherSkillsEdit from './other-skills-edit';
+import CertificationsEdit from './certifications-edit';
 
 interface Props {
-  userOtherSkills: OtherSkill[] | undefined;
-  occupations: Occupation[];
-  handleSave: (selected: OtherSkill[]) => void;
+  userCertifications: Certification[] | undefined;
+  onSelect: (selected: Certification[]) => void;
 }
 
-export default function OtherSkillsSelect(props: Props) {
-  const { userOtherSkills, occupations, handleSave } = props;
+export default function CertificationsSelect(props: Props) {
+  const { userCertifications, onSelect } = props;
 
   const { openModal, closeModal } = useModal();
 
-  const openEdit = () => {
+  const openEdit = () =>
     openModal({
-      title: 'Other skills',
+      title: 'Add your certifications',
       content: (
-        <OtherSkillsEdit
-          // userOccupations={userOccupationsWithLables}
-          userOtherSkills={userOtherSkills || []}
+        <CertificationsEdit
+          userCertifications={userCertifications || []}
           onSave={selected => {
-            handleSave(selected);
+            onSelect(selected);
             closeModal();
           }}
-          onClose={() => closeModal()}
+          onCancel={closeModal}
         />
       ),
       onClose: () => {},
     });
-  };
 
   return (
     <div>
-      <Label>Other skills</Label>
-      {!userOtherSkills?.length ? (
+      <Label>Certifications</Label>
+      {!userCertifications?.length ? (
         <Text className="!text-base">
-          <span>No other skills selected, </span>
+          <span>No certifications added, </span>
           <span
             role="button"
             className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
@@ -49,14 +45,14 @@ export default function OtherSkillsSelect(props: Props) {
         </Text>
       ) : (
         <div className="flex flex-col flex-wrap gap-2">
-          {userOtherSkills.map((s, index) => (
-            <Text key={`${s.escoIdentifier}-${index}`} className="!text-base">
+          {userCertifications.map((c, index) => (
+            <Text key={`${c.escoIdentifier}-${index}`} className="!text-base">
               <span
                 role="button"
                 className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
                 onClick={openEdit}
               >
-                {s.escoIdentifier}
+                {c.certificationName}
               </span>
             </Text>
           ))}

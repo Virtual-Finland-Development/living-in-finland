@@ -337,7 +337,7 @@ export interface LanguageSkill {
 
 export interface Certification {
   certificationName: string;
-  escoIdentifier: string;
+  escoIdentifier: string[];
   institutionName: string;
 }
 

@@ -63,7 +63,7 @@ export default function LanguagesEdit(props: Props) {
         {fields.map((field, index) => (
           <div
             key={field.id}
-            className="grid grid-cols-3 gap-3 items-end border-b border-gray-300 pb-4"
+            className="grid grid-cols-1 sm:grid-cols-3 gap-3 items-end border-b border-gray-300 pb-4"
           >
             <FormSingleSelect
               name={`languages.${index}.languageCode`}

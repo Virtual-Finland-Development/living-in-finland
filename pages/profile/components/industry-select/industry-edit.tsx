@@ -1,6 +1,13 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { IoClose } from 'react-icons/io5';
-import { Button, Text } from 'suomifi-ui-components';
+import {
+  Button,
+  Expander,
+  ExpanderContent,
+  ExpanderGroup,
+  ExpanderTitleButton,
+  Text,
+} from 'suomifi-ui-components';
 import type { Nace } from '@/types';
 import { findNace } from '@/lib/utils';
 import CustomHeading from '@/components/ui/custom-heading';
@@ -16,6 +23,10 @@ interface Props {
 export default function IndustryEdit(props: Props) {
   const { items, defaultSelected, onSelect, onCancel } = props;
   const [selected, setSelected] = useState<Nace | undefined>(defaultSelected);
+  const [openExpander, setOpenExpander] = useState<string | null>(
+    defaultSelected?.topLevelGroupCode || null
+  );
+  const defaultOpenExpanderRef = useRef<null | HTMLDivElement>(null);
 
   const handleSelect = useCallback(
     (identifier: string, isChecked: boolean, isIndeterminate: boolean) => {
@@ -28,6 +39,15 @@ export default function IndustryEdit(props: Props) {
     [items]
   );
 
+  // scroll into default opened expander, if defaultSelected is provided and if defaultOpenExpanderRef is defined
+  useEffect(() => {
+    if (defaultOpenExpanderRef.current) {
+      if (typeof defaultOpenExpanderRef.current.scrollIntoView === 'function') {
+        defaultOpenExpanderRef.current.scrollIntoView();
+      }
+    }
+  }, []);
+
   return (
     <>
       <div className="flex flex-col gap-2 border p-2 bg-suomifi-blue-bg-light">
@@ -39,15 +59,36 @@ export default function IndustryEdit(props: Props) {
         </Text>
 
         <div className="py-2 border bg-white h-auto md:h-[300px] overflow-y-auto">
-          <div className="flex flex-col gap-1 items-start mx-2">
-            {items.map(item => (
-              <IndustryDisclosure
-                key={item.codeValue}
-                item={item}
-                selected={selected}
-                onSelect={handleSelect}
-              />
-            ))}
+          <div className="mx-2">
+            <ExpanderGroup
+              closeAllText=""
+              openAllText=""
+              showToggleAllButton={false}
+            >
+              {items.map(item => (
+                <Expander
+                  key={item.codeValue}
+                  open={openExpander === item.codeValue}
+                  onOpenChange={isOpen =>
+                    setOpenExpander(!isOpen ? item.codeValue : null)
+                  }
+                  {...(defaultSelected?.topLevelGroupCode ===
+                    item.codeValue && { ref: defaultOpenExpanderRef })}
+                >
+                  <ExpanderTitleButton>{item.prefLabel.en}</ExpanderTitleButton>
+                  <ExpanderContent>
+                    {item.children?.map(item => (
+                      <IndustryDisclosure
+                        key={item.codeValue}
+                        item={item}
+                        selected={selected}
+                        onSelect={handleSelect}
+                      />
+                    ))}
+                  </ExpanderContent>
+                </Expander>
+              ))}
+            </ExpanderGroup>
           </div>
         </div>
 

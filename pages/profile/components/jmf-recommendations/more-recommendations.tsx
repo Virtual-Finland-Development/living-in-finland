@@ -15,7 +15,7 @@ interface Props {
   showChiplist?: boolean;
 }
 
-const Selection = ({
+const CustomChipItem = ({
   item,
   onRemove,
 }: {
@@ -128,7 +128,7 @@ export default function MoreRecommendations(props: Props) {
           {selected.length > 0 && (
             <div className="flex items-start justify-start flex-wrap gap-2">
               {selected.map(item => (
-                <Selection
+                <CustomChipItem
                   key={item.uniqueItemId}
                   item={item}
                   onRemove={item => {

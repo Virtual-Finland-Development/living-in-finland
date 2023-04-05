@@ -5,8 +5,9 @@ import {
   Path,
   RegisterOptions,
 } from 'react-hook-form';
-import { format } from 'date-fns';
+import { format, isValid, parseISO } from 'date-fns';
 import { DateInput, TextInput } from 'suomifi-ui-components';
+import useDimensions from '@/lib/hooks/use-dimensions';
 
 interface FormInputControllerProps<T extends FieldValues> {
   name: Path<T>;
@@ -38,7 +39,7 @@ interface Props<T extends FieldValues> extends FormInputControllerProps<T> {
 export default function FormInput<T extends FieldValues>(props: Props<T>) {
   const {
     name,
-    rules,
+    rules = {},
     control,
     type,
     labelText,
@@ -51,14 +52,27 @@ export default function FormInput<T extends FieldValues>(props: Props<T>) {
     step = 1,
   } = props;
 
+  const { width } = useDimensions();
+
   return (
     <Controller
       name={name}
-      rules={rules}
       control={control}
+      rules={{
+        ...rules,
+        validate: rules?.validate
+          ? rules.validate
+          : value => {
+              if (type === 'date') {
+                return !value ? true : isValid(parseISO(value));
+              } else {
+                return true;
+              }
+            },
+      }}
       render={({
         field: { onChange, onBlur, value },
-        fieldState: { error },
+        fieldState: { error, isDirty },
       }) => (
         <>
           {type === 'date' ? (
@@ -67,13 +81,21 @@ export default function FormInput<T extends FieldValues>(props: Props<T>) {
               hintText={hintText}
               optionalText={optionalText}
               datePickerEnabled
+              language="en"
+              minDate={new Date(0)}
+              smallScreen={width <= 640}
               className="!w-suomifi-input-default"
               status={error && 'error'}
               statusText={showStatusText && error ? error.message : ''}
-              value={value ? format(new Date(value), 'dd.MM.yyyy') : ''}
-              onChange={({ date }) => {
+              initialDate={!isDirty && value ? new Date(value) : new Date()}
+              defaultValue={
+                !isDirty && value ? format(new Date(value), 'd.M.yyyy') : ''
+              }
+              onChange={({ value, date }) => {
                 if (date instanceof Date && !isNaN(date.getTime())) {
                   onChange(format(date, 'yyyy-MM-dd'));
+                } else {
+                  onChange(value);
                 }
               }}
             />

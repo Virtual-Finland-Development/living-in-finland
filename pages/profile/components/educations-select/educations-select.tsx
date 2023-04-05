@@ -26,7 +26,7 @@ export default function EducationsSelect(props: Props) {
 
   const openEducationEdit = () =>
     openModal({
-      title: 'Select your language skills',
+      title: 'Educations',
       content: (
         <EducationsEdit
           userEducations={userEducations}

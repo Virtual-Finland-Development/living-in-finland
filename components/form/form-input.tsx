@@ -50,7 +50,7 @@ export default function FormInput<T extends FieldValues>(props: Props<T>) {
     min = 1,
     step = 1,
   } = props;
-  console.log(min);
+
   return (
     <Controller
       name={name}

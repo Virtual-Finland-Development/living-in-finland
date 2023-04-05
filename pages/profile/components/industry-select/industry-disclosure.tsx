@@ -32,10 +32,9 @@ function DisclosureLabel(props: DisclosureLabelProps) {
       <Checkbox
         className="!mr-2 text-start cursor-default"
         checked={isChecked}
-        onClick={({ checkboxState }) => {
-          console.log(checkboxState);
-          onSelect(item.codeValue, checkboxState, isIndeterminate);
-        }}
+        onClick={({ checkboxState }) =>
+          onSelect(item.codeValue, checkboxState, isIndeterminate)
+        }
       >
         {item.prefLabel.en}
       </Checkbox>

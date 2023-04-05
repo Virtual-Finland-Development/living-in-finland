@@ -33,7 +33,7 @@ const CustomChipItem = ({
         className="flex-shrink-0"
         role="button"
         tabIndex={0}
-        aria-label="Remove selected industry"
+        aria-label="Remove selected skill"
       />
     </div>
   );

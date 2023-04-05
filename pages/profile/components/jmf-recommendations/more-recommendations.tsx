@@ -1,26 +1,26 @@
 import { useEffect, useMemo, useState } from 'react';
 import lodash_debounce from 'lodash.debounce';
 import { MultiSelect } from 'suomifi-ui-components';
-import type { JmfRecommendation } from '@/types';
 import useJmfRecommendations from '@/lib/hooks/use-jmf-recommendations';
 
 interface Props {
+  type: 'occupations' | 'skills';
   onSelect: (selected: any) => void;
   defaultValue: { labelText: string; uniqueItemId: string }[];
 }
 
 export default function MoreRecommendations(props: Props) {
-  const { onSelect, defaultValue } = props;
+  const { type, onSelect, defaultValue } = props;
   const [textContent, setTextContent] = useState<string | null>('');
-  const [cachedOptions, setCachedOptions] = useState<JmfRecommendation[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const {
     data: recommendations,
     isFetching: recommendationsFetching,
     refetch: fetchRecommendations,
   } = useJmfRecommendations(textContent, {
-    maxNumberOfSkills: 100,
-    maxNumberOfOccupations: 1,
+    maxNumberOfSkills: type === 'skills' ? 100 : 1,
+    maxNumberOfOccupations: type === 'occupations' ? 100 : 1,
   });
 
   const loadDebounced = useMemo(
@@ -30,17 +30,19 @@ export default function MoreRecommendations(props: Props) {
 
   useEffect(() => {
     if (textContent) {
+      setIsLoading(true);
       loadDebounced();
     } else {
+      setIsLoading(false);
       loadDebounced.cancel();
     }
   }, [loadDebounced, textContent]);
 
   useEffect(() => {
-    if (recommendations?.skills) {
-      setCachedOptions(recommendations.skills);
+    if (!recommendationsFetching) {
+      setIsLoading(false);
     }
-  }, [recommendations?.skills]);
+  }, [recommendationsFetching]);
 
   return (
     <>
@@ -56,7 +58,7 @@ export default function MoreRecommendations(props: Props) {
         ariaChipActionLabel="Remove"
         ariaOptionChipRemovedText="removed"
         noItemsText="Search for options" // <-- need to use ts-ignore above, because this prop is wrongly typed...
-        loading={recommendationsFetching}
+        loading={isLoading}
         loadingText="Loading..."
         items={
           recommendations?.skills
@@ -64,10 +66,7 @@ export default function MoreRecommendations(props: Props) {
                 labelText: skill.label,
                 uniqueItemId: skill.uri,
               }))
-            : cachedOptions.map(skill => ({
-                labelText: skill.label,
-                uniqueItemId: skill.uri,
-              }))
+            : []
         }
         onChange={val => setTextContent(val)}
         onItemSelectionsChange={selected => onSelect(selected)}

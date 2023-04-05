@@ -71,6 +71,7 @@ export default function CertificationsEdit(props: Props) {
               control={control}
               render={({ field: { onChange, value } }) => (
                 <MoreRecommendations
+                  type="skills"
                   onSelect={(
                     selected: {
                       labelText: string;

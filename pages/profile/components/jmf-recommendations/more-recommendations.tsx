@@ -12,7 +12,7 @@ interface Props {
   type: 'occupations' | 'skills';
   onSelect: (selected: any) => void;
   defaultValue: SelectionItem[];
-  showChiplist?: boolean;
+  showCustomChipList?: boolean;
 }
 
 const CustomChipItem = ({
@@ -40,7 +40,7 @@ const CustomChipItem = ({
 };
 
 export default function MoreRecommendations(props: Props) {
-  const { type, onSelect, defaultValue, showChiplist = true } = props;
+  const { type, onSelect, defaultValue, showCustomChipList = true } = props;
   const [inputValue, setInputValue] = useState<string | null>('');
   const [isLoading, setIsLoading] = useState(false);
   const [selected, setSelected] =
@@ -116,10 +116,10 @@ export default function MoreRecommendations(props: Props) {
           setSelected(selected);
         }}
         defaultSelectedItems={defaultValue}
-        chipListVisible={false}
+        chipListVisible={!showCustomChipList}
       />
 
-      {showChiplist && (
+      {showCustomChipList && (
         <div className="min-h-[100px] max-h-[100px] overflow-y-auto border rounded-sm border-gray-300 p-2">
           {!selected.length && (
             <Text className="!text-base">No related skills selected.</Text>

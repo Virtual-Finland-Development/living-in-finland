@@ -1,24 +1,56 @@
 import { useEffect, useMemo, useState } from 'react';
+import { IoClose } from 'react-icons/io5';
 import lodash_debounce from 'lodash.debounce';
-import { MultiSelect } from 'suomifi-ui-components';
+import { MultiSelect, Text } from 'suomifi-ui-components';
 import useJmfRecommendations from '@/lib/hooks/use-jmf-recommendations';
 
+interface SelectionItem {
+  labelText: string;
+  uniqueItemId: string;
+}
 interface Props {
   type: 'occupations' | 'skills';
   onSelect: (selected: any) => void;
-  defaultValue: { labelText: string; uniqueItemId: string }[];
+  defaultValue: SelectionItem[];
+  showChiplist?: boolean;
 }
 
+const Selection = ({
+  item,
+  onRemove,
+}: {
+  item: SelectionItem;
+  onRemove: (item: SelectionItem) => void;
+}) => {
+  return (
+    <div
+      role="button"
+      onClick={() => onRemove(item)}
+      className="flex flex-row items-center gap-2 bg-suomifi-light hover:bg-suomifi-light-hover text-white font-bold text-base rounded-xl px-2"
+    >
+      <span>{item.labelText}</span>
+      <IoClose
+        className="flex-shrink-0"
+        role="button"
+        tabIndex={0}
+        aria-label="Remove selected industry"
+      />
+    </div>
+  );
+};
+
 export default function MoreRecommendations(props: Props) {
-  const { type, onSelect, defaultValue } = props;
-  const [textContent, setTextContent] = useState<string | null>('');
+  const { type, onSelect, defaultValue, showChiplist = true } = props;
+  const [inputValue, setInputValue] = useState<string | null>('');
   const [isLoading, setIsLoading] = useState(false);
+  const [selected, setSelected] =
+    useState<{ labelText: string; uniqueItemId: string }[]>(defaultValue);
 
   const {
     data: recommendations,
     isFetching: recommendationsFetching,
     refetch: fetchRecommendations,
-  } = useJmfRecommendations(textContent, {
+  } = useJmfRecommendations(inputValue, {
     maxNumberOfSkills: type === 'skills' ? 100 : 1,
     maxNumberOfOccupations: type === 'occupations' ? 100 : 1,
   });
@@ -29,14 +61,14 @@ export default function MoreRecommendations(props: Props) {
   );
 
   useEffect(() => {
-    if (textContent) {
+    if (inputValue) {
       setIsLoading(true);
       loadDebounced();
     } else {
       setIsLoading(false);
       loadDebounced.cancel();
     }
-  }, [loadDebounced, textContent]);
+  }, [loadDebounced, inputValue]);
 
   useEffect(() => {
     if (!recommendationsFetching) {
@@ -44,35 +76,75 @@ export default function MoreRecommendations(props: Props) {
     }
   }, [recommendationsFetching]);
 
+  const options: { labelText: string; uniqueItemId: string }[] = useMemo(() => {
+    if (type === 'skills' && recommendations?.skills) {
+      return recommendations.skills.map(skill => ({
+        labelText: skill.label,
+        uniqueItemId: skill.uri,
+      }));
+    } else if (type === 'occupations' && recommendations?.occupations) {
+      return recommendations.occupations.map(occupation => ({
+        labelText: occupation.label,
+        uniqueItemId: occupation.uri,
+      }));
+    } else {
+      return [];
+    }
+  }, [recommendations?.occupations, recommendations?.skills, type]);
+
   return (
-    <>
+    <div className="w-full flex flex-col gap-3">
       {/*
           // @ts-ignore */}
       <MultiSelect
         className="!w-full"
-        labelText="Search related skills"
+        labelText="Select related skills"
+        optionalText="Optional"
         visualPlaceholder="Type to search"
         itemAdditionHelpText=""
         ariaOptionsAvailableText="options available"
         ariaSelectedAmountText="option selected"
         ariaChipActionLabel="Remove"
         ariaOptionChipRemovedText="removed"
-        noItemsText="Search for options" // <-- need to use ts-ignore above, because this prop is wrongly typed...
+        noItemsText="No options found" // <-- need to use ts-ignore above, because this prop is wrongly typed...
         loading={isLoading}
-        loadingText="Loading..."
-        items={
-          recommendations?.skills
-            ? recommendations.skills.map(skill => ({
-                labelText: skill.label,
-                uniqueItemId: skill.uri,
-              }))
-            : []
-        }
-        onChange={val => setTextContent(val)}
-        onItemSelectionsChange={selected => onSelect(selected)}
+        loadingText="Searching..."
+        items={options}
+        onChange={val => setInputValue(val)}
+        onItemSelectionsChange={selected => {
+          onSelect(selected);
+          setSelected(selected);
+        }}
         defaultSelectedItems={defaultValue}
-        chipListVisible
+        chipListVisible={false}
       />
-    </>
+
+      {showChiplist && (
+        <div className="min-h-[100px] max-h-[100px] overflow-y-auto border rounded-sm border-gray-300 p-2">
+          {!selected.length && (
+            <Text className="!text-base">No related skills selected.</Text>
+          )}
+
+          {selected.length > 0 && (
+            <div className="flex items-start justify-start flex-wrap gap-2">
+              {selected.map(item => (
+                <Selection
+                  key={item.uniqueItemId}
+                  item={item}
+                  onRemove={item => {
+                    setSelected(prev =>
+                      prev.filter(i => i.uniqueItemId !== item.uniqueItemId)
+                    );
+                    onSelect(
+                      selected.filter(i => i.uniqueItemId !== item.uniqueItemId)
+                    );
+                  }}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 }

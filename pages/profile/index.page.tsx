@@ -1,11 +1,16 @@
 import { useState } from 'react';
-import { Button, Text, TextInput } from 'suomifi-ui-components';
+import { Button, InlineAlert, Text, TextInput } from 'suomifi-ui-components';
 import api from '@/lib/api';
+import {
+  ReferrerProvider,
+  useReferrerContext,
+} from '@/context/referrer-context';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 
 export default function ProfilePage() {
   const [isLoading, setLoading] = useState(false);
+  const { referrer } = useReferrerContext();
 
   const loginHandler = () => {
     setLoading(true);
@@ -19,6 +24,9 @@ export default function ProfilePage() {
           Create your profile
         </CustomHeading>
         <div className="flex flex-col mt-8 gap-6">
+          {referrer === 'localhost:3004' && (
+            <InlineAlert>You arrived from Access to Finland app!</InlineAlert>
+          )}
           <Text>
             Choose which service to use to log in to Living in Finland.
           </Text>
@@ -43,3 +51,5 @@ export default function ProfilePage() {
     </Page>
   );
 }
+
+ProfilePage.provider = ReferrerProvider;

@@ -1,15 +1,20 @@
 import { useState } from 'react';
-import { Button, Text, TextInput } from 'suomifi-ui-components';
+import { Button, InlineAlert, Text, TextInput } from 'suomifi-ui-components';
 import api from '@/lib/api';
+import {
+  ReferrerProvider,
+  useReferrerContext,
+} from '@/context/referrer-context';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 
 export default function ProfilePage() {
   const [isLoading, setLoading] = useState(false);
+  const { referrerSettings } = useReferrerContext();
 
   const loginHandler = () => {
     setLoading(true);
-    api.auth.directToAuthGwLogin();
+    api.auth.directToAuthGwLogin('/profile');
   };
 
   return (
@@ -19,6 +24,19 @@ export default function ProfilePage() {
           Create your profile
         </CustomHeading>
         <div className="flex flex-col mt-8 gap-6">
+          {referrerSettings && (
+            <InlineAlert>
+              <div className="flex flex-col gap-3 items-start">
+                <Text>{referrerSettings.text}</Text>
+                <a
+                  href={referrerSettings.redirectUrl}
+                  className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                >
+                  {referrerSettings.redirectText}
+                </a>
+              </div>
+            </InlineAlert>
+          )}
           <Text>
             Choose which service to use to log in to Living in Finland.
           </Text>
@@ -43,3 +61,5 @@ export default function ProfilePage() {
     </Page>
   );
 }
+
+ProfilePage.provider = ReferrerProvider;

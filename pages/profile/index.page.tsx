@@ -10,11 +10,11 @@ import CustomHeading from '@/components/ui/custom-heading';
 
 export default function ProfilePage() {
   const [isLoading, setLoading] = useState(false);
-  const { referrer } = useReferrerContext();
+  const { referrerSettings } = useReferrerContext();
 
   const loginHandler = () => {
     setLoading(true);
-    api.auth.directToAuthGwLogin();
+    api.auth.directToAuthGwLogin('/profile');
   };
 
   return (
@@ -24,8 +24,18 @@ export default function ProfilePage() {
           Create your profile
         </CustomHeading>
         <div className="flex flex-col mt-8 gap-6">
-          {referrer === 'localhost:3004' && (
-            <InlineAlert>You arrived from Access to Finland app!</InlineAlert>
+          {referrerSettings && (
+            <InlineAlert>
+              <div className="flex flex-col gap-3 items-start">
+                <Text>{referrerSettings.text}</Text>
+                <a
+                  href={referrerSettings.redirectUrl}
+                  className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                >
+                  {referrerSettings.redirectText}
+                </a>
+              </div>
+            </InlineAlert>
           )}
           <Text>
             Choose which service to use to log in to Living in Finland.

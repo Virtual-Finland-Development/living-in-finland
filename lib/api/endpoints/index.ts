@@ -15,3 +15,12 @@ export const TESTBED_API_BASE_URL = process.env.NEXT_PUBLIC_TESTBED_API_BASE_URL
 export const CODESETS_BASE_URL = process.env.NEXT_PUBLIC_CODESETS_BASE_URL
   ? removeTrailingSlash(process.env.NEXT_PUBLIC_CODESETS_BASE_URL)
   : 'http://localhost:3166';
+
+export const ATOF_BASE_URL = process.env.NEXT_PUBLIC_ATOF_BASE_URL
+  ? removeTrailingSlash(process.env.NEXT_PUBLIC_ATOF_BASE_URL)
+  : 'http://localhost:3004';
+
+export const EXT_REGISTRATION_SERVICE_URL = process.env
+  .NEXT_PUBLIC_EXT_REGISTRATION_SERVICE_URL
+  ? removeTrailingSlash(process.env.NEXT_PUBLIC_EXT_REGISTRATION_SERVICE_URL)
+  : 'http://localhost:3001';

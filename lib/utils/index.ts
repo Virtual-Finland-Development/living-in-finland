@@ -78,3 +78,12 @@ export function getUserIdentifier() {
   const { sub }: { sub: string | undefined } = jwt_decode(token);
   return sub;
 }
+
+export function parseReferrer(url: string) {
+  // alternative, does not work when in local dev, since all are "localhost"
+  // const domain = new URL(url).hostname;
+  // console.log(domain);
+  const parsed = url.match(/:\/\/(.[^/]+)/); // try to get domain only, in local localhost:port
+  const referrer = parsed ? parsed[1] : '';
+  return referrer;
+}

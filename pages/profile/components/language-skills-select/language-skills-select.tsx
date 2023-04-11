@@ -1,22 +1,17 @@
 import { Label, Text } from 'suomifi-ui-components';
-import type { LanguageSkill } from '@/types';
-import { useEscoLanguages, useLanguageSkillLevels } from '@/lib/hooks/codesets';
+import type { EscoLanguage, LanguageSkill, LanguageSkillLevel } from '@/types';
 import { useModal } from '@/context/modal-context';
-import Loading from '@/components/ui/loading';
 import LanguagesEdit from './languages-edit';
 
 interface Props {
   userLanguages: LanguageSkill[] | undefined;
+  escoLanguages: EscoLanguage[];
+  languageSkillLevels: LanguageSkillLevel[];
   onSelect: (selected: LanguageSkill[]) => void;
 }
 
 export default function LanguageSkillsSelect(props: Props) {
-  const { userLanguages, onSelect } = props;
-
-  const { data: escoLanguages, isLoading: escoLanguagesLoading } =
-    useEscoLanguages();
-  const { data: languageSkillLevels, isLoading: languageSkillLevelsLoading } =
-    useLanguageSkillLevels();
+  const { userLanguages, onSelect, escoLanguages, languageSkillLevels } = props;
 
   const { openModal, closeModal } = useModal();
 
@@ -37,10 +32,6 @@ export default function LanguageSkillsSelect(props: Props) {
       ),
       onClose: () => {},
     });
-
-  if (escoLanguagesLoading || languageSkillLevelsLoading) {
-    return <Loading />;
-  }
 
   return (
     <div>

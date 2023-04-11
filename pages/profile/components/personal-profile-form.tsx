@@ -29,7 +29,11 @@ export default function PersonalProfileForm(props: Props) {
     formState: { isSubmitting, dirtyFields },
   } = useForm<PersonBasicInformation>({
     defaultValues: personBasicInformation
-      ? { ...personBasicInformation }
+      ? {
+          ...personBasicInformation,
+          email: personBasicInformation.email || userEmail!,
+          phoneNumber: personBasicInformation.phoneNumber || '+1 231 231 2312',
+        }
       : {
           givenName: pickRandomName('firstName'),
           lastName: pickRandomName('lastName'),

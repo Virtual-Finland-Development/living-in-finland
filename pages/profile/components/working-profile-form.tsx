@@ -5,9 +5,14 @@ import { EmploymentType, JobApplicantProfile, WorkingTime } from '@/types';
 import api from '@/lib/api';
 import { EMPLOYMENT_TYPE_LABELS, WORKING_TIME_LABELS } from '@/lib/constants';
 import {
+  useEducationFields,
+  useEducationLevels,
+  useEscoLanguages,
   useEscoSkills,
+  useLanguageSkillLevels,
   useLanguages,
   useMunicipalities,
+  useNaceCodes,
   useOccupationsFlat,
   useRegions,
   useWorkPermits,
@@ -42,6 +47,15 @@ export default function WorkingProfileForm(props: Props) {
   const { data: municipalities, isLoading: municipalitiesLoading } =
     useMunicipalities();
   const { data: escoSkills, isLoading: escoSkillsLoading } = useEscoSkills();
+  const { data: educationFields, isLoading: educationFieldsLoading } =
+    useEducationFields();
+  const { data: educationLevels, isLoading: educationLevelsLoading } =
+    useEducationLevels();
+  const { data: naceCodes, isLoading: naceCodesLoading } = useNaceCodes();
+  const { data: escoLanguages, isLoading: escoLanguagesLoading } =
+    useEscoLanguages();
+  const { data: languageSkillLevels, isLoading: languageSkillLevelsLoading } =
+    useLanguageSkillLevels();
 
   const isLoading =
     occupationsFlatLoading ||
@@ -49,7 +63,12 @@ export default function WorkingProfileForm(props: Props) {
     permitsLoading ||
     regionsLoading ||
     municipalitiesLoading ||
-    escoSkillsLoading;
+    escoSkillsLoading ||
+    educationFieldsLoading ||
+    educationLevelsLoading ||
+    naceCodesLoading ||
+    escoLanguagesLoading ||
+    languageSkillLevelsLoading;
 
   const {
     control,
@@ -148,6 +167,8 @@ export default function WorkingProfileForm(props: Props) {
         />
         <EducationsSelect
           userEducations={educations}
+          educationFields={educationFields || []}
+          educationLevels={educationLevels || []}
           onSelect={selected =>
             setValue('educations', selected, { shouldDirty: true })
           }
@@ -161,6 +182,8 @@ export default function WorkingProfileForm(props: Props) {
         />
         <LanguageSkillsSelect
           userLanguages={languageSkills}
+          escoLanguages={escoLanguages || []}
+          languageSkillLevels={languageSkillLevels || []}
           onSelect={selected =>
             setValue('languageSkills', selected, { shouldDirty: true })
           }
@@ -229,6 +252,7 @@ export default function WorkingProfileForm(props: Props) {
         />
         <IndustrySelect
           userNaceCode={workPreferences?.naceCode}
+          naceCodes={naceCodes || []}
           handleSelect={selected => {
             setValue(
               'workPreferences.naceCode',

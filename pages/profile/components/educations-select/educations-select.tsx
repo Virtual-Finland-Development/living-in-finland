@@ -1,28 +1,19 @@
 import { Label, Text } from 'suomifi-ui-components';
-import type { Education } from '@/types';
-import { useEducationFields, useEducationLevels } from '@/lib/hooks/codesets';
+import type { Education, EducationField, EducationLevel } from '@/types';
 import { useModal } from '@/context/modal-context';
-import Loading from '@/components/ui/loading';
 import EducationsEdit from './educations-edit';
 
 interface Props {
   userEducations: Education[] | undefined;
+  educationFields: EducationField[];
+  educationLevels: EducationLevel[];
   onSelect: (selected: Education[]) => void;
 }
 
 export default function EducationsSelect(props: Props) {
-  const { userEducations, onSelect } = props;
+  const { userEducations, onSelect, educationFields, educationLevels } = props;
 
   const { openModal, closeModal } = useModal();
-
-  const { data: educationFields, isLoading: educationFieldsLoading } =
-    useEducationFields();
-  const { data: educationLevels, isLoading: educationLevelsLoading } =
-    useEducationLevels();
-
-  if (educationFieldsLoading || educationLevelsLoading) {
-    return <Loading />;
-  }
 
   const openEducationEdit = () =>
     openModal({
@@ -30,8 +21,8 @@ export default function EducationsSelect(props: Props) {
       content: (
         <EducationsEdit
           userEducations={userEducations}
-          educationFields={educationFields || []}
-          educationLevels={educationLevels || []}
+          educationFields={educationFields}
+          educationLevels={educationLevels}
           onSave={selected => {
             onSelect(selected);
             closeModal();

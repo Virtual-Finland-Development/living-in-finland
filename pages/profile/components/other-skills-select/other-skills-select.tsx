@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Label, Text } from 'suomifi-ui-components';
 import type { EscoSkill, OtherSkill } from '@/types';
+import { SKILL_LEVEL_LABELS } from '@/lib/constants';
 import { useModal } from '@/context/modal-context';
 import OtherSkillsEdit from './other-skills-edit';
 
@@ -79,7 +80,7 @@ export default function OtherSkillsSelect(props: Props) {
                 className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
                 onClick={openEdit}
               >
-                {s.label}
+                {s.label} ({SKILL_LEVEL_LABELS[s.skillLevel]})
               </span>
             </Text>
           ))}

@@ -2,21 +2,18 @@ import { useMemo } from 'react';
 import { Text } from 'suomifi-ui-components';
 import { Label } from 'suomifi-ui-components';
 import type { Nace } from '@/types';
-import { useNaceCodes } from '@/lib/hooks/codesets';
 import { findNace, getGroupedNaceCodes } from '@/lib/utils';
 import { useModal } from '@/context/modal-context';
-import Loading from '@/components/ui/loading';
 import IndustryEdit from './industry-edit';
 
 interface Props {
   userNaceCode: string | undefined | null;
+  naceCodes: Nace[];
   handleSelect: (selected: Nace | undefined) => void;
 }
 
 export default function IndustrySelect(props: Props) {
-  const { userNaceCode, handleSelect } = props;
-
-  const { data: naceCodes, isLoading: naceCodesLoading } = useNaceCodes();
+  const { userNaceCode, handleSelect, naceCodes } = props;
 
   const groupedNaceCodes = useMemo(
     () => getGroupedNaceCodes(naceCodes || []),
@@ -43,10 +40,6 @@ export default function IndustrySelect(props: Props) {
       ),
       onClose: () => {},
     });
-
-  if (naceCodesLoading) {
-    return <Loading />;
-  }
 
   return (
     <div>

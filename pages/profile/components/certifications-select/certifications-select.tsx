@@ -36,7 +36,7 @@ export default function CertificationsSelect(props: Props) {
       <Label>Certifications</Label>
       {!userCertifications?.length ? (
         <Text className="!text-base">
-          <span>No certifications added, </span>
+          <span>No certifications selected, </span>
           <span
             role="button"
             className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"

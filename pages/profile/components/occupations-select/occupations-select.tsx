@@ -70,7 +70,7 @@ export default function OccupationsSelect(props: Props) {
       <Label>Occupations</Label>
       {!userOccupations?.length ? (
         <Text className="!text-base">
-          <span>No languages selected, </span>
+          <span>No occupations selected, </span>
           <span
             role="button"
             className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"

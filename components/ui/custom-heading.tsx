@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-// import styled from 'styled-components';
 import { Heading, HeadingProps } from 'suomifi-ui-components';
 import tw, { styled } from 'twin.macro';
 

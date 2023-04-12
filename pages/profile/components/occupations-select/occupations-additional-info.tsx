@@ -2,7 +2,7 @@ import { SubmitHandler, useFieldArray, useForm } from 'react-hook-form';
 import { yearsToMonths } from 'date-fns';
 import { Button, Text } from 'suomifi-ui-components';
 import type { UserOccupation } from '@/types';
-import { useOccupationsFlat } from '@/lib/hooks/codesets';
+import { useOccupations } from '@/lib/hooks/codesets';
 import FormInput from '@/components/form/form-input';
 import Loading from '@/components/ui/loading';
 import type { UserOccupationSelection } from './occupations-edit';
@@ -20,7 +20,7 @@ interface FormProps {
 export default function OccupationsAdditionalInfo(props: Props) {
   const { selected, goBack, onSave } = props;
 
-  const { data: occupations, isLoading } = useOccupationsFlat();
+  const { data: occupations, isLoading } = useOccupations();
 
   const { handleSubmit, control } = useForm<FormProps>({
     defaultValues: {

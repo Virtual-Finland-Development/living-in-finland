@@ -176,21 +176,6 @@ function useMunicipalities() {
 
 function useOccupations() {
   const query = useQuery(
-    ['occupations'],
-    async () => await api.codesets.getOccupations(),
-    OPTIONS
-  );
-
-  useErrorToast({
-    title: 'Could not fetch codesets: occupations',
-    error: query.error,
-  });
-
-  return query;
-}
-
-function useOccupationsFlat() {
-  const query = useQuery(
     ['occupations-flat'],
     async () => await api.codesets.getOccupationsFlat(),
     OPTIONS
@@ -232,6 +217,5 @@ export {
   useRegions,
   useMunicipalities,
   useOccupations,
-  useOccupationsFlat,
   useEscoSkills,
 };

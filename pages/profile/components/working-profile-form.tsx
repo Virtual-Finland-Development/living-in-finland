@@ -13,7 +13,7 @@ import {
   useLanguages,
   useMunicipalities,
   useNaceCodes,
-  useOccupationsFlat,
+  useOccupations,
   useRegions,
   useWorkPermits,
 } from '@/lib/hooks/codesets';
@@ -39,8 +39,7 @@ export default function WorkingProfileForm(props: Props) {
 
   const toast = useToast();
 
-  const { data: occupationsFlat, isLoading: occupationsFlatLoading } =
-    useOccupationsFlat();
+  const { data: occupations, isLoading: occupationsLoading } = useOccupations();
   const { data: languages, isLoading: languagesLoading } = useLanguages();
   const { data: permits, isLoading: permitsLoading } = useWorkPermits();
   const { data: regions, isLoading: regionsLoading } = useRegions();
@@ -58,7 +57,7 @@ export default function WorkingProfileForm(props: Props) {
     useLanguageSkillLevels();
 
   const isLoading =
-    occupationsFlatLoading ||
+    occupationsLoading ||
     languagesLoading ||
     permitsLoading ||
     regionsLoading ||
@@ -151,7 +150,7 @@ export default function WorkingProfileForm(props: Props) {
       <div className="flex flex-col gap-4 items-start">
         <OccupationsSelect
           userOccupations={userOccupations}
-          occupations={occupationsFlat || []}
+          occupations={occupations || []}
           onSelect={selected =>
             setValue('occupations', selected, { shouldDirty: true })
           }

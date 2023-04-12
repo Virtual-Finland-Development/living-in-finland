@@ -93,13 +93,6 @@ export async function getMunicipalities(): Promise<Municipality[]> {
   return data;
 }
 
-export async function getOccupations(): Promise<Occupation[]> {
-  const { data } = await apiClient.get(
-    `${CODESETS_BASE_URL}/resources/OccupationsEscoURL`
-  );
-  return data;
-}
-
 export async function getOccupationsFlat(): Promise<Occupation[]> {
   const { data } = await apiClient.get(
     `${CODESETS_BASE_URL}/resources/OccupationsFlatURL`

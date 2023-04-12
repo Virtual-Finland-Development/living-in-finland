@@ -27,7 +27,7 @@ export default function EducationsSelect(props: Props) {
             onSelect(selected);
             closeModal();
           }}
-          onCancel={closeModal}
+          onClose={closeModal}
         />
       ),
       onClose: () => {},

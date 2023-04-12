@@ -9,11 +9,11 @@ import IndustryEdit from './industry-edit';
 interface Props {
   userNaceCode: string | undefined | null;
   naceCodes: Nace[];
-  handleSelect: (selected: Nace | undefined) => void;
+  onSelect: (selected: Nace | undefined) => void;
 }
 
 export default function IndustrySelect(props: Props) {
-  const { userNaceCode, handleSelect, naceCodes } = props;
+  const { userNaceCode, onSelect, naceCodes } = props;
 
   const groupedNaceCodes = useMemo(
     () => getGroupedNaceCodes(naceCodes || []),
@@ -32,10 +32,10 @@ export default function IndustrySelect(props: Props) {
             userNaceCode ? findNace(groupedNaceCodes, userNaceCode) : undefined
           }
           onSelect={selected => {
-            handleSelect(selected);
+            onSelect(selected);
             closeModal();
           }}
-          onCancel={closeModal}
+          onClose={closeModal}
         />
       ),
       onClose: () => {},

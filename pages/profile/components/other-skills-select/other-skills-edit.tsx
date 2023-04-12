@@ -64,7 +64,7 @@ export default function OtherSkillsEdit(props: Props) {
           }))}
           onSelect={selectSkill}
           onSave={handleSave}
-          onCancel={onClose}
+          onClose={onClose}
         />
 
         <div className="flex flecx-row items-start gap-3 mt-4">

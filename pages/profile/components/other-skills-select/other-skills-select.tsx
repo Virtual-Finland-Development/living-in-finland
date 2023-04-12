@@ -12,11 +12,11 @@ export interface UserOtherSkill extends OtherSkill {
 interface Props {
   userOtherSkills: OtherSkill[] | undefined;
   escoSkills: EscoSkill[];
-  handleSave: (selected: OtherSkill[]) => void;
+  onSelect: (selected: OtherSkill[]) => void;
 }
 
 export default function OtherSkillsSelect(props: Props) {
-  const { userOtherSkills, handleSave, escoSkills } = props;
+  const { userOtherSkills, onSelect, escoSkills } = props;
   const { openModal, closeModal } = useModal();
 
   const userOtherSkillsWithLabels = useMemo(() => {
@@ -47,7 +47,7 @@ export default function OtherSkillsSelect(props: Props) {
         <OtherSkillsEdit
           userOtherSkillsWithLabels={userOtherSkillsWithLabels}
           onSave={selected => {
-            handleSave(selected);
+            onSelect(selected);
             closeModal();
           }}
           onClose={() => closeModal()}

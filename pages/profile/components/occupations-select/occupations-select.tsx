@@ -5,18 +5,14 @@ import type { Occupation, UserOccupation } from '@/types';
 import { useModal } from '@/context/modal-context';
 import OccupationsEdit from './occupations-edit';
 
-export interface UserOccupationSelection extends Partial<UserOccupation> {
-  label?: string;
-}
-
 interface Props {
   userOccupations: UserOccupation[] | undefined;
   occupations: Occupation[];
-  handleSave: (selected: UserOccupationSelection[]) => void;
+  onSelect: (selected: UserOccupation[]) => void;
 }
 
 export default function OccupationsSelect(props: Props) {
-  const { userOccupations, occupations, handleSave } = props;
+  const { userOccupations, occupations, onSelect } = props;
 
   const { openModal, closeModal } = useModal();
 
@@ -39,7 +35,7 @@ export default function OccupationsSelect(props: Props) {
         <OccupationsEdit
           userOccupations={userOccupationsWithLables}
           onSave={selected => {
-            handleSave(selected);
+            onSelect(selected);
             closeModal();
           }}
           onClose={() => closeModal()}
@@ -49,6 +45,7 @@ export default function OccupationsSelect(props: Props) {
     });
   };
 
+  // left for reference, may be needed for ux
   /* return (
     <div className="relative">
       <TextInput

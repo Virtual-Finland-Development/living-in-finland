@@ -8,7 +8,7 @@ interface Props {
   escoLanguages: EscoLanguage[];
   languageSkillLevels: LanguageSkillLevel[];
   onSave: (selected: LanguageSkill[]) => void;
-  onCancel: () => void;
+  onClose: () => void;
 }
 
 interface FormProps {
@@ -22,13 +22,8 @@ const DEFAULT_VALUE: LanguageSkill = {
 };
 
 export default function LanguagesEdit(props: Props) {
-  const {
-    userLanguages,
-    escoLanguages,
-    languageSkillLevels,
-    onSave,
-    onCancel,
-  } = props;
+  const { userLanguages, escoLanguages, languageSkillLevels, onSave, onClose } =
+    props;
 
   const { handleSubmit, control } = useForm<FormProps>({
     defaultValues: userLanguages
@@ -107,7 +102,7 @@ export default function LanguagesEdit(props: Props) {
         </Button>
       </div>
       <div className="flex flex-row gap-3 mt-8">
-        <Button variant="secondary" onClick={onCancel}>
+        <Button variant="secondary" onClick={onClose}>
           Close
         </Button>
         <Button type="submit">Save</Button>

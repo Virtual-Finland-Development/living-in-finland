@@ -17,11 +17,11 @@ interface Props {
   items: Nace[];
   defaultSelected: Nace | undefined;
   onSelect: (selected: Nace | undefined) => void;
-  onCancel: () => void;
+  onClose: () => void;
 }
 
 export default function IndustryEdit(props: Props) {
-  const { items, defaultSelected, onSelect, onCancel } = props;
+  const { items, defaultSelected, onSelect, onClose } = props;
   const [selected, setSelected] = useState<Nace | undefined>(defaultSelected);
   const [openExpander, setOpenExpander] = useState<string | null>(
     defaultSelected?.topLevelGroupCode || null
@@ -112,8 +112,8 @@ export default function IndustryEdit(props: Props) {
       </div>
 
       <div className="flex flex-row gap-3 mt-4">
-        <Button variant="secondary" onClick={onCancel}>
-          Cancel
+        <Button variant="secondary" onClick={onClose}>
+          Close
         </Button>
         <Button onClick={() => onSelect(selected)}>Select</Button>
       </div>

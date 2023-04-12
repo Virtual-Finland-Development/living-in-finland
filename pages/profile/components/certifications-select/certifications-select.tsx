@@ -25,7 +25,7 @@ export default function CertificationsSelect(props: Props) {
             onSelect(selected);
             closeModal();
           }}
-          onCancel={closeModal}
+          onClose={closeModal}
         />
       ),
       onClose: () => {},

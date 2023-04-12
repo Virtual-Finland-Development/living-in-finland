@@ -21,7 +21,7 @@ interface JmfRecommendationsSelectProps {
   controlledSelected?: JmfRecommendation[];
   onSelect?: (selected: JmfRecommendation) => void;
   onSave: (selected?: JmfRecommendation[]) => void;
-  onCancel: () => void;
+  onClose: () => void;
 }
 
 export default function JmfRecommendationsSelect(
@@ -33,8 +33,9 @@ export default function JmfRecommendationsSelect(
     controlledSelected,
     onSelect,
     onSave,
-    onCancel,
+    onClose,
   } = props;
+
   const [textContent, setTextContent] = useState<string | null>('');
   const [extractedTextContent, setExtractedTextContent] = useState<
     string | null
@@ -268,7 +269,7 @@ export default function JmfRecommendationsSelect(
 
         {!isControlled && (
           <div className="flex flecx-row items-start gap-3">
-            <Button variant="secondary" onClick={onCancel}>
+            <Button variant="secondary" onClick={onClose}>
               Close
             </Button>
             <Button

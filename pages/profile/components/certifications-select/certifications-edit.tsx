@@ -13,7 +13,7 @@ interface Props {
   userCertifications: Certification[];
   escoSkills: EscoSkill[];
   onSave: (selected: Certification[]) => void;
-  onCancel: () => void;
+  onClose: () => void;
 }
 
 interface FormProps {
@@ -27,7 +27,7 @@ const DEFAULT_VALUE: Certification = {
 };
 
 export default function CertificationsEdit(props: Props) {
-  const { userCertifications, escoSkills, onSave, onCancel } = props;
+  const { userCertifications, escoSkills, onSave, onClose } = props;
 
   const { handleSubmit, control } = useForm<FormProps>({
     defaultValues: { certifications: userCertifications },
@@ -116,7 +116,7 @@ export default function CertificationsEdit(props: Props) {
       </div>
 
       <div className="flex flex-row gap-3 mt-8">
-        <Button variant="secondary" onClick={onCancel}>
+        <Button variant="secondary" onClick={onClose}>
           Close
         </Button>
         <Button type="submit">Save</Button>

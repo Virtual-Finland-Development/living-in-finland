@@ -152,17 +152,8 @@ export default function WorkingProfileForm(props: Props) {
         <OccupationsSelect
           userOccupations={userOccupations}
           occupations={occupationsFlat || []}
-          handleSave={occupations =>
-            setValue(
-              'occupations',
-              occupations.map(o => ({
-                escoIdentifier: o.escoIdentifier!,
-                escoCode: o.escoCode!,
-                workExperience: o.workExperience!,
-                employer: o.employer!,
-              })),
-              { shouldDirty: true }
-            )
+          onSelect={selected =>
+            setValue('occupations', selected, { shouldDirty: true })
           }
         />
         <EducationsSelect
@@ -191,8 +182,8 @@ export default function WorkingProfileForm(props: Props) {
         <OtherSkillsSelect
           userOtherSkills={otherSkills}
           escoSkills={escoSkills || []}
-          handleSave={skills =>
-            setValue('otherSkills', skills, { shouldDirty: true })
+          onSelect={selected =>
+            setValue('otherSkills', selected, { shouldDirty: true })
           }
         />
         <FormMultiSelect
@@ -253,7 +244,7 @@ export default function WorkingProfileForm(props: Props) {
         <IndustrySelect
           userNaceCode={workPreferences?.naceCode}
           naceCodes={naceCodes || []}
-          handleSelect={selected => {
+          onSelect={selected => {
             setValue(
               'workPreferences.naceCode',
               selected?.dotNotationCodeValue || null,
@@ -264,7 +255,7 @@ export default function WorkingProfileForm(props: Props) {
       </div>
       <div className="mt-8">
         <Button type="submit" disabled={isSubmitting}>
-          Save
+          Save profile
         </Button>
       </div>
     </form>

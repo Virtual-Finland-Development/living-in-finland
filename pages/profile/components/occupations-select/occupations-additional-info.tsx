@@ -9,7 +9,7 @@ import type { UserOccupationSelection } from './occupations-edit';
 
 interface Props {
   selected: UserOccupationSelection[];
-  onBack: () => void;
+  goBack: () => void;
   onSave: (selected: UserOccupation[]) => void;
 }
 
@@ -18,7 +18,7 @@ interface FormProps {
 }
 
 export default function OccupationsAdditionalInfo(props: Props) {
-  const { selected, onBack, onSave } = props;
+  const { selected, goBack, onSave } = props;
 
   const { data: occupations, isLoading } = useOccupationsFlat();
 
@@ -100,7 +100,7 @@ export default function OccupationsAdditionalInfo(props: Props) {
       </div>
 
       <div className="flex flecx-row items-start gap-3 mt-4">
-        <Button variant="secondary" icon="arrowLeft" onClick={onBack}>
+        <Button variant="secondary" icon="arrowLeft" onClick={goBack}>
           Back
         </Button>
         <Button disabled={!selected.length} type="submit">

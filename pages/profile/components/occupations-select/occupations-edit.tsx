@@ -63,7 +63,7 @@ export default function OccupationsEdit(props: Props) {
       {phase === 'additional-info' && (
         <OccupationsAdditionalInfo
           selected={selected}
-          onBack={() => setPhase('selections')}
+          goBack={() => setPhase('selections')}
           onSave={onSave}
         />
       )}
@@ -78,7 +78,7 @@ export default function OccupationsEdit(props: Props) {
           }))}
           onSelect={selectOccupation}
           onSave={handleSave}
-          onCancel={onClose}
+          onClose={onClose}
         />
         <div className="flex flecx-row items-start gap-3 mt-4">
           <Button variant="secondary" onClick={onClose}>

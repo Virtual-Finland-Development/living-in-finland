@@ -9,7 +9,7 @@ interface Props {
   educationFields: EducationField[];
   educationLevels: EducationLevel[];
   onSave: (selected: Education[]) => void;
-  onCancel: () => void;
+  onClose: () => void;
 }
 
 interface FormProps {
@@ -25,7 +25,7 @@ const DEFAULT_VALUE: Education = {
 };
 
 export default function EducationsEdit(props: Props) {
-  const { userEducations, educationFields, educationLevels, onSave, onCancel } =
+  const { userEducations, educationFields, educationLevels, onSave, onClose } =
     props;
 
   const { handleSubmit, control } = useForm<FormProps>({
@@ -119,7 +119,7 @@ export default function EducationsEdit(props: Props) {
         </Button>
       </div>
       <div className="flex flex-row gap-3 mt-8">
-        <Button variant="secondary" onClick={onCancel}>
+        <Button variant="secondary" onClick={onClose}>
           Close
         </Button>
         <Button type="submit">Save</Button>

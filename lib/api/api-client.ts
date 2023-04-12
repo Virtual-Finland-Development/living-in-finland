@@ -2,11 +2,7 @@ import axios from 'axios';
 import { isPast, parseISO } from 'date-fns';
 import { LOCAL_STORAGE_AUTH_KEY, REQUEST_NOT_AUTHORIZED } from '../constants';
 import { JSONLocalStorage } from '../utils/JSONStorage';
-import {
-  PRH_MOCK_BASE_URL,
-  TESTBED_API_BASE_URL,
-  USERS_API_BASE_URL,
-} from './endpoints';
+import { PRH_MOCK_BASE_URL, TESTBED_API_BASE_URL } from './endpoints';
 
 const apiClient = axios.create({});
 
@@ -18,10 +14,8 @@ const PROTECTED_URLS = [
   `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/establishment`,
   `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/beneficial-owners`,
   `${TESTBED_API_BASE_URL}/testbed/productizer/non-listed-company/signatory-rights`,
-  `${USERS_API_BASE_URL}/productizer/draft/Person/BasicInformation`,
-  `${USERS_API_BASE_URL}/productizer/draft/Person/BasicInformation/Write`,
-  `${USERS_API_BASE_URL}/productizer/draft/Person/JobApplicantProfile`,
-  `${USERS_API_BASE_URL}/productizer/draft/Person/JobApplicantProfile/Write`,
+  `${TESTBED_API_BASE_URL}/testbed/productizer/person/basic-information`,
+  `${TESTBED_API_BASE_URL}/testbed/productizer/person/job-applicant-information`,
 ];
 
 apiClient.interceptors.request.use(config => {

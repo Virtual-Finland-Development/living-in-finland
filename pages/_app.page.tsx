@@ -61,15 +61,15 @@ export default function App({ Component, pageProps }: ExtendedAppProps) {
             }
 
             return (
-              <ModalProvider>
-                <ToastProvider>
+              <ToastProvider>
+                <ModalProvider>
                   <MainLayout>
                     <ComponentContextProvider>
                       <Component {...pageProps} />
                     </ComponentContextProvider>
                   </MainLayout>
-                </ToastProvider>
-              </ModalProvider>
+                </ModalProvider>
+              </ToastProvider>
             );
           }}
         </AuthConsumer>

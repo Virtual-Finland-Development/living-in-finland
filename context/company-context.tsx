@@ -11,8 +11,8 @@ import lodash_get from 'lodash.get';
 import lodash_merge from 'lodash.merge';
 import type {
   BenecifialOwners,
-  CountryOption,
-  CurrencyOption,
+  Country,
+  Currency,
   NonListedCompany,
   SignatoryRights,
 } from '@/types';
@@ -71,8 +71,8 @@ interface CompanyContextProps {
   isSaving: boolean;
   nationalIdentifier?: string;
   codesets: {
-    countries: CountryOption[] | undefined;
-    currencies: CurrencyOption[] | undefined;
+    countries: Country[] | undefined;
+    currencies: Currency[] | undefined;
   };
   saveCompany: () => void;
   saveIsSuccess: boolean;

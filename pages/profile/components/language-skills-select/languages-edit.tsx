@@ -75,10 +75,12 @@ export default function LanguagesEdit(props: Props) {
               control={control}
               rules={{ required: true }}
               labelText="Skill level"
-              items={languageSkillLevels.map(l => ({
-                labelText: l.prefLabel.en,
-                uniqueItemId: l.codeValue,
-              }))}
+              items={languageSkillLevels
+                .filter(l => l.codeValue.length === 2)
+                .map(l => ({
+                  labelText: l.prefLabel.en,
+                  uniqueItemId: l.codeValue,
+                }))}
             />
             <div>
               <Button

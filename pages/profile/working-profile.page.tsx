@@ -8,17 +8,12 @@ import Loading from '@/components/ui/loading';
 import WorkingProfileForm from './components/working-profile-form';
 
 export default function WorkingProfilePage() {
-  const {
-    data: jobApplicationProfile,
-    isLoading,
-    isFetching,
-  } = useJobApplicantProfile();
-  const loading = isLoading || isFetching;
+  const { data: jobApplicationProfile, isLoading } = useJobApplicantProfile();
 
   return (
     <AuthSentry redirectPath="/profile">
       <Page title="Working profile">
-        {loading ? (
+        {isLoading ? (
           <Page.Block className="bg-white flex items-center justify-center min-h-[200px]">
             <Loading />
           </Page.Block>

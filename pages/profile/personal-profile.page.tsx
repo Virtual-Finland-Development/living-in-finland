@@ -9,18 +9,13 @@ import Loading from '@/components/ui/loading';
 import PersonalProfileForm from './components/personal-profile-form';
 
 export default function PersonalProfilePage() {
-  const {
-    data: personBasicInformation,
-    isLoading,
-    isFetching,
-  } = usePersonBasicInfo();
-  const loading = isLoading || isFetching;
+  const { data: personBasicInformation, isLoading } = usePersonBasicInfo();
   const router = useRouter();
 
   return (
     <AuthSentry redirectPath="/profile">
       <Page title="Personal profile">
-        {loading ? (
+        {isLoading ? (
           <Page.Block className="bg-white flex items-center justify-center min-h-[200px]">
             <Loading />
           </Page.Block>

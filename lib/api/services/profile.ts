@@ -35,3 +35,10 @@ export async function saveJobApplicantProfile(
   );
   return data;
 }
+
+export async function deleteProfile() {
+  const { data } = await apiClient.delete(
+    `${TESTBED_API_BASE_URL}/users-api/user`
+  );
+  return data;
+}

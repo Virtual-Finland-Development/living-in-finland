@@ -12,6 +12,7 @@ interface ModalProps {
   content: ReactNode;
   footerContent?: ReactNode;
   onClose?: () => void;
+  closeOnEsc?: boolean;
 }
 
 interface ModalContextProps {

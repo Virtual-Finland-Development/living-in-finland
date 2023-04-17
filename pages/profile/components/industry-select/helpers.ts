@@ -4,7 +4,7 @@ type ExtendedNace = Nace & { isSearchMatch?: boolean };
 
 // search condition
 const searchCondition = (item: Nace, searchText: string) =>
-  item.prefLabel.en.toLowerCase().includes(searchText.toLowerCase());
+  item.prefLabel.en.toLowerCase().includes(searchText.trim().toLowerCase());
 
 // try to find match with items & their children
 export function isMatchWithSearch(item: Nace, searchText: string) {

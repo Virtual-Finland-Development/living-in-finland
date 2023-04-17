@@ -30,6 +30,23 @@ import LanguageSkillsSelect from './language-skills-select/language-skills-selec
 import OccupationsSelect from './occupations-select/occupations-select';
 import OtherSkillsSelect from './other-skills-select/other-skills-select';
 
+const DEFAUT_VALUES = {
+  occupations: [],
+  educations: [],
+  languageSkills: [],
+  otherSkills: [],
+  certifications: [],
+  permits: [],
+  workPreferences: {
+    naceCode: null,
+    preferredRegion: [],
+    preferredMunicipality: [],
+    typeOfEmployment: null,
+    workingTime: null,
+    workingLanguage: [],
+  },
+};
+
 interface Props {
   jobApplicationProfile: JobApplicantProfile | undefined;
 }
@@ -76,7 +93,9 @@ export default function WorkingProfileForm(props: Props) {
     watch,
     setValue,
   } = useForm<JobApplicantProfile>({
-    defaultValues: jobApplicationProfile && { ...jobApplicationProfile },
+    defaultValues: jobApplicationProfile
+      ? jobApplicationProfile
+      : DEFAUT_VALUES,
   });
 
   const {

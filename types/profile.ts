@@ -74,8 +74,8 @@ export interface JobApplicantProfile {
   workPreferences: {
     preferredRegion: string[];
     preferredMunicipality: string[];
-    typeOfEmployment: EmploymentType;
-    workingTime: WorkingTime;
+    typeOfEmployment: EmploymentType | null;
+    workingTime: WorkingTime | null;
     workingLanguage: string[];
     naceCode: string | null;
   };

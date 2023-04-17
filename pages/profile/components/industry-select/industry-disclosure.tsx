@@ -1,7 +1,9 @@
+import Highlighter from 'react-highlight-words';
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
 import { Disclosure } from '@headlessui/react';
 import { Checkbox } from 'suomifi-ui-components';
 import type { Nace } from '@/types';
+import { isMatchWithSearch } from './helpers';
 
 interface DisclosureLabelProps {
   item: Nace;
@@ -14,15 +16,35 @@ interface DisclosureLabelProps {
     isChecked: boolean,
     isIndeterminate: boolean
   ) => void;
+  searchText: string;
 }
 
+const Highlight = ({ children }: { children: string }) => (
+  <strong>{children}</strong>
+);
+
 function DisclosureLabel(props: DisclosureLabelProps) {
-  const { item, isOpen, isTopLevel, isChecked, isIndeterminate, onSelect } =
-    props;
+  const {
+    item,
+    isOpen,
+    isTopLevel,
+    isChecked,
+    isIndeterminate,
+    onSelect,
+    searchText,
+  } = props;
+
+  const searchWords = searchText.toLocaleLowerCase().split(' ');
 
   return isTopLevel ? (
     <Disclosure.Button className="flex flex-row gap-2 items-center justify-center text-left">
-      {item.prefLabel.en}
+      <Highlighter
+        highlightClassName="font-semibold bg-red"
+        searchWords={searchWords}
+        autoEscape={true}
+        textToHighlight={item.prefLabel.en}
+        highlightTag={Highlight}
+      />
       <span className="mt-1">
         {isOpen ? <IoChevronUp /> : <IoChevronDown />}
       </span>
@@ -36,7 +58,13 @@ function DisclosureLabel(props: DisclosureLabelProps) {
           onSelect(item.codeValue, checkboxState, isIndeterminate)
         }
       >
-        {item.prefLabel.en}
+        <Highlighter
+          highlightClassName="font-semibold bg-red"
+          searchWords={searchWords}
+          autoEscape={true}
+          textToHighlight={item.prefLabel.en}
+          highlightTag={Highlight}
+        />
       </Checkbox>
       {item.children && (
         <Disclosure.Button>
@@ -57,10 +85,12 @@ interface IndustryDisclosureProps {
     checked: boolean,
     isIndeterminate: boolean
   ) => void;
+  searchText: string;
+  isSearchMatch: boolean;
 }
 
 export default function IndustryDisclosure(props: IndustryDisclosureProps) {
-  const { item, selected, onSelect } = props;
+  const { item, selected, onSelect, searchText, isSearchMatch } = props;
 
   const isChecked = Boolean(
     selected &&
@@ -74,7 +104,7 @@ export default function IndustryDisclosure(props: IndustryDisclosureProps) {
 
   if (item.children) {
     return (
-      <Disclosure defaultOpen={isChecked || isIndeterminate}>
+      <Disclosure defaultOpen={isChecked || isIndeterminate || isSearchMatch}>
         {({ open }) => (
           <>
             <DisclosureLabel
@@ -84,21 +114,28 @@ export default function IndustryDisclosure(props: IndustryDisclosureProps) {
               isChecked={isChecked}
               isIndeterminate={isIndeterminate}
               onSelect={onSelect}
+              searchText={searchText}
             />
             <Disclosure.Panel>
               {open &&
-                item.children?.map(item => (
-                  <div
-                    key={item.codeValue}
-                    className="flex flex-col ml-4 items-start"
-                  >
-                    <IndustryDisclosure
-                      item={item}
-                      selected={selected}
-                      onSelect={onSelect}
-                    />
-                  </div>
-                ))}
+                item.children
+                  ?.filter(child =>
+                    searchText ? isMatchWithSearch(child, searchText) : true
+                  )
+                  .map(item => (
+                    <div
+                      key={item.codeValue}
+                      className="flex flex-col ml-4 items-start"
+                    >
+                      <IndustryDisclosure
+                        item={item}
+                        selected={selected}
+                        onSelect={onSelect}
+                        searchText={searchText}
+                        isSearchMatch={isSearchMatch}
+                      />
+                    </div>
+                  ))}
             </Disclosure.Panel>
           </>
         )}
@@ -114,6 +151,7 @@ export default function IndustryDisclosure(props: IndustryDisclosureProps) {
       isChecked={isChecked}
       isIndeterminate={isIndeterminate}
       onSelect={onSelect}
+      searchText={searchText}
     />
   );
 }

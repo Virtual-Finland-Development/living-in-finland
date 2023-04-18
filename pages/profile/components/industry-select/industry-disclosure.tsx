@@ -34,12 +34,11 @@ function DisclosureLabel(props: DisclosureLabelProps) {
     searchText,
   } = props;
 
-  const searchWords = searchText.toLocaleLowerCase().split(' ');
+  const searchWords = searchText.toLowerCase().split(' ');
 
   return isTopLevel ? (
     <Disclosure.Button className="flex flex-row gap-2 items-center justify-center text-left">
       <Highlighter
-        highlightClassName="font-semibold bg-red"
         searchWords={searchWords}
         autoEscape={true}
         textToHighlight={item.prefLabel.en}
@@ -59,7 +58,6 @@ function DisclosureLabel(props: DisclosureLabelProps) {
         }
       >
         <Highlighter
-          highlightClassName="font-semibold bg-red"
           searchWords={searchWords}
           autoEscape={true}
           textToHighlight={item.prefLabel.en}

@@ -3,7 +3,7 @@ import type { Nace } from '@/types';
 type ExtendedNace = Nace & { isSearchMatch?: boolean };
 
 // search condition
-const searchCondition = (item: Nace, searchText: string) => {
+function searchCondition(item: Nace, searchText: string) {
   const labelWords = item.prefLabel.en.toLowerCase().split(' ');
   const searchWords = searchText.toLowerCase().split(' ');
 
@@ -11,7 +11,7 @@ const searchCondition = (item: Nace, searchText: string) => {
     searchWords.some(word => item.prefLabel.en.toLowerCase().includes(word)) ||
     labelWords.filter(word => searchWords.includes(word)).length > 0
   );
-};
+}
 
 // try to find match with items & their children
 export function isMatchWithSearch(item: Nace, searchText: string) {

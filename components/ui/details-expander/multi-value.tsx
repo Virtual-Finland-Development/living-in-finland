@@ -5,9 +5,12 @@ import SingleValue from './single-value';
 interface MultiValueProps {
   index: number;
   valueObj: Record<string, any>;
+  labels: Record<string, any>;
 }
 
-export default function MultiValue({ index, valueObj }: MultiValueProps) {
+export default function MultiValue(props: MultiValueProps) {
+  const { index, valueObj, labels } = props;
+
   try {
     return (
       <div className="flex flex-row">
@@ -18,22 +21,28 @@ export default function MultiValue({ index, valueObj }: MultiValueProps) {
             .filter(valueKey => valueObj[valueKey])
             .map(valueKey => {
               const value = valueObj[valueKey];
-              const isArray = Array.isArray(value);
+              const isArrayOfObjects =
+                Array.isArray(value) && value.every(i => typeof i === 'object');
 
-              return !isArray ? (
+              return !isArrayOfObjects ? (
                 <SingleValue
                   key={valueKey}
-                  label={COMPANY_DATA_LABELS[valueKey] || ''}
+                  label={labels[valueKey] || ''}
                   value={value}
                 />
               ) : (
                 <div key={valueKey}>
                   <Text className="!text-base">
                     {COMPANY_DATA_LABELS[valueKey] || ''}:
-                  </Text>{' '}
+                  </Text>
                   {valueObj[valueKey].map(
                     (obj: Record<string, any>, i: number) => (
-                      <MultiValue key={i} index={i} valueObj={obj} />
+                      <MultiValue
+                        key={i}
+                        index={i}
+                        valueObj={obj}
+                        labels={labels}
+                      />
                     )
                   )}
                 </div>

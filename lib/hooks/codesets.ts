@@ -9,199 +9,126 @@ const OPTIONS = {
   staleTime: 300_000,
 };
 
-function useCountries() {
-  const query = useQuery(
+function queryFunction<T>(
+  queryKeys: string[],
+  apiCall: () => Promise<T>,
+  enabled: boolean
+) {
+  const query = useQuery(queryKeys, apiCall, { ...OPTIONS, enabled });
+
+  useErrorToast({
+    title: `Could not fetch codesets: ${queryKeys.join(', ')}`,
+    error: query.error,
+  });
+
+  return {
+    ...query,
+    isLoading: query.isLoading && query.fetchStatus !== 'idle',
+  };
+}
+
+function useCountries(enabled: boolean = true) {
+  return queryFunction(
     ['countries'],
     async () => await api.codesets.getCountries(),
-    OPTIONS
+    enabled
   );
-
-  useErrorToast({
-    title: 'Could not fetch codesets: countries',
-    error: query.error,
-  });
-
-  return query;
 }
 
-function useCurrencies() {
-  const query = useQuery(
+function useCurrencies(enabled: boolean = true) {
+  return queryFunction(
     ['currencies'],
     async () => await api.codesets.getCurrencies(),
-    OPTIONS
+    enabled
   );
-
-  useErrorToast({
-    title: 'Could not fetch codesets: currencies',
-    error: query.error,
-  });
-
-  return query;
 }
 
-function useLanguages() {
-  const query = useQuery(
+function useLanguages(enabled: boolean = true) {
+  return queryFunction(
     ['languages'],
     async () => await api.codesets.getLanguages(),
-    OPTIONS
+    enabled
   );
-
-  useErrorToast({
-    title: 'Could not fetch codesets: languages',
-    error: query.error,
-  });
-
-  return query;
 }
 
-function useEscoLanguages() {
-  const query = useQuery(
+function useEscoLanguages(enabled: boolean = true) {
+  return queryFunction(
     ['esco-languages'],
     async () => await api.codesets.getEscoLanguages(),
-    OPTIONS
+    enabled
   );
-
-  useErrorToast({
-    title: 'Could not fetch codesets: esco languages',
-    error: query.error,
-  });
-
-  return query;
 }
 
-function useLanguageSkillLevels() {
-  const query = useQuery(
+function useLanguageSkillLevels(enabled: boolean = true) {
+  return queryFunction(
     ['language-skill-levels'],
     async () => await api.codesets.getLanguageSkillLevels(),
-    OPTIONS
+    enabled
   );
-
-  useErrorToast({
-    title: 'Could not fetch codesets: language skill levels',
-    error: query.error,
-  });
-
-  return query;
 }
 
-function useNaceCodes() {
-  const query = useQuery(
+function useNaceCodes(enabled: boolean = true) {
+  return queryFunction(
     ['nace'],
     async () => await api.codesets.getNaceCodes(),
-    OPTIONS
+    enabled
   );
-
-  useErrorToast({
-    title: 'Could not fetch codesets: nace codes',
-    error: query.error,
-  });
-
-  return query;
 }
 
-function useEducationFields() {
-  const query = useQuery(
+function useEducationFields(enabled: boolean = true) {
+  return queryFunction(
     ['education-fields'],
     async () => await api.codesets.getEducationFields(),
-    OPTIONS
+    enabled
   );
-
-  useErrorToast({
-    title: 'Could not fetch codesets: education fields',
-    error: query.error,
-  });
-
-  return query;
 }
 
-function useEducationLevels() {
-  const query = useQuery(
+function useEducationLevels(enabled: boolean = true) {
+  return queryFunction(
     ['education-levels'],
     async () => await api.codesets.getEducationLevels(),
-    OPTIONS
+    enabled
   );
-
-  useErrorToast({
-    title: 'Could not fetch codesets: education levels',
-    error: query.error,
-  });
-
-  return query;
 }
 
-function useWorkPermits() {
-  const query = useQuery(
+function useWorkPermits(enabled: boolean = true) {
+  return queryFunction(
     ['permits'],
     async () => await api.codesets.getWorkPermits(),
-    OPTIONS
+    enabled
   );
-
-  useErrorToast({
-    title: 'Could not fetch codesets: work permits',
-    error: query.error,
-  });
-
-  return query;
 }
 
-function useRegions() {
-  const query = useQuery(
+function useRegions(enabled: boolean = true) {
+  return queryFunction(
     ['regions'],
     async () => await api.codesets.getRegions(),
-    OPTIONS
+    enabled
   );
-
-  useErrorToast({
-    title: 'Could not fetch codesets: regions',
-    error: query.error,
-  });
-
-  return query;
 }
 
-function useMunicipalities() {
-  const query = useQuery(
+function useMunicipalities(enabled: boolean = true) {
+  return queryFunction(
     ['municipalities'],
     async () => await api.codesets.getMunicipalities(),
-    OPTIONS
+    enabled
   );
-
-  useErrorToast({
-    title: 'Could not fetch codesets: municipalities',
-    error: query.error,
-  });
-
-  return query;
 }
 
-function useOccupations() {
-  const query = useQuery(
+function useOccupations(enabled: boolean = true) {
+  return queryFunction(
     ['occupations-flat'],
     async () => await api.codesets.getOccupationsFlat(),
-    OPTIONS
+    enabled
   );
-
-  useErrorToast({
-    title: 'Could not fetch codesets: occupations flat',
-    error: query.error,
-  });
-
-  return query;
 }
 
-function useEscoSkills() {
-  const query = useQuery(
+function useEscoSkills(enabled: boolean = true) {
+  return queryFunction(
     ['esco-skills'],
     async () => await api.codesets.getEscoSkills(),
-    OPTIONS
+    enabled
   );
-
-  useErrorToast({
-    title: 'Could not fetch codesets: esco skills',
-    error: query.error,
-  });
-
-  return query;
 }
 
 export {

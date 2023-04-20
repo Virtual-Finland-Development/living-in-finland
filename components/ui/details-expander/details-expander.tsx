@@ -1,32 +1,31 @@
+import { ReactNode } from 'react';
 import { MdDone, MdOutlineInfo } from 'react-icons/md';
 import {
-  Button,
   Expander,
   ExpanderContent,
   ExpanderTitleButton,
 } from 'suomifi-ui-components';
-import { COMPANY_DATA_LABELS } from '@/lib/constants';
 import CustomHeading from '@/components/ui/custom-heading';
 import MultiValue from './multi-value';
 import SingleValue from './single-value';
 
-interface PreviewExpanderProps<T> {
+interface DetailsExpanderProps<T> {
   title: string;
-  showEditButtons?: boolean;
-  onEditClick?: () => void;
-  onClearClick?: () => void;
-  allStepsDone?: boolean;
+  hasValues?: boolean;
+  showStatusIcons?: boolean;
   values: Partial<Record<keyof T, any>> | undefined;
+  labels: Record<string, any>;
+  children?: ReactNode;
 }
 
-export default function PreviewExpander<T>(props: PreviewExpanderProps<T>) {
+export default function DetailsExpander<T>(props: DetailsExpanderProps<T>) {
   const {
     title,
-    showEditButtons = false,
-    onEditClick = () => {},
-    onClearClick = () => {},
-    allStepsDone,
+    hasValues,
+    showStatusIcons = true,
     values,
+    labels,
+    children,
   } = props;
 
   return (
@@ -34,9 +33,9 @@ export default function PreviewExpander<T>(props: PreviewExpanderProps<T>) {
       <ExpanderTitleButton>
         <div className="flex flex-row gap-2 items-center">
           <span>{title}</span>{' '}
-          {typeof allStepsDone === 'boolean' && (
+          {typeof hasValues === 'boolean' && showStatusIcons && (
             <>
-              {allStepsDone ? (
+              {hasValues ? (
                 <MdDone size={22} color="green" />
               ) : (
                 <MdOutlineInfo size={22} color="orange" />
@@ -47,44 +46,54 @@ export default function PreviewExpander<T>(props: PreviewExpanderProps<T>) {
       </ExpanderTitleButton>
       <ExpanderContent className="!text-base">
         <div className="flex flex-col gap-4 mt-4">
-          {allStepsDone !== undefined && !allStepsDone && (
-            <CustomHeading variant="h4">Missing information.</CustomHeading>
+          {typeof hasValues === 'boolean' && !hasValues && (
+            <CustomHeading variant="h4">No information provided.</CustomHeading>
           )}
 
           {values !== undefined &&
             Object.keys(values).map(dataKey => {
               const value: any = values[dataKey as keyof typeof values];
               const isArray = Array.isArray(value);
+              const isArrayOfObjects =
+                isArray && value.every(i => typeof i === 'object');
               const isString =
                 typeof value === 'string' || value instanceof String;
 
               return (
                 <div key={dataKey}>
-                  <CustomHeading variant="h4">
-                    {COMPANY_DATA_LABELS[dataKey] || ''}
-                  </CustomHeading>
+                  {labels[dataKey] && (
+                    <CustomHeading variant="h4">
+                      {labels[dataKey]}
+                    </CustomHeading>
+                  )}
 
                   <div className="grid grid-cols-1 lg:grid-cols-2 mt-2 gap-4">
-                    {isArray &&
+                    {isArray && value.length < 1 && <span>-</span>}
+
+                    {isArrayOfObjects &&
                       value.map((_, index: number) => (
                         <MultiValue
                           key={`${dataKey}-${index}`}
                           index={index}
                           valueObj={value[index]}
+                          labels={labels}
                         />
                       ))}
-                    {!isArray && !isString && (
+
+                    {!isArrayOfObjects && !isString && (
                       <div>
                         {value &&
                           Object.keys(value).map((key, i) => {
                             const nestedValue =
                               value[key as keyof typeof value];
-                            const isArray = Array.isArray(nestedValue);
+                            const isArrayOfObjects =
+                              Array.isArray(nestedValue) &&
+                              nestedValue.every(i => typeof i === 'object');
 
-                            return !isArray ? (
+                            return !isArrayOfObjects ? (
                               <SingleValue
                                 key={i}
-                                label={COMPANY_DATA_LABELS[key] || ''}
+                                label={labels[key] || ''}
                                 value={nestedValue as string}
                               />
                             ) : (
@@ -92,14 +101,16 @@ export default function PreviewExpander<T>(props: PreviewExpanderProps<T>) {
                                 key={i}
                                 index={i}
                                 valueObj={nestedValue}
+                                labels={labels}
                               />
                             );
                           })}
                       </div>
                     )}
+
                     {isString && (
                       <SingleValue
-                        label={COMPANY_DATA_LABELS[dataKey] || ''}
+                        label={labels[dataKey] || ''}
                         value={value as string}
                       />
                     )}
@@ -109,14 +120,8 @@ export default function PreviewExpander<T>(props: PreviewExpanderProps<T>) {
             })}
         </div>
 
-        {showEditButtons && (
-          <div className="flex flex-row gap-4 mt-8">
-            <Button onClick={onEditClick}>Edit information</Button>
-            <Button variant="secondary" onClick={onClearClick}>
-              Clear data
-            </Button>
-          </div>
-        )}
+        {/* render any optional children content */}
+        {children && <>{children}</>}
       </ExpanderContent>
     </Expander>
   );

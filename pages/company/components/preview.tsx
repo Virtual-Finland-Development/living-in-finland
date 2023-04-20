@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router';
+import { Button } from 'suomifi-ui-components';
 import { BenecifialOwners, NonListedCompany, SignatoryRights } from '@/types';
+import { COMPANY_DATA_LABELS } from '@/lib/constants';
 import { useCompanyContext } from '@/context/company-context';
 import type { Step } from '@/context/company-context';
 import CustomHeading from '@/components/ui/custom-heading';
-import PreviewExpander from './preview-expander';
+import DetailsExpander from '@/components/ui/details-expander/details-expander';
 
 interface Props {
   previewType: 'all' | 'company' | 'beneficialOwners' | 'signatoryRights';
@@ -22,6 +24,23 @@ function isAllStepsDone(
   const doneStepValues = Object.values(trackedDoneSteps);
   const allStepsDone = doneStepValues.every(isDone => isDone);
   return allStepsDone;
+}
+
+function EditActions({
+  onEditClick,
+  onClearClick,
+}: {
+  onEditClick: () => void;
+  onClearClick: () => void;
+}) {
+  return (
+    <div className="flex flex-row gap-4 mt-8">
+      <Button onClick={onEditClick}>Edit information</Button>
+      <Button variant="secondary" onClick={onClearClick}>
+        Clear data
+      </Button>
+    </div>
+  );
 }
 
 export default function Preview(props: Props) {
@@ -49,48 +68,65 @@ export default function Preview(props: Props) {
       )}
 
       {['all', 'company'].includes(previewType) && (
-        <PreviewExpander<Partial<NonListedCompany>>
+        <DetailsExpander<Partial<NonListedCompany>>
           title={previewType === 'all' ? '1. Details' : 'Details'}
           values={company}
-          allStepsDone={isAllStepsDone('company', doneSteps)}
-          showEditButtons={previewType === 'all'}
-          onEditClick={() => router.push(`${editUrlBase}/details`)}
-          onClearClick={() => {
-            clearValues('company');
-            window.scrollTo(0, 0);
-          }}
-        />
+          labels={COMPANY_DATA_LABELS}
+          hasValues={isAllStepsDone('company', doneSteps)}
+        >
+          {previewType === 'all' && (
+            <EditActions
+              onEditClick={() => router.push(`${editUrlBase}/details`)}
+              onClearClick={() => {
+                clearValues('company');
+                window.scrollTo(0, 0);
+              }}
+            />
+          )}
+        </DetailsExpander>
       )}
 
       {['all', 'beneficialOwners'].includes(previewType) && (
-        <PreviewExpander<Partial<BenecifialOwners>>
+        <DetailsExpander<Partial<BenecifialOwners>>
           title={
             previewType === 'all' ? '2. Beneficial owners' : 'Beneficial owners'
           }
           values={beneficialOwners}
-          allStepsDone={isAllStepsDone('beneficialOwners', doneSteps)}
-          showEditButtons={previewType === 'all'}
-          onEditClick={() => router.push(`${editUrlBase}/beneficial-owners`)}
-          onClearClick={() => {
-            clearValues('beneficialOwners');
-            window.scrollTo(0, 0);
-          }}
-        />
+          labels={COMPANY_DATA_LABELS}
+          hasValues={isAllStepsDone('beneficialOwners', doneSteps)}
+        >
+          {previewType === 'all' && (
+            <EditActions
+              onEditClick={() =>
+                router.push(`${editUrlBase}/beneficial-owners`)
+              }
+              onClearClick={() => {
+                clearValues('beneficialOwners');
+                window.scrollTo(0, 0);
+              }}
+            />
+          )}
+        </DetailsExpander>
       )}
       {['all', 'signatoryRights'].includes(previewType) && (
-        <PreviewExpander<SignatoryRights>
+        <DetailsExpander<SignatoryRights>
           title={
             previewType === 'all' ? '3. Signatory rights' : 'Signatory rights'
           }
           values={signatoryRights}
-          allStepsDone={isAllStepsDone('signatoryRights', doneSteps)}
-          showEditButtons={previewType === 'all'}
-          onEditClick={() => router.push(`${editUrlBase}/signatory-rights`)}
-          onClearClick={() => {
-            clearValues('signatoryRights');
-            window.scrollTo(0, 0);
-          }}
-        />
+          labels={COMPANY_DATA_LABELS}
+          hasValues={isAllStepsDone('signatoryRights', doneSteps)}
+        >
+          {previewType === 'all' && (
+            <EditActions
+              onEditClick={() => router.push(`${editUrlBase}/signatory-rights`)}
+              onClearClick={() => {
+                clearValues('signatoryRights');
+                window.scrollTo(0, 0);
+              }}
+            />
+          )}
+        </DetailsExpander>
       )}
     </div>
   );

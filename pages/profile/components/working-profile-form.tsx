@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useQueryClient } from '@tanstack/react-query';
 import { Button } from 'suomifi-ui-components';
 import { EmploymentType, JobApplicantProfile, WorkingTime } from '@/types';
 import api from '@/lib/api';
@@ -17,6 +18,7 @@ import {
   useRegions,
   useWorkPermits,
 } from '@/lib/hooks/codesets';
+import { JOB_APPLICATION_QUERY_KEYS } from '@/lib/hooks/profile';
 import { nullifyUndefinedValues } from '@/lib/utils';
 import { useToast } from '@/context/toast-context';
 import FormMultiSelect from '@/components/form/form-multi-select';
@@ -53,8 +55,8 @@ interface Props {
 
 export default function WorkingProfileForm(props: Props) {
   const { jobApplicationProfile } = props;
-
   const toast = useToast();
+  const reactQueryClient = useQueryClient();
 
   const { data: occupations, isLoading: occupationsLoading } = useOccupations();
   const { data: languages, isLoading: languagesLoading } = useLanguages();
@@ -141,8 +143,10 @@ export default function WorkingProfileForm(props: Props) {
 
   const onSubmit: SubmitHandler<JobApplicantProfile> = async values => {
     try {
+      // save profile and update profile data in react-query
       const payload = nullifyUndefinedValues(values);
-      await api.profile.saveJobApplicantProfile(payload);
+      const response = await api.profile.saveJobApplicantProfile(payload);
+      reactQueryClient.setQueryData(JOB_APPLICATION_QUERY_KEYS, response);
       toast({
         status: 'neutral',
         title: 'Success',

@@ -1,8 +1,10 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useQueryClient } from '@tanstack/react-query';
 import { Button } from 'suomifi-ui-components';
 import type { PersonBasicInformation } from '@/types';
 import api from '@/lib/api';
 import { useCountries } from '@/lib/hooks/codesets';
+import { BASIC_INFO_QUERY_KEYS } from '@/lib/hooks/profile';
 import { pickRandomName } from '@/lib/utils';
 import { useAuth } from '@/context/auth-context';
 import { useToast } from '@/context/toast-context';
@@ -22,6 +24,7 @@ export default function PersonalProfileForm(props: Props) {
   const { userEmail } = useAuth();
   const { data: countries, isLoading } = useCountries();
   const toast = useToast();
+  const reactQueryClient = useQueryClient();
 
   const {
     control,
@@ -45,7 +48,9 @@ export default function PersonalProfileForm(props: Props) {
   const onSubmit: SubmitHandler<PersonBasicInformation> = async values => {
     try {
       if (Object.keys(dirtyFields).length) {
-        await api.profile.savePersonBasicInfo(values);
+        // save profile and update profile data in react-query
+        const response = await api.profile.savePersonBasicInfo(values);
+        reactQueryClient.setQueryData(BASIC_INFO_QUERY_KEYS, response);
         toast({
           status: 'neutral',
           title: 'Success',

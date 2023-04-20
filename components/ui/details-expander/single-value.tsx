@@ -6,7 +6,8 @@ interface SingleValueProps {
 export default function SingleValue({ label, value }: SingleValueProps) {
   return (
     <div>
-      {label}: {value}
+      <>{label && <span>{label}: </span>}</>
+      <span>{value || '-'}</span>
     </div>
   );
 }

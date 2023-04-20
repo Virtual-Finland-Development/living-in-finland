@@ -1,21 +1,14 @@
-import { useRouter } from 'next/router';
-import { Button, Text } from 'suomifi-ui-components';
-import tw, { css } from 'twin.macro';
+import { Text } from 'suomifi-ui-components';
 import {
   useJobApplicantProfile,
   usePersonBasicInfo,
 } from '@/lib/hooks/profile';
-import { useModal } from '@/context/modal-context';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
-import DangerButton from '@/components/ui/danger-button';
 import Loading from '@/components/ui/loading';
-import ProfileDeleteConfirmation from './profile-delete-confirmation';
+import ProfileDetails from './profile-details/profile-details';
 
 export default function ProfileAuthenticated() {
-  const router = useRouter();
-  const { openModal, closeModal } = useModal();
-
   const { data: personBasicInformation, isLoading: basicInformationLoading } =
     usePersonBasicInfo();
   const {
@@ -24,14 +17,6 @@ export default function ProfileAuthenticated() {
   } = useJobApplicantProfile();
 
   const isLoading = basicInformationLoading || jobApplicationProfileLoading;
-
-  const onDelete = () =>
-    openModal({
-      title: 'Delete profile',
-      content: <ProfileDeleteConfirmation onCancel={closeModal} />,
-      onClose: closeModal,
-      closeOnEsc: false,
-    });
 
   return (
     <>
@@ -47,6 +32,7 @@ export default function ProfileAuthenticated() {
                 Profile
               </CustomHeading>
             </div>
+
             <Text>
               Lorem ipsum dolor sit amet, consectetur adipisci elit, sed eiusmod
               tempor incidunt ut labore et dolore magna aliqua. Ut enim ad minim
@@ -56,17 +42,11 @@ export default function ProfileAuthenticated() {
               obcaecat cupiditat non proident, sunt in culpa qui officia
               deserunt mollit anim id est laborum.
             </Text>
-            <Button onClick={() => router.push('/profile/personal-profile')}>
-              Your personal profile
-            </Button>
-            <Button onClick={() => router.push('/profile/working-profile')}>
-              Your working profile
-            </Button>
-            {(personBasicInformation || jobApplicationProfile) && (
-              <DangerButton onClick={onDelete}>
-                Delete your profile
-              </DangerButton>
-            )}
+
+            <ProfileDetails
+              personBasicInformation={personBasicInformation}
+              jobApplicationProfile={jobApplicationProfile}
+            />
           </div>
         </Page.Block>
       )}

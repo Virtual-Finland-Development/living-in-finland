@@ -97,6 +97,7 @@ export default function CertificationsEdit(props: Props) {
             <Button
               variant="link"
               iconRight="remove"
+              className="!mt-3"
               onClick={() => remove(index)}
             >
               Remove

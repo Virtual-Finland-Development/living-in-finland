@@ -8,16 +8,17 @@ import type {
   SignatoryRights,
 } from '@/types';
 import api from '@/lib/api';
+import { COMPANY_DATA_LABELS } from '@/lib/constants';
 import { useToast } from '@/context/toast-context';
 import FormInput from '@/components/form/form-input';
 import FormSingleSelect from '@/components/form/form-single-select';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
+import DetailsExpander from '@/components/ui/details-expander/details-expander';
 import Loading from '@/components/ui/loading';
 import dummyCompanyDataFI from '../../../lib/fake-data/company-search-fi.json';
 import dummyCompanyDataNO from '../../../lib/fake-data/company-search-no.json';
 import dummyCompanyDataSE from '../../../lib/fake-data/company-search-se.json';
-import PreviewExpander from '../components/preview/preview-expander';
 
 const SOURCE_OPTIONS = [
   { labelText: 'Norway', uniqueItemId: 'no' },
@@ -126,19 +127,22 @@ export default function CompanySearchPage() {
               <CustomHeading variant="h3">
                 {companyData.name || 'Company details'}
               </CustomHeading>
-              <PreviewExpander<CompanyBasicInformation>
+              <DetailsExpander<CompanyBasicInformation>
                 title="1. Details"
                 values={companyData}
+                labels={COMPANY_DATA_LABELS}
               />
 
-              <PreviewExpander<Partial<BenecifialOwners>>
+              <DetailsExpander<Partial<BenecifialOwners>>
                 title="2. Benefical owners"
                 values={dummyData!.beneficialOwners}
+                labels={COMPANY_DATA_LABELS}
               />
 
-              <PreviewExpander<Partial<SignatoryRights>>
+              <DetailsExpander<Partial<SignatoryRights>>
                 title="3. Signatory rights"
                 values={{ signatoryRights: dummyData!.signatoryRights }}
+                labels={COMPANY_DATA_LABELS}
               />
             </div>
           )}

@@ -3,8 +3,8 @@ import { AxiosError } from 'axios';
 import api from '../api';
 import useErrorToast from './use-error-toast';
 
-const BASIC_INFO_KEYS = ['basic-information'];
-const JOB_APPLICATION_KEYS = ['job-application-profile'];
+export const BASIC_INFO_QUERY_KEYS = ['basic-information'];
+export const JOB_APPLICATION_QUERY_KEYS = ['job-application-profile'];
 
 const QUERY_OPTIONS = {
   refetchOnWindowFocus: false,
@@ -16,7 +16,7 @@ const QUERY_OPTIONS = {
  */
 function usePersonBasicInfo() {
   const query = useQuery(
-    BASIC_INFO_KEYS,
+    BASIC_INFO_QUERY_KEYS,
     async () => await api.profile.getPersonBasicInfo(),
     QUERY_OPTIONS
   );
@@ -37,7 +37,7 @@ function usePersonBasicInfo() {
  */
 function useJobApplicantProfile() {
   const query = useQuery(
-    JOB_APPLICATION_KEYS,
+    JOB_APPLICATION_QUERY_KEYS,
     async () => await api.profile.getJobApplicantProfile(),
     QUERY_OPTIONS
   );

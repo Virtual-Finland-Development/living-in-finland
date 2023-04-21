@@ -22,7 +22,7 @@ import CompanyDirectors from '../form-inputs/company-inputs-5-managing-directors
 import CompanyMembers from '../form-inputs/company-inputs-6-board-members';
 import CompanyAuditor from '../form-inputs/company-inputs-7-auditor';
 import SignatoryRightsInputs from '../form-inputs/signatory-rights-inputs-1';
-import Preview from '../preview/preview';
+import Preview from '../preview';
 import CompanyWizardActionButtons from './company-wizard-action-buttons';
 import CompanyWizardNav from './company-wizard-nav';
 

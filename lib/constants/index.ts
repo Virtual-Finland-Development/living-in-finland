@@ -65,6 +65,39 @@ export const COMPANY_DATA_LABELS: Record<string, any> = {
   addressId: 'Address ID',
 };
 
+export const PROFILE_DATA_LABELS: Record<string, any> = {
+  email: 'Email',
+  givenName: 'Given name',
+  lastName: 'Last name',
+  phoneNumber: 'Phone number',
+  residency: 'Country of residence',
+  certifications: 'Certifications',
+  educations: 'Educations',
+  languageSkills: 'Language skills',
+  occupations: 'Occupations',
+  otherSkills: 'Other skills',
+  permits: 'Acquired permits',
+  workPreferences: 'Work preferences',
+  certificationName: 'Certification name',
+  institutionName: 'Institution name',
+  educationField: 'Education field',
+  educationLevel: 'Education level',
+  educationName: 'Education name',
+  graduationDate: 'Graduation date',
+  languageCode: 'Language',
+  skillLevel: 'Skill level',
+  employer: 'Employer',
+  escoCode: 'Occupation',
+  workExperience: 'Work experience',
+  escoIdentifier: 'Skill',
+  naceCode: 'Preferred industry',
+  preferredMunicipality: 'Preferred municipalities to work in',
+  preferredRegion: 'Preferred regions to work in',
+  typeOfEmployment: 'Preferred type of employment',
+  workingTime: 'Preferred working time',
+  workingLanguage: 'Working languages',
+};
+
 export const SHARE_SERIES_CLASS_OPTIONS = [
   {
     labelText: 'A',

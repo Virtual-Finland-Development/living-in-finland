@@ -6,7 +6,7 @@ import AuthSentry from '@/components/auth-sentry';
 import Page from '@/components/layout/page';
 import CustomHeading from '@/components/ui/custom-heading';
 import Loading from '@/components/ui/loading';
-import Preview from '../../components/preview/preview';
+import Preview from '../../components/preview';
 
 export default function CompanyEditPage() {
   const router = useRouter();

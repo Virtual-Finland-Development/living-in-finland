@@ -46,19 +46,21 @@ export default function CertificationsSelect(props: Props) {
           </span>
         </Text>
       ) : (
-        <div className="flex flex-col flex-wrap gap-2">
+        <ul className="list-disc list-inside text-base list-image-[url(checkmark.png)]">
           {userCertifications.map((c, index) => (
-            <Text key={`${c.escoIdentifier}-${index}`} className="!text-base">
-              <span
-                role="button"
-                className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-                onClick={openEdit}
-              >
-                {c.certificationName}
-              </span>
-            </Text>
+            <li key={`${c.escoIdentifier}-${index}`}>
+              <Text className="!text-base">
+                <span
+                  role="button"
+                  className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                  onClick={openEdit}
+                >
+                  {c.certificationName}
+                </span>
+              </Text>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

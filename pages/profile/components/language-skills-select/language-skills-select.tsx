@@ -48,27 +48,30 @@ export default function LanguageSkillsSelect(props: Props) {
           </span>
         </Text>
       ) : (
-        <div className="flex flex-col flex-wrap gap-2">
+        <ul className="list-disc list-inside text-base">
           {userLanguages.map((l, index) => (
-            <Text key={`${l.escoIdentifier}-${index}`} className="!text-base">
-              <span
-                role="button"
-                className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-                onClick={openLanguageEdit}
-              >
-                {escoLanguages?.find(
-                  el => el.twoLetterISOLanguageName === l.languageCode
-                )?.name || ''}{' '}
-                (
-                {
-                  languageSkillLevels?.find(sl => sl.codeValue === l.skillLevel)
-                    ?.prefLabel.en
-                }
-                )
-              </span>
-            </Text>
+            <li key={`${l.escoIdentifier}-${index}`}>
+              <Text className="!text-base">
+                <span
+                  role="button"
+                  className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                  onClick={openLanguageEdit}
+                >
+                  {escoLanguages?.find(
+                    el => el.twoLetterISOLanguageName === l.languageCode
+                  )?.name || ''}{' '}
+                  (
+                  {
+                    languageSkillLevels?.find(
+                      sl => sl.codeValue === l.skillLevel
+                    )?.prefLabel.en
+                  }
+                  )
+                </span>
+              </Text>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

@@ -114,7 +114,7 @@ export default function IndustryDisclosure(props: IndustryDisclosureProps) {
               onSelect={onSelect}
               searchText={searchText}
             />
-            <Disclosure.Panel>
+            <Disclosure.Panel className="flex flex-col gap-3 mt-3">
               {open &&
                 item.children
                   ?.filter(child =>

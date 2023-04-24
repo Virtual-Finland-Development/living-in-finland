@@ -208,18 +208,21 @@ export default function WorkingProfileForm(props: Props) {
               control={control}
               labelText="Working languages"
               items={languageOptions}
+              fullWidthChipList
             />
             <FormMultiSelect
               name={`workPreferences.preferredRegion`}
               control={control}
               labelText="Preferred regions to work in"
               items={regionOptions}
+              fullWidthChipList
             />
             <FormMultiSelect
               name={`workPreferences.preferredMunicipality`}
               control={control}
               labelText="Preferred municipalities to work in"
               items={municipalityOptions}
+              fullWidthChipList
             />
             <IndustrySelect
               userNaceCode={workPreferences?.naceCode}
@@ -281,6 +284,7 @@ export default function WorkingProfileForm(props: Props) {
               control={control}
               labelText="Your acquired permits"
               items={permitOptions}
+              fullWidthChipList
             />
           </div>
         </div>

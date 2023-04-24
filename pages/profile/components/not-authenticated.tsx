@@ -51,8 +51,12 @@ export default function ProfileNotAuthenticated() {
       openPrivacyStatement();
     } else {
       setPermissionGranted(!permissionGranted);
+
       if (permissionGranted) {
-        JSONLocalStorage.set(LOCAL_STORAGE_PRIVACY_STATEMENT_PERMISSION, false);
+        JSONLocalStorage.set(
+          LOCAL_STORAGE_PRIVACY_STATEMENT_PERMISSION,
+          'false'
+        );
       }
     }
   };

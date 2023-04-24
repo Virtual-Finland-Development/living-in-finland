@@ -48,7 +48,7 @@ export default function LanguageSkillsSelect(props: Props) {
           </span>
         </Text>
       ) : (
-        <ul className="list-disc list-inside text-base">
+        <ul className="list-disc list-outside text-base ml-[17px]">
           {userLanguages.map((l, index) => (
             <li key={`${l.escoIdentifier}-${index}`}>
               <Text className="!text-base">

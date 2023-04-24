@@ -80,7 +80,7 @@ export default function OccupationsSelect(props: Props) {
           </span>
         </Text>
       ) : (
-        <ul className="list-disc list-inside text-base">
+        <ul className="list-disc list-outside text-base ml-[17px]">
           {userOccupations.map((uo, index) => (
             <li key={`${uo.escoIdentifier}-${index}`}>
               <Text className="!text-base">

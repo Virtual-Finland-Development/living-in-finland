@@ -48,7 +48,7 @@ export default function EducationsSelect(props: Props) {
           </span>
         </Text>
       ) : (
-        <ul className="list-disc list-inside text-base">
+        <ul className="list-disc list-outside text-base ml-[17px]">
           {userEducations.map((e, index) => (
             <li key={`${e.educationField}-${index}`}>
               <Text className="!text-base">

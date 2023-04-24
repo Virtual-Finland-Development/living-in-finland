@@ -72,7 +72,7 @@ export default function OtherSkillsSelect(props: Props) {
           </span>
         </Text>
       ) : (
-        <ul className="list-disc list-inside text-base">
+        <ul className="list-disc list-outside text-base ml-[17px]">
           {userOtherSkillsWithLabels.map((s, index) => (
             <li key={`${s.escoIdentifier}-${index}`}>
               <Text className="!text-base">

@@ -46,7 +46,7 @@ export default function CertificationsSelect(props: Props) {
           </span>
         </Text>
       ) : (
-        <ul className="list-disc list-inside text-base list-image-[url(checkmark.png)]">
+        <ul className="list-disc list-outside text-base ml-[17px]">
           {userCertifications.map((c, index) => (
             <li key={`${c.escoIdentifier}-${index}`}>
               <Text className="!text-base">

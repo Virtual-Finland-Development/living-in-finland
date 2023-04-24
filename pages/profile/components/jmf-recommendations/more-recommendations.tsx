@@ -115,7 +115,7 @@ export default function MoreRecommendations(props: Props) {
           onSelect(selected);
           setSelected(selected);
         }}
-        defaultSelectedItems={defaultValue}
+        selectedItems={selected}
         chipListVisible={!showCustomChipList}
       />
 

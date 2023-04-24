@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
@@ -57,6 +58,7 @@ export default function WorkingProfileForm(props: Props) {
   const { jobApplicationProfile } = props;
   const toast = useToast();
   const reactQueryClient = useQueryClient();
+  const router = useRouter();
 
   const { data: occupations, isLoading: occupationsLoading } = useOccupations();
   const { data: languages, isLoading: languagesLoading } = useLanguages();
@@ -284,9 +286,16 @@ export default function WorkingProfileForm(props: Props) {
         </div>
       </div>
 
-      <div className="mt-6">
+      <div className="flex flex-row gap-3 mt-6">
+        <Button
+          variant="secondary"
+          icon="arrowLeft"
+          onClick={() => router.push('/profile')}
+        >
+          Back
+        </Button>
         <Button type="submit" disabled={isSubmitting}>
-          Save profile
+          Save
         </Button>
       </div>
     </form>

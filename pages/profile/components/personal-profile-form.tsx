@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button } from 'suomifi-ui-components';
@@ -25,6 +26,7 @@ export default function PersonalProfileForm(props: Props) {
   const { data: countries, isLoading } = useCountries();
   const toast = useToast();
   const reactQueryClient = useQueryClient();
+  const router = useRouter();
 
   const {
     control,
@@ -130,10 +132,15 @@ export default function PersonalProfileForm(props: Props) {
         </div>
       </div>
 
-      <div className="mt-6">
-        <Button type="submit" disabled={isSubmitting}>
-          Next
+      <div className="flex flex-row gap-3 mt-6">
+        <Button
+          variant="secondary"
+          icon="arrowLeft"
+          onClick={() => router.push('/profile')}
+        >
+          Back
         </Button>
+        <Button type="submit">Save</Button>
       </div>
     </form>
   );

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
-import { Paragraph } from 'suomifi-ui-components';
+import { Text } from 'suomifi-ui-components';
 import { AuthProvider } from '@/types';
 import api from '@/lib/api';
 import { LOCAL_STORAGE_REDIRECT_KEY } from '@/lib/constants';
@@ -8,6 +8,7 @@ import { generateAppContextHash } from '@/lib/utils';
 import { JSONLocalStorage } from '@/lib/utils/JSONStorage';
 import { useAuth } from '@/context/auth-context';
 import Alert from '@/components/ui/alert';
+import CustomLink from '@/components/ui/custom-link';
 import Loading from '@/components/ui/loading';
 
 export default function AuthPage() {
@@ -75,11 +76,14 @@ export default function AuthPage() {
 
   if (authError) {
     return (
-      <Alert status="error" labelText="Error error!">
-        <div className="w-96">
-          <Paragraph>{authError}</Paragraph>
-        </div>
-      </Alert>
+      <div className="min-w-xl max-w-xl">
+        <Alert status="error" labelText="Error">
+          <div className="flex flex-col gap-3">
+            <Text>{authError}</Text>
+            <CustomLink href="/">Go to home page</CustomLink>
+          </div>
+        </Alert>
+      </div>
     );
   }
 

@@ -9,8 +9,9 @@ import Modal from '@/components/ui/modal';
 
 interface ModalProps {
   title: string;
+  titleVariant?: 'h1' | 'h1hero' | 'h2' | 'h3' | 'h4' | 'h5';
   content: ReactNode;
-  footerContent?: ReactNode;
+  footerContent?: ReactNode | ((modalBottomReached: boolean) => JSX.Element);
   onClose?: () => void;
   closeOnEsc?: boolean;
 }

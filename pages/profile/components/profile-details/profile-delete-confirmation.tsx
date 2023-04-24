@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Button, Text } from 'suomifi-ui-components';
 import api from '@/lib/api';
+import { LOCAL_STORAGE_PRIVACY_STATEMENT_PERMISSION } from '@/lib/constants';
+import { JSONLocalStorage } from '@/lib/utils/JSONStorage';
 import { useToast } from '@/context/toast-context';
 import DangerButton from '@/components/ui/danger-button';
 import Loading from '@/components/ui/loading';
@@ -18,6 +20,7 @@ export default function ProfileDeleteConfirmation(props: Props) {
     setIsLoading(true);
 
     try {
+      JSONLocalStorage.remove(LOCAL_STORAGE_PRIVACY_STATEMENT_PERMISSION);
       await api.profile.deleteProfile();
       api.auth.directToAuthGwLogout();
     } catch (error: any) {

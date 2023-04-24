@@ -7,6 +7,8 @@ export const baseAppContextObj: AppContextObj = {
 
 export const LOCAL_STORAGE_AUTH_KEY = 'virtual-finland-auth';
 export const LOCAL_STORAGE_REDIRECT_KEY = 'redirect-path';
+export const LOCAL_STORAGE_PRIVACY_STATEMENT_PERMISSION =
+  'vf-privacy-permission';
 
 export const REQUEST_NOT_AUTHORIZED = 'rna';
 

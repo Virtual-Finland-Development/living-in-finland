@@ -60,7 +60,6 @@ function AuthProvider(props: AuthProviderProps) {
   }, []);
 
   const logOut = useCallback(() => {
-    JSONLocalStorage.clear();
     setUserEmail(null);
     setIsAuthenticated(false);
   }, []);

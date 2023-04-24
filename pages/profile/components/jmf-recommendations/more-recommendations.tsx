@@ -115,12 +115,12 @@ export default function MoreRecommendations(props: Props) {
           onSelect(selected);
           setSelected(selected);
         }}
-        defaultSelectedItems={defaultValue}
+        selectedItems={selected}
         chipListVisible={!showCustomChipList}
       />
 
       {showCustomChipList && (
-        <div className="min-h-[100px] max-h-[100px] overflow-y-auto p-2">
+        <div className="min-h-[70px] max-h-[70px] overflow-y-auto p-2">
           {!selected.length && (
             <Text className="!text-base">No related skills selected.</Text>
           )}

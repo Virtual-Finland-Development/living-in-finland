@@ -2,7 +2,6 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
-const withTwin = require('./withTwin.js');
 
 const nextConfig = {
   reactStrictMode: false,
@@ -24,5 +23,5 @@ const nextConfig = {
 };
 
 module.exports = () => {
-  return withBundleAnalyzer(withTwin(nextConfig));
+  return withBundleAnalyzer(nextConfig);
 };

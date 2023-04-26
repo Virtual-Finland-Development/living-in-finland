@@ -32,7 +32,7 @@ export default function CompanyNotAuthenticated() {
             <CustomHeading variant="h2" center>
               Establish a company or modify company information
             </CustomHeading>
-            <CustomText $center>
+            <CustomText center>
               Identify yourself into Company. You can then establish a company
               or modify existing company information.
             </CustomText>

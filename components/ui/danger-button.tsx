@@ -1,5 +1,5 @@
+import styled from 'styled-components';
 import { Button } from 'suomifi-ui-components';
-import { styled } from 'twin.macro';
 
 const StyledButton = styled(Button).attrs({ variant: 'default' })`
   ${props =>

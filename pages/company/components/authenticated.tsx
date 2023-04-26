@@ -51,7 +51,7 @@ export default function CompanyAuthenticated() {
           ) : (
             <>
               {!companies?.length ? (
-                <CustomText $bold>No companies established.</CustomText>
+                <CustomText bold>No companies established.</CustomText>
               ) : (
                 <div className="flex flex-col gap-4">
                   {companies.map((company, index) => (

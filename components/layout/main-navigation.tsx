@@ -2,6 +2,7 @@ import Link, { LinkProps } from 'next/link';
 import { useRouter } from 'next/router';
 import { ReactNode, useRef, useState } from 'react';
 import { Dialog, Popover, Transition } from '@headlessui/react';
+import styled from 'styled-components';
 import {
   Button,
   Icon,
@@ -13,7 +14,6 @@ import {
   StaticIcon,
   Text,
 } from 'suomifi-ui-components';
-import tw, { styled } from 'twin.macro';
 import api from '@/lib/api';
 import { useAuth } from '@/context/auth-context';
 import CustomHeading from '../ui/custom-heading';
@@ -27,8 +27,8 @@ const navigation = [
 
 const MobileMenuToggleButton = styled(Button).attrs({
   variant: 'secondaryNoBorder',
+  className: 'p-0 px-2',
 })`
-  ${tw`p-0 px-2`}
   &:hover {
     background: transparent !important;
   }
@@ -41,20 +41,24 @@ interface MobileLink extends LinkProps {
 function MobileLink({ onClick, children, href }: MobileLink) {
   return (
     <Link href={href} passHref legacyBehavior>
-      <RouterLink onClick={onClick} tw="(normal-case)!">
+      <RouterLink onClick={onClick} className="!normal-case">
         {children}
       </RouterLink>
     </Link>
   );
 }
 
-const DesktopNavItem = styled.li<{ $active: boolean }>(({ $active }) => [
-  tw`border-b-4 py-2 px-4 mx-7 border-b-transparent hover:border-b-suomifi-light`,
-  $active && tw`border-b-suomifi-light`,
-  `a {
+const DesktopNavItem = styled.li.attrs<{ isActive: boolean }>(
+  ({ isActive }) => ({
+    className: `border-b-4 py-2 px-4 mx-7 hover:border-b-suomifi-light ${
+      isActive ? 'border-b-suomifi-light' : 'border-b-transparent'
+    }`,
+  })
+)<{ isActive: boolean }>`
+  a {
     font-weight: 700;
-  }`,
-]);
+  }
+`;
 
 function DesktopMenuPopover() {
   return (
@@ -81,7 +85,7 @@ function DesktopMenuPopover() {
                   />
                   <div className="flex flex-col">
                     <div onClick={() => close()}>
-                      <CustomLink href={item.href} $bold>
+                      <CustomLink href={item.href} bold>
                         {item.name}
                       </CustomLink>
                     </div>
@@ -107,7 +111,7 @@ function DesktopNavigation() {
           {navigation.map(item => (
             <DesktopNavItem
               key={item.name}
-              $active={
+              isActive={
                 (item.href === '/' && router.pathname === item.href) ||
                 (item.href !== '/' && router.pathname.includes(item.href))
               }
@@ -194,10 +198,10 @@ function UserControl({ className }: { className: string }) {
 
   return (
     <div className={className}>
-      <Text tw="text-sm lg:text-base font-bold">{userEmail}</Text>
+      <Text className="!text-sm lg:!text-base !font-bold">{userEmail}</Text>
       <Button
         variant="secondaryNoBorder"
-        tw="text-xs min-h-0 p-0"
+        className="!text-xs !min-h-0 !p-0"
         onClick={logoutHandler}
       >
         LOG OUT
@@ -225,7 +229,7 @@ export default function MainNavigation() {
             {/* Controls */}
             <div className="flex flex-row items-center gap-6">
               {/* Language menu */}
-              <LanguageMenu name="EN" tw="font-bold">
+              <LanguageMenu name="EN" className="!font-bold">
                 <LanguageMenuItem onSelect={() => {}}>
                   Suomeksi (FI)
                 </LanguageMenuItem>

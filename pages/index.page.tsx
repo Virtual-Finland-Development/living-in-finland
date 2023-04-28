@@ -108,31 +108,31 @@ export default function HomePage() {
         <div className="flex flex-col mt-4">
           <div className="bg-suomifi-blue-bg-light flex flex-row items-center gap-6 py-2">
             <StaticIcon icon="doctor" className="h-16 w-16 flex-shrink-0" />
-            <CustomLink href="#" $bold>
+            <CustomLink href="#" bold>
               work
             </CustomLink>
           </div>
           <div className="flex flex-row items-center gap-6 py-2">
             <StaticIcon icon="manLaptop" className="h-16 w-16 flex-shrink-0" />
-            <CustomLink href="#" $bold>
+            <CustomLink href="#" bold>
               study
             </CustomLink>
           </div>
           <div className="bg-suomifi-blue-bg-light flex flex-row items-center gap-6 py-2">
             <StaticIcon icon="shop" className="h-16 w-16 flex-shrink-0" />
-            <CustomLink href="/company" $bold>
+            <CustomLink href="/company" bold>
               create business
             </CustomLink>
           </div>
           <div className="flex flex-row items-center gap-6 py-2">
             <StaticIcon icon="family" className="h-16 w-16 flex-shrink-0" />
-            <CustomLink href="#" $bold>
+            <CustomLink href="#" bold>
               along with family
             </CustomLink>
           </div>
           <div className="bg-suomifi-blue-bg-light flex flex-row items-center gap-6 py-2">
             <StaticIcon icon="catalog" className="h-16 w-16 flex-shrink-0" />
-            <CustomLink href="#" $bold>
+            <CustomLink href="#" bold>
               other
             </CustomLink>
           </div>

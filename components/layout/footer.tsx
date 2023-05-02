@@ -30,7 +30,7 @@ function Help() {
                     icon="chevronRight"
                     className="-ml-1 text-base flex-shrink-0 text-suomifi-orange"
                   />
-                  <CustomLink href={item.href} base>
+                  <CustomLink href={item.href} $base>
                     {item.label}
                   </CustomLink>
                 </div>
@@ -44,10 +44,10 @@ function Help() {
           <CustomHeading variant="h4">Do you need help?</CustomHeading>
           <div className="mt-4 flex flex-col gap-2">
             <div className="flex flex-col gap-1">
-              <CustomText base bold>
+              <CustomText $base $bold>
                 All help channels under one address
               </CustomText>
-              <CustomText base>
+              <CustomText $base>
                 Find help for people, organisations or companies from here:
               </CustomText>
             </div>

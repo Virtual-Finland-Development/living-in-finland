@@ -7,13 +7,13 @@ import {
 } from 'suomifi-ui-components';
 
 interface StyledLinkProps {
-  bold?: boolean;
-  base?: boolean;
+  $bold?: boolean;
+  $base?: boolean;
 }
 
 const StyledLink = styled(SuomiFiLink).attrs<StyledLinkProps>(
-  ({ bold, base }) => ({
-    className: `${bold && '!font-bold'} ${base && '!text-base'}`,
+  ({ $bold, $base }) => ({
+    className: `${$bold && '!font-bold'} ${$base && '!text-base'}`,
   })
 )<StyledLinkProps>``;
 
@@ -22,7 +22,7 @@ type CustomLinkProps = Omit<SuomiFiLinkProps, 'href'> &
   StyledLinkProps;
 
 const CustomLink = forwardRef<HTMLAnchorElement, CustomLinkProps>(
-  ({ href, replace, scroll, shallow, locale, bold, base, children }, ref) => {
+  ({ href, replace, scroll, shallow, locale, $bold, $base, children }, ref) => {
     return (
       <NextLink
         href={href}
@@ -33,7 +33,7 @@ const CustomLink = forwardRef<HTMLAnchorElement, CustomLinkProps>(
         passHref
         legacyBehavior
       >
-        <StyledLink href="" ref={ref} bold={bold} base={base}>
+        <StyledLink href="" ref={ref} $bold={$bold} $base={$base}>
           {children}
         </StyledLink>
       </NextLink>

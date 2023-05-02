@@ -8,15 +8,6 @@ import {
 import { MultiSelect } from 'suomifi-ui-components';
 import { styled } from 'twin.macro';
 
-/* const StyledHeading = styled(Heading)<{
-  suomiFiBlue?: SuomiFiBlue;
-  center?: boolean;
-}>(({ suomiFiBlue, center }) => [
-  tw`text-inherit`,
-  center && tw`text-center`,
-  suomiFiBlue && colorVariant(suomiFiBlue),
-]); */
-
 const StyledMultiSelect = styled(MultiSelect)<{
   fullWidthChipList?: boolean;
 }>`

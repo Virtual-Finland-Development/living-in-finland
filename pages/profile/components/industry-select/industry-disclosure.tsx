@@ -83,20 +83,6 @@ function DisclosureLabel(props: DisclosureLabelProps) {
         />
       </StyledCheckbox>
 
-      {/* <div
-        className="flex items-center justify-center border border-[hsl(212,63%,45%)] h-[18px] w-[18px] rounded-[2px] cursor-pointer"
-        role="checkbox"
-        aria-checked={isChecked}
-        tabIndex={0}
-      >
-        <Icon
-          icon="minus"
-          color="hsl(212, 63%, 45%)"
-          className="w-3"
-          onClick={() => console.log('moi')}
-        />
-      </div> */}
-
       {item.children && (
         <Disclosure.Button>
           <span className="mt-1 flex-shrink-0">

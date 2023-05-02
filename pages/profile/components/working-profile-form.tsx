@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
@@ -57,6 +58,7 @@ export default function WorkingProfileForm(props: Props) {
   const { jobApplicationProfile } = props;
   const toast = useToast();
   const reactQueryClient = useQueryClient();
+  const router = useRouter();
 
   const { data: occupations, isLoading: occupationsLoading } = useOccupations();
   const { data: languages, isLoading: languagesLoading } = useLanguages();
@@ -167,117 +169,137 @@ export default function WorkingProfileForm(props: Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-      <CustomHeading variant="h2" suomiFiBlue="dark">
-        Occupational and skill information
-      </CustomHeading>
-      <div className="flex flex-col gap-4 items-start">
-        <OccupationsSelect
-          userOccupations={userOccupations}
-          occupations={occupations || []}
-          onSelect={selected =>
-            setValue('occupations', selected, { shouldDirty: true })
-          }
-        />
-        <EducationsSelect
-          userEducations={educations}
-          educationFields={educationFields || []}
-          educationLevels={educationLevels || []}
-          onSelect={selected =>
-            setValue('educations', selected, { shouldDirty: true })
-          }
-        />
-        <CertificationsSelect
-          userCertifications={certifications}
-          escoSkills={escoSkills || []}
-          onSelect={selected =>
-            setValue('certifications', selected, { shouldDirty: true })
-          }
-        />
-        <LanguageSkillsSelect
-          userLanguages={languageSkills}
-          escoLanguages={escoLanguages || []}
-          languageSkillLevels={languageSkillLevels || []}
-          onSelect={selected =>
-            setValue('languageSkills', selected, { shouldDirty: true })
-          }
-        />
-        <OtherSkillsSelect
-          userOtherSkills={otherSkills}
-          escoSkills={escoSkills || []}
-          onSelect={selected =>
-            setValue('otherSkills', selected, { shouldDirty: true })
-          }
-        />
-        <FormMultiSelect
-          name={'permits'}
-          control={control}
-          labelText="Your acquired permits"
-          items={permitOptions}
-        />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="flex flex-col gap-6">
+          <CustomHeading variant="h2" suomiFiBlue="dark">
+            Work preferences
+          </CustomHeading>
+          <div className="flex flex-col gap-4 items-start">
+            <FormSingleSelect
+              name={`workPreferences.typeOfEmployment`}
+              control={control}
+              labelText="Preferred type of employment"
+              items={Object.keys(EmploymentType)
+                .filter((key: any) => !isNaN(Number(EmploymentType[key])))
+                .map(type => ({
+                  labelText:
+                    EMPLOYMENT_TYPE_LABELS[
+                      type as keyof typeof EMPLOYMENT_TYPE_LABELS
+                    ],
+                  uniqueItemId: type,
+                }))}
+            />
+            <FormSingleSelect
+              name={`workPreferences.workingTime`}
+              control={control}
+              labelText="Preferred working time"
+              items={Object.keys(WorkingTime)
+                .filter(key => key.length === 2)
+                .map(type => ({
+                  labelText:
+                    WORKING_TIME_LABELS[
+                      type as keyof typeof WORKING_TIME_LABELS
+                    ],
+                  uniqueItemId: type,
+                }))}
+            />
+            <FormMultiSelect
+              name={'workPreferences.workingLanguage'}
+              control={control}
+              labelText="Working languages"
+              items={languageOptions}
+              fullWidthChipList
+            />
+            <FormMultiSelect
+              name={`workPreferences.preferredRegion`}
+              control={control}
+              labelText="Preferred regions to work in"
+              items={regionOptions}
+              fullWidthChipList
+            />
+            <FormMultiSelect
+              name={`workPreferences.preferredMunicipality`}
+              control={control}
+              labelText="Preferred municipalities to work in"
+              items={municipalityOptions}
+              fullWidthChipList
+            />
+            <IndustrySelect
+              userNaceCode={workPreferences?.naceCode}
+              naceCodes={naceCodes || []}
+              onSelect={selected => {
+                setValue(
+                  'workPreferences.naceCode',
+                  selected?.dotNotationCodeValue || null,
+                  { shouldDirty: true }
+                );
+              }}
+            />
+          </div>
+        </div>
+        <div className="flex flex-col gap-6">
+          <CustomHeading variant="h2" suomiFiBlue="dark">
+            Occupational and skill information
+          </CustomHeading>
+          <div className="flex flex-col gap-4 items-start">
+            <OccupationsSelect
+              userOccupations={userOccupations}
+              occupations={occupations || []}
+              onSelect={selected =>
+                setValue('occupations', selected, { shouldDirty: true })
+              }
+            />
+            <EducationsSelect
+              userEducations={educations}
+              educationFields={educationFields || []}
+              educationLevels={educationLevels || []}
+              onSelect={selected =>
+                setValue('educations', selected, { shouldDirty: true })
+              }
+            />
+            <CertificationsSelect
+              userCertifications={certifications}
+              escoSkills={escoSkills || []}
+              onSelect={selected =>
+                setValue('certifications', selected, { shouldDirty: true })
+              }
+            />
+            <LanguageSkillsSelect
+              userLanguages={languageSkills}
+              escoLanguages={escoLanguages || []}
+              languageSkillLevels={languageSkillLevels || []}
+              onSelect={selected =>
+                setValue('languageSkills', selected, { shouldDirty: true })
+              }
+            />
+            <OtherSkillsSelect
+              userOtherSkills={otherSkills}
+              escoSkills={escoSkills || []}
+              onSelect={selected =>
+                setValue('otherSkills', selected, { shouldDirty: true })
+              }
+            />
+            <FormMultiSelect
+              name={'permits'}
+              control={control}
+              labelText="Your acquired permits"
+              items={permitOptions}
+              fullWidthChipList
+            />
+          </div>
+        </div>
       </div>
-      <CustomHeading variant="h2" suomiFiBlue="dark">
-        Work preferences
-      </CustomHeading>
-      <div className="flex flex-col gap-4 items-start">
-        <FormSingleSelect
-          name={`workPreferences.typeOfEmployment`}
-          control={control}
-          labelText="Preferred type of employment"
-          items={Object.keys(EmploymentType)
-            .filter((key: any) => !isNaN(Number(EmploymentType[key])))
-            .map(type => ({
-              labelText:
-                EMPLOYMENT_TYPE_LABELS[
-                  type as keyof typeof EMPLOYMENT_TYPE_LABELS
-                ],
-              uniqueItemId: type,
-            }))}
-        />
-        <FormSingleSelect
-          name={`workPreferences.workingTime`}
-          control={control}
-          labelText="Preferred working time"
-          items={Object.keys(WorkingTime)
-            .filter(key => key.length === 2)
-            .map(type => ({
-              labelText:
-                WORKING_TIME_LABELS[type as keyof typeof WORKING_TIME_LABELS],
-              uniqueItemId: type,
-            }))}
-        />
-        <FormMultiSelect
-          name={'workPreferences.workingLanguage'}
-          control={control}
-          labelText="Working languages"
-          items={languageOptions}
-        />
-        <FormMultiSelect
-          name={`workPreferences.preferredRegion`}
-          control={control}
-          labelText="Preferred regions to work in"
-          items={regionOptions}
-        />
-        <FormMultiSelect
-          name={`workPreferences.preferredMunicipality`}
-          control={control}
-          labelText="Preferred municipalities to work in"
-          items={municipalityOptions}
-        />
-        <IndustrySelect
-          userNaceCode={workPreferences?.naceCode}
-          naceCodes={naceCodes || []}
-          onSelect={selected => {
-            setValue(
-              'workPreferences.naceCode',
-              selected?.dotNotationCodeValue || null,
-              { shouldDirty: true }
-            );
-          }}
-        />
-      </div>
-      <div className="mt-8">
+
+      <div className="flex flex-row gap-3 mt-6">
+        <Button
+          variant="secondary"
+          icon="arrowLeft"
+          onClick={() => router.push('/profile')}
+        >
+          Back
+        </Button>
         <Button type="submit" disabled={isSubmitting}>
-          Save profile
+          Save
         </Button>
       </div>
     </form>

@@ -48,19 +48,21 @@ export default function EducationsSelect(props: Props) {
           </span>
         </Text>
       ) : (
-        <div className="flex flex-col flex-wrap gap-2">
+        <ul className="list-disc list-outside text-base ml-[17px]">
           {userEducations.map((e, index) => (
-            <Text key={`${e.educationField}-${index}`} className="!text-base">
-              <span
-                role="button"
-                className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-                onClick={openEducationEdit}
-              >
-                {e.educationName}
-              </span>
-            </Text>
+            <li key={`${e.educationField}-${index}`}>
+              <Text className="!text-base">
+                <span
+                  role="button"
+                  className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                  onClick={openEducationEdit}
+                >
+                  {e.educationName}
+                </span>
+              </Text>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

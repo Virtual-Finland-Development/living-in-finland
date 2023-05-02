@@ -1,6 +1,7 @@
 import Highlighter from 'react-highlight-words';
 import { IoChevronDown, IoChevronUp } from 'react-icons/io5';
 import { Disclosure } from '@headlessui/react';
+import styled from 'styled-components';
 import { Checkbox } from 'suomifi-ui-components';
 import type { Nace } from '@/types';
 import { isMatchWithSearch } from './helpers';
@@ -22,6 +23,22 @@ interface DisclosureLabelProps {
 const Highlight = ({ children }: { children: string }) => (
   <strong>{children}</strong>
 );
+
+const StyledCheckbox = styled(Checkbox)<{ isIndeterminate: boolean }>`
+  ${({ isIndeterminate }) =>
+    isIndeterminate &&
+    `
+svg {
+  top: 8px !important;
+  
+}
+svg path {
+  d: path('M1 13a1 1 0 010-2h22a1 1 0 010 2H1z');
+  stroke: hsl(212,63%,45%);
+  stroke-width: 1.5px !important;
+}
+`}
+`;
 
 function DisclosureLabel(props: DisclosureLabelProps) {
   const {
@@ -50,12 +67,13 @@ function DisclosureLabel(props: DisclosureLabelProps) {
     </Disclosure.Button>
   ) : (
     <div className="flex flex-row gap-2 items-center justify-items-center text-left">
-      <Checkbox
+      <StyledCheckbox
         className="!mr-2 text-start cursor-default"
         checked={isChecked}
         onClick={({ checkboxState }) =>
           onSelect(item.codeValue, checkboxState, isIndeterminate)
         }
+        isIndeterminate={isIndeterminate}
       >
         <Highlighter
           searchWords={searchWords}
@@ -63,7 +81,8 @@ function DisclosureLabel(props: DisclosureLabelProps) {
           textToHighlight={item.prefLabel.en}
           highlightTag={Highlight}
         />
-      </Checkbox>
+      </StyledCheckbox>
+
       {item.children && (
         <Disclosure.Button>
           <span className="mt-1 flex-shrink-0">
@@ -114,7 +133,7 @@ export default function IndustryDisclosure(props: IndustryDisclosureProps) {
               onSelect={onSelect}
               searchText={searchText}
             />
-            <Disclosure.Panel>
+            <Disclosure.Panel className="flex flex-col gap-3 mt-3">
               {open &&
                 item.children
                   ?.filter(child =>

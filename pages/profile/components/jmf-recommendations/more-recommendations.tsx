@@ -93,7 +93,7 @@ export default function MoreRecommendations(props: Props) {
   }, [recommendations?.occupations, recommendations?.skills, type]);
 
   return (
-    <div className="w-full flex flex-col gap-3">
+    <div className="w-full flex flex-col gap-6">
       {/*
           // @ts-ignore */}
       <MultiSelect
@@ -120,7 +120,7 @@ export default function MoreRecommendations(props: Props) {
       />
 
       {showCustomChipList && (
-        <div className="min-h-[100px] max-h-[100px] overflow-y-auto border rounded-sm border-gray-300 p-2">
+        <div className="min-h-[70px] max-h-[70px] overflow-y-auto p-2">
           {!selected.length && (
             <Text className="!text-base">No related skills selected.</Text>
           )}

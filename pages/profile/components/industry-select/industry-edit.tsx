@@ -114,27 +114,31 @@ export default function IndustryEdit(props: Props) {
                       {item.prefLabel.en}
                     </ExpanderTitleButton>
                     <ExpanderContent>
-                      {expanderIsOpen &&
-                        item.children
-                          ?.filter(child =>
-                            searchText
-                              ? isMatchWithSearch(child, searchText)
-                              : true
-                          )
-                          .map(item => (
-                            <IndustryDisclosure
-                              key={item.codeValue}
-                              item={item}
-                              selected={selected}
-                              onSelect={handleSelect}
-                              searchText={searchText}
-                              isSearchMatch={
-                                searchText
-                                  ? isMatchWithSearch(item, searchText)
-                                  : false
-                              }
-                            />
-                          ))}
+                      <div className="flex flex-col gap-3">
+                        {expanderIsOpen &&
+                          item.children
+                            ?.filter(child =>
+                              searchText
+                                ? isMatchWithSearch(child, searchText)
+                                : true
+                            )
+                            .map(item => (
+                              <div key={item.codeValue}>
+                                <IndustryDisclosure
+                                  key={item.codeValue}
+                                  item={item}
+                                  selected={selected}
+                                  onSelect={handleSelect}
+                                  searchText={searchText}
+                                  isSearchMatch={
+                                    searchText
+                                      ? isMatchWithSearch(item, searchText)
+                                      : false
+                                  }
+                                />
+                              </div>
+                            ))}
+                      </div>
                     </ExpanderContent>
                   </Expander>
                 );

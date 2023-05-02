@@ -6,6 +6,21 @@ import {
   RegisterOptions,
 } from 'react-hook-form';
 import { MultiSelect } from 'suomifi-ui-components';
+import { styled } from 'twin.macro';
+
+const StyledMultiSelect = styled(MultiSelect)<{
+  fullWidthChipList?: boolean;
+}>`
+  ${({ fullWidthChipList }) =>
+    fullWidthChipList &&
+    `
+width: 100% !important;
+
+.fi-filter-input_functionalityContainer {
+  max-width: 290px !important;
+}
+`}
+`;
 
 interface SelectInputControllerProps<T extends FieldValues> {
   name: Path<T>;
@@ -19,6 +34,7 @@ interface Props<T extends FieldValues> extends SelectInputControllerProps<T> {
   optionalText?: string;
   showStatusText?: boolean;
   items: { labelText: string; uniqueItemId: string; disabled?: boolean }[];
+  fullWidthChipList?: boolean;
 }
 
 export default function FormMultiSelect<T extends FieldValues>(
@@ -33,6 +49,7 @@ export default function FormMultiSelect<T extends FieldValues>(
     optionalText,
     showStatusText = true,
     items,
+    fullWidthChipList = false,
   } = props;
 
   return (
@@ -41,7 +58,7 @@ export default function FormMultiSelect<T extends FieldValues>(
       rules={rules}
       control={control}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
-        <MultiSelect
+        <StyledMultiSelect
           labelText={labelText}
           hintText={hintText}
           optionalText={optionalText}
@@ -63,6 +80,7 @@ export default function FormMultiSelect<T extends FieldValues>(
           onItemSelectionsChange={selected => {
             onChange(selected.map(s => s.uniqueItemId));
           }}
+          fullWidthChipList={fullWidthChipList}
         />
       )}
     />

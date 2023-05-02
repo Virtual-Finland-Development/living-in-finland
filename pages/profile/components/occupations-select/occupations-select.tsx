@@ -80,20 +80,22 @@ export default function OccupationsSelect(props: Props) {
           </span>
         </Text>
       ) : (
-        <div className="flex flex-col flex-wrap gap-2">
+        <ul className="list-disc list-outside text-base ml-[17px]">
           {userOccupations.map((uo, index) => (
-            <Text key={`${uo.escoIdentifier}-${index}`} className="!text-base">
-              <span
-                role="button"
-                className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
-                onClick={openEdit}
-              >
-                {occupations?.find(o => o.uri === uo.escoIdentifier)?.prefLabel
-                  .en || ''}
-              </span>
-            </Text>
+            <li key={`${uo.escoIdentifier}-${index}`}>
+              <Text className="!text-base">
+                <span
+                  role="button"
+                  className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600"
+                  onClick={openEdit}
+                >
+                  {occupations?.find(o => o.uri === uo.escoIdentifier)
+                    ?.prefLabel.en || ''}
+                </span>
+              </Text>
+            </li>
           ))}
-        </div>
+        </ul>
       )}
     </div>
   );

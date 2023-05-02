@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useQueryClient } from '@tanstack/react-query';
 import { Button } from 'suomifi-ui-components';
@@ -25,6 +26,7 @@ export default function PersonalProfileForm(props: Props) {
   const { data: countries, isLoading } = useCountries();
   const toast = useToast();
   const reactQueryClient = useQueryClient();
+  const router = useRouter();
 
   const {
     control,
@@ -78,57 +80,67 @@ export default function PersonalProfileForm(props: Props) {
       <CustomHeading variant="h2" suomiFiBlue="dark">
         Personal information
       </CustomHeading>
-      <div className="flex flex-col gap-4 items-start">
-        <FormInput
-          name={`givenName`}
-          labelText="Given name"
-          control={control}
-          rules={{ required: 'Given name is required.' }}
-          readOnly
-        />
-        <FormInput
-          name={`lastName`}
-          labelText="Last name"
-          control={control}
-          rules={{ required: 'Last name is required.' }}
-          readOnly
-        />
-        <FormInput
-          type="email"
-          name={`email`}
-          labelText="Email"
-          control={control}
-          rules={{ required: 'Email is required.' }}
-          readOnly
-        />
-        <FormPhoneInput
-          name={`phoneNumber`}
-          control={control}
-          rules={{ required: 'Phone number is required.' }}
-          labelText="Phone number"
-          hintText="Use international format (+358xxx)"
-          readOnly
-        />
-        <FormSingleSelect
-          name={`residency`}
-          control={control}
-          rules={{ required: 'Residency is required.' }}
-          labelText="Country of residence"
-          hintText="Filter by typing or select from dropdown"
-          items={
-            countries
-              ? countries.map(c => ({
-                  labelText: c.englishName,
-                  uniqueItemId: c.threeLetterISORegionName,
-                }))
-              : []
-          }
-        />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="flex flex-col gap-4 items-start">
+          <FormInput
+            name={`givenName`}
+            labelText="Given name"
+            control={control}
+            rules={{ required: 'Given name is required.' }}
+            readOnly
+          />
+          <FormInput
+            name={`lastName`}
+            labelText="Last name"
+            control={control}
+            rules={{ required: 'Last name is required.' }}
+            readOnly
+          />
+          <FormInput
+            type="email"
+            name={`email`}
+            labelText="Email"
+            control={control}
+            rules={{ required: 'Email is required.' }}
+            readOnly
+          />
+        </div>
+        <div className="flex flex-col gap-4 items-start">
+          <FormPhoneInput
+            name={`phoneNumber`}
+            control={control}
+            rules={{ required: 'Phone number is required.' }}
+            labelText="Phone number"
+            hintText="Use international format (+358xxx)"
+            readOnly
+          />
+          <FormSingleSelect
+            name={`residency`}
+            control={control}
+            rules={{ required: 'Residency is required.' }}
+            labelText="Country of residence"
+            hintText="Filter by typing or select from dropdown"
+            items={
+              countries
+                ? countries.map(c => ({
+                    labelText: c.englishName,
+                    uniqueItemId: c.threeLetterISORegionName,
+                  }))
+                : []
+            }
+          />
+        </div>
       </div>
-      <div className="mt-8">
-        <Button type="submit" disabled={isSubmitting}>
-          Next
+
+      <div className="flex flex-row gap-3 mt-6">
+        <Button
+          variant="secondary"
+          icon="arrowLeft"
+          onClick={() => router.push('/profile')}
+        >
+          Back
         </Button>
+        <Button type="submit">Save</Button>
       </div>
     </form>
   );

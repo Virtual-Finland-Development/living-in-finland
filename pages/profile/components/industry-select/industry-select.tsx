@@ -43,7 +43,7 @@ export default function IndustrySelect(props: Props) {
 
   return (
     <div>
-      <Label>Preferred industry</Label>
+      <Label>Preferred industry to work in</Label>
       <Text className="!text-base">
         {!userNaceCode && <span>No industry selected, </span>}
         <span

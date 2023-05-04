@@ -20,6 +20,10 @@ const nextConfig = {
     nextImageExportOptimizer_exportFolderName: 'nextImageExportOptimizer',
     nextImageExportOptimizer_generateAndUseBlurImages: true,
   },
+  compiler: {
+    styledComponents: true,
+  },
+  output: 'export',
 };
 
 module.exports = () => {

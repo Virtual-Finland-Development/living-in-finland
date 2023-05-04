@@ -4,7 +4,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FC, PropsWithChildren, ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import tw from 'twin.macro';
+import styled from 'styled-components';
 import { AuthConsumer, AuthProvider } from '@/context/auth-context';
 import { ModalProvider } from '@/context/modal-context';
 import { ToastProvider } from '@/context/toast-context';
@@ -21,7 +21,9 @@ type ExtendedAppProps = AppProps & {
 
 const queryClient = new QueryClient();
 
-const Container = tw.div`container flex items-center justify-center h-screen`;
+const Container = styled.div.attrs({
+  className: 'container flex items-center justify-center h-screen',
+})``;
 
 const NoProvider = ({ children }: { children: ReactNode }) => <>{children}</>;
 

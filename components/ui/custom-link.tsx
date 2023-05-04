@@ -1,24 +1,25 @@
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
 import { forwardRef } from 'react';
+import styled from 'styled-components';
 import {
   Link as SuomiFiLink,
   LinkProps as SuomiFiLinkProps,
 } from 'suomifi-ui-components';
-import tw, { styled } from 'twin.macro';
 
-interface StyledProps {
+interface StyledLinkProps {
   $bold?: boolean;
   $base?: boolean;
 }
 
-const StyledLink = styled(SuomiFiLink)<StyledProps>`
-  ${props => props.$bold && tw`font-bold`}
-  ${props => props.$base && tw`text-base`}
-`;
+const StyledLink = styled(SuomiFiLink).attrs<StyledLinkProps>(
+  ({ $bold, $base }) => ({
+    className: `${$bold && '!font-bold'} ${$base && '!text-base'}`,
+  })
+)<StyledLinkProps>``;
 
 type CustomLinkProps = Omit<SuomiFiLinkProps, 'href'> &
   Omit<NextLinkProps, 'as' | 'passHref' | 'children'> &
-  StyledProps;
+  StyledLinkProps;
 
 const CustomLink = forwardRef<HTMLAnchorElement, CustomLinkProps>(
   ({ href, replace, scroll, shallow, locale, $bold, $base, children }, ref) => {

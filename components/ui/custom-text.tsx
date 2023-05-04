@@ -1,20 +1,23 @@
+import styled from 'styled-components';
 import { Text } from 'suomifi-ui-components';
-import tw, { styled } from 'twin.macro';
 
-interface StyledProps {
+interface StyledTextProps {
   $base?: boolean;
   $bold?: boolean;
   $center?: boolean;
 }
 
-const StyledText = styled(Text)<StyledProps>`
-  ${({ $base }) => $base && tw`text-base`}
-  ${({ $bold }) => $bold && tw`font-bold`}
-  ${({ $center }) => $center && tw`text-center`}
+const StyledText = styled(Text).attrs<StyledTextProps>(
+  ({ $bold, $base, $center }) => ({
+    className: `${$bold && '!font-bold'} ${$base && '!text-base'} ${
+      $center && '!text-center'
+    }`,
+  })
+)<StyledTextProps>`
   color: inherit;
 `;
 
-interface Props extends StyledProps {
+interface Props extends StyledTextProps {
   children: string;
 }
 

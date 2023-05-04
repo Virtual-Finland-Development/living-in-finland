@@ -2,7 +2,6 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
-const withTwin = require('./withTwin.js');
 
 const nextConfig = {
   reactStrictMode: false,
@@ -21,8 +20,12 @@ const nextConfig = {
     nextImageExportOptimizer_exportFolderName: 'nextImageExportOptimizer',
     nextImageExportOptimizer_generateAndUseBlurImages: true,
   },
+  compiler: {
+    styledComponents: true,
+  },
+  output: 'export',
 };
 
 module.exports = () => {
-  return withBundleAnalyzer(withTwin(nextConfig));
+  return withBundleAnalyzer(nextConfig);
 };

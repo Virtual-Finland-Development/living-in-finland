@@ -29,7 +29,7 @@ export default function CompanyNotAuthenticated() {
                 className="h-16 w-16 flex-shrink-0 bg-white rounded-full"
               />
             </div>
-            <CustomHeading variant="h2" center>
+            <CustomHeading variant="h2" $center>
               Establish a company or modify company information
             </CustomHeading>
             <CustomText $center>

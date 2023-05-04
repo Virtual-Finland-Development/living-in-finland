@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import { styled } from 'twin.macro';
+import styled from 'styled-components';
 import Footer from './footer';
 import MainNavigation from './main-navigation';
 

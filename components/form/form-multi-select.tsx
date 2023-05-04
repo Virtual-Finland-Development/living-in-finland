@@ -5,8 +5,8 @@ import {
   Path,
   RegisterOptions,
 } from 'react-hook-form';
+import styled from 'styled-components';
 import { MultiSelect } from 'suomifi-ui-components';
-import { styled } from 'twin.macro';
 
 const StyledMultiSelect = styled(MultiSelect)<{
   $fullWidthChipList?: boolean;

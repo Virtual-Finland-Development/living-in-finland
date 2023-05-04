@@ -173,7 +173,7 @@ function Ownerships({ index }: { index: number }) {
         <Button
           variant="secondaryNoBorder"
           iconRight="plus"
-          tw="min-h-0 p-0"
+          className="!min-h-0 !p-0"
           onClick={appendOwnership}
         >
           Add ownership

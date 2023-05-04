@@ -9,10 +9,10 @@ import { MultiSelect } from 'suomifi-ui-components';
 import { styled } from 'twin.macro';
 
 const StyledMultiSelect = styled(MultiSelect)<{
-  fullWidthChipList?: boolean;
+  $fullWidthChipList?: boolean;
 }>`
-  ${({ fullWidthChipList }) =>
-    fullWidthChipList &&
+  ${({ $fullWidthChipList }) =>
+    $fullWidthChipList &&
     `
 width: 100% !important;
 
@@ -80,7 +80,7 @@ export default function FormMultiSelect<T extends FieldValues>(
           onItemSelectionsChange={selected => {
             onChange(selected.map(s => s.uniqueItemId));
           }}
-          fullWidthChipList={fullWidthChipList}
+          $fullWidthChipList={fullWidthChipList}
         />
       )}
     />

@@ -9,7 +9,7 @@ const OPTIONS = {
   staleTime: 300_000,
 };
 
-function queryFunction<T>(
+function useQueryFunction<T>(
   queryKeys: string[],
   apiCall: () => Promise<T>,
   enabled: boolean
@@ -28,7 +28,7 @@ function queryFunction<T>(
 }
 
 function useCountries(enabled: boolean = true) {
-  return queryFunction(
+  return useQueryFunction(
     ['countries'],
     async () => await api.codesets.getCountries(),
     enabled
@@ -36,7 +36,7 @@ function useCountries(enabled: boolean = true) {
 }
 
 function useCurrencies(enabled: boolean = true) {
-  return queryFunction(
+  return useQueryFunction(
     ['currencies'],
     async () => await api.codesets.getCurrencies(),
     enabled
@@ -44,7 +44,7 @@ function useCurrencies(enabled: boolean = true) {
 }
 
 function useLanguages(enabled: boolean = true) {
-  return queryFunction(
+  return useQueryFunction(
     ['languages'],
     async () => await api.codesets.getLanguages(),
     enabled
@@ -52,7 +52,7 @@ function useLanguages(enabled: boolean = true) {
 }
 
 function useEscoLanguages(enabled: boolean = true) {
-  return queryFunction(
+  return useQueryFunction(
     ['esco-languages'],
     async () => await api.codesets.getEscoLanguages(),
     enabled
@@ -60,7 +60,7 @@ function useEscoLanguages(enabled: boolean = true) {
 }
 
 function useLanguageSkillLevels(enabled: boolean = true) {
-  return queryFunction(
+  return useQueryFunction(
     ['language-skill-levels'],
     async () => await api.codesets.getLanguageSkillLevels(),
     enabled
@@ -68,7 +68,7 @@ function useLanguageSkillLevels(enabled: boolean = true) {
 }
 
 function useNaceCodes(enabled: boolean = true) {
-  return queryFunction(
+  return useQueryFunction(
     ['nace'],
     async () => await api.codesets.getNaceCodes(),
     enabled
@@ -76,7 +76,7 @@ function useNaceCodes(enabled: boolean = true) {
 }
 
 function useEducationFields(enabled: boolean = true) {
-  return queryFunction(
+  return useQueryFunction(
     ['education-fields'],
     async () => await api.codesets.getEducationFields(),
     enabled
@@ -84,7 +84,7 @@ function useEducationFields(enabled: boolean = true) {
 }
 
 function useEducationLevels(enabled: boolean = true) {
-  return queryFunction(
+  return useQueryFunction(
     ['education-levels'],
     async () => await api.codesets.getEducationLevels(),
     enabled
@@ -92,7 +92,7 @@ function useEducationLevels(enabled: boolean = true) {
 }
 
 function useWorkPermits(enabled: boolean = true) {
-  return queryFunction(
+  return useQueryFunction(
     ['permits'],
     async () => await api.codesets.getWorkPermits(),
     enabled
@@ -100,7 +100,7 @@ function useWorkPermits(enabled: boolean = true) {
 }
 
 function useRegions(enabled: boolean = true) {
-  return queryFunction(
+  return useQueryFunction(
     ['regions'],
     async () => await api.codesets.getRegions(),
     enabled
@@ -108,7 +108,7 @@ function useRegions(enabled: boolean = true) {
 }
 
 function useMunicipalities(enabled: boolean = true) {
-  return queryFunction(
+  return useQueryFunction(
     ['municipalities'],
     async () => await api.codesets.getMunicipalities(),
     enabled
@@ -116,7 +116,7 @@ function useMunicipalities(enabled: boolean = true) {
 }
 
 function useOccupations(enabled: boolean = true) {
-  return queryFunction(
+  return useQueryFunction(
     ['occupations-flat'],
     async () => await api.codesets.getOccupationsFlat(),
     enabled
@@ -124,7 +124,7 @@ function useOccupations(enabled: boolean = true) {
 }
 
 function useEscoSkills(enabled: boolean = true) {
-  return queryFunction(
+  return useQueryFunction(
     ['esco-skills'],
     async () => await api.codesets.getEscoSkills(),
     enabled

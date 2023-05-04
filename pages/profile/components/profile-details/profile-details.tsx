@@ -91,7 +91,7 @@ export default function ProfileDetails(props: Props) {
         countries || []
       );
     }
-  }, [isLoading]);
+  }, [countries, isLoading, personBasicInformation]);
 
   // map all jobApplicationProfile values to readable form
   const jobApplicationProfileMapped = useMemo(() => {
@@ -113,7 +113,21 @@ export default function ProfileDetails(props: Props) {
         regions: regions || [],
       });
     }
-  }, [isLoading]);
+  }, [
+    educationFields,
+    educationLevels,
+    escoLanguages,
+    escoSkills,
+    isLoading,
+    jobApplicationProfile,
+    languageSkillLevels,
+    languages,
+    municipalities,
+    naceCodes,
+    occupations,
+    permits,
+    regions,
+  ]);
 
   // open delete confirmation modal
   const onDelete = () =>

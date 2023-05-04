@@ -24,9 +24,9 @@ const Highlight = ({ children }: { children: string }) => (
   <strong>{children}</strong>
 );
 
-const StyledCheckbox = styled(Checkbox)<{ isIndeterminate: boolean }>`
-  ${({ isIndeterminate }) =>
-    isIndeterminate &&
+const StyledCheckbox = styled(Checkbox)<{ $isIndeterminate: boolean }>`
+  ${({ $isIndeterminate }) =>
+    $isIndeterminate &&
     `
 svg {
   top: 8px !important;
@@ -73,7 +73,7 @@ function DisclosureLabel(props: DisclosureLabelProps) {
         onClick={({ checkboxState }) =>
           onSelect(item.codeValue, checkboxState, isIndeterminate)
         }
-        isIndeterminate={isIndeterminate}
+        $isIndeterminate={isIndeterminate}
       >
         <Highlighter
           searchWords={searchWords}

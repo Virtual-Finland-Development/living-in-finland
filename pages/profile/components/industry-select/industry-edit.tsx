@@ -37,7 +37,7 @@ export default function IndustryEdit(props: Props) {
   const filteredItems = useMemo(() => {
     if (!searchText) return items;
     return searchItems(items, searchText);
-  }, [searchText]);
+  }, [items, searchText]);
 
   const handleSelect = useCallback(
     (identifier: string, isChecked: boolean, isIndeterminate: boolean) => {

@@ -88,9 +88,7 @@ export default function FormInput<T extends FieldValues>(props: Props<T>) {
               status={error && 'error'}
               statusText={showStatusText && error ? error.message : ''}
               initialDate={!isDirty && value ? new Date(value) : new Date()}
-              defaultValue={
-                !isDirty && value ? format(new Date(value), 'd.M.yyyy') : ''
-              }
+              defaultValue={value ? format(new Date(value), 'd.M.yyyy') : ''}
               onChange={({ value, date }) => {
                 if (date instanceof Date && !isNaN(date.getTime())) {
                   onChange(format(date, 'yyyy-MM-dd'));

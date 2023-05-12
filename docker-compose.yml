@@ -20,9 +20,9 @@ services:
     networks:
       - vfd-network
     labels:
-      - traefik.http.routers.app.rule=Host(`virtual-finland.localhost`)
+      - traefik.http.routers.app.rule=Host(`virtual-finland-demo.localhost`)
     environment:
-      - NEXT_PUBLIC_APP_BASE_URL=http://virtual-finland.localhost
+      - NEXT_PUBLIC_APP_BASE_URL=http://virtual-finland-demo.localhost
 
 networks:
   vfd-network:

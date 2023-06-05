@@ -20,7 +20,8 @@ export function directToAuthGwLogin(redirectPath?: string) {
 
 export function directToAuthGwLogout() {
   const idToken = JSONLocalStorage.get(LOCAL_STORAGE_AUTH_KEY).idToken;
-  JSONLocalStorage.clear();
+  JSONLocalStorage.remove(LOCAL_STORAGE_AUTH_KEY);
+  JSONLocalStorage.remove(LOCAL_STORAGE_REDIRECT_KEY);
 
   window.location.assign(
     `${AUTH_GW_BASE_URL}/auth/openid/testbed/logout-request?appContext=${generateAppContextHash()}&idToken=${idToken}`
